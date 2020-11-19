@@ -20,7 +20,7 @@ class LogInHandlerTest {
     void setUp() throws IOException {
         // todo save current user credentials file and replace with default values
         Path datadir = Main.datadir;
-        Path userinfopath = Paths.get(datadir.toString(), "user_cred");
+        Path userinfopath = Paths.get(datadir.toString(), "user_cred.txt");
         File usercreds = new File(userinfopath.toString());
         String[] usernames = {"edward40hands", "coals2diamonds", "corgi", "pepsi", "Manager"};
         String[] passwords = {"correcthorseBATTERYSTAPLE", "myteamdamnrabak","hamtar0!", "c0kE123Login", "admin"};
