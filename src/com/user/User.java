@@ -1,17 +1,28 @@
 package com.user;
+
 enum gender{male, female}
 
 public class User {
     private static int count = 0;
     private String name;
     private String username;
-    private String pw_salt; // hashed password and salt
+    private String password; // hashed password and salt
+    private String salt;
+    private int user_id;
 
-    public User(String name,String username,String pw_salt){
+    public User(String name,String username,String password){
         count++;
+
         this.name = name;
         this.username = username;
-        this.pw_salt = pw_salt;
+        this.user_id = count;
+        this.salt = LogInHandler.getNextSalt().toString();
+        setPassword(password);
+
+    }
+
+    public User(){
+
     }
 
     public String getUsername(){
@@ -21,24 +32,62 @@ public class User {
     public void sendEmail(){
         //todo fill in
     }
+
+    public static int getCount() {
+        return count;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = LogInHandler.hash(password, salt);
+    }
+
+    public int getUser_id(){ return user_id; }
 }
 
 class Student extends User{
+    static class acc_info{
+        String name;
+        String username;
+        String password;
+        String permissions = "student";
 
-    private int matricID;
+        public acc_info(String name, String username, String password){
+            this.name = name;
+            this.username = username;
+            this.password = password;
+        }
+    }
+
+    private String matricID;
     private String gender;
     private String nationality;
     private String email;
-    private String course_of_study;
     private String phone_number;
+    private String course_of_study;
     private String date_matriculated;
     private Object Timetable;
 
-    public Student(String name,String username,String pw_salt, int matricID, String gender, String nationality,
+    public Student(acc_info acc_details, String matricID, String gender, String nationality,
                    String email, String course_of_study, String phone_number, String date_matriculated,
                    Object timetable) {
 
-        super(name,username,pw_salt);
+        super(acc_details.name, acc_details.username, acc_details.password);
         this.matricID = matricID;
         this.gender = gender;
         this.nationality = nationality;
@@ -50,11 +99,16 @@ class Student extends User{
 
     }
 
-    public int getMatricID() {
+    public Student(){
+    }
+
+
+
+    public String getMatricID() {
         return matricID;
     }
 
-    public void setMatricID(int matricID) {
+    public void setMatricID(String matricID) {
         this.matricID = matricID;
     }
 
@@ -85,8 +139,13 @@ class Student extends User{
     }
 
     public void setEmail(String email) {
-        // todo implement check if email is valid
-        this.email = email;
+        final String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
+        if (email.matches(regex)){
+            this.email = email;
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
     }
 
     public String getCourse_of_study() {
@@ -102,7 +161,14 @@ class Student extends User{
     }
 
     public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+        final String regex = "^[0-9]{8}$|^[+][0-9]{10,11}"; // 8digit number or +countrycode phone number
+        if (phone_number.matches(regex)){
+            this.phone_number = phone_number;
+        }
+        else{
+            throw new IllegalArgumentException("Phone number must be 8 digits long or have country code");
+        }
+
     }
 
     public String getDate_matriculated() {
@@ -120,6 +186,7 @@ class Student extends User{
     public void setTimetable(Object timetable) {
         Timetable = timetable;
     }
+
 }
 
 class Admin extends User{

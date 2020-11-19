@@ -15,15 +15,12 @@ import java.util.*;
 
 
 public class LogInHandler {
-    private final Path datadir = Main.datadir;
-    private final Path usercredpath = Paths.get(datadir.toString(), "user_cred.txt");
+    private final Path usercredpath = Main.usercredpath;
     private static final LogInHandler instance = new LogInHandler();
     private static UserFactory userFactory;
     private User[] logged_in_users;
 
-    private LogInHandler(){
-        userFactory = new UserFactory();
-    }
+    private LogInHandler(){ }
 
     public static LogInHandler startHandler(){
         return instance;
@@ -32,18 +29,21 @@ public class LogInHandler {
     public User login(String username, String password){
 
         HashMap<String, String[]> userinfo = readDB(usercredpath);
-        String[] salt_pw_perm = userinfo.get(username);
-        if (salt_pw_perm != null) {
-            String hashed_pw = hash(password, salt_pw_perm[0]);
-            if (hashed_pw.equals(salt_pw_perm[1])) {
-                if (checkPermissions(salt_pw_perm[2], salt_pw_perm[0]).equals("student")) {
-                    return userFactory.getUser(username, salt_pw_perm[2]);
-                } else if (checkPermissions(salt_pw_perm[2], salt_pw_perm[0]).equals("admin")) {
-                    return userFactory.getUser(username, salt_pw_perm[2]);
-                }
-            } else {
-                return null;
+        String[] salt_pw_perm_id = userinfo.get(username);
+        if (salt_pw_perm_id == null){
+            return null;
+        }
+        String[] salt_pw_perm = Arrays.copyOf(salt_pw_perm_id, salt_pw_perm_id.length-1);
+
+        String hashed_pw = hash(password, salt_pw_perm[0]);
+        if (hashed_pw.equals(salt_pw_perm[1])) {
+            if (checkPermissions(salt_pw_perm[2], salt_pw_perm[0]).equals("student")) {
+                return UserFactory.getUser(username, salt_pw_perm[2]);
+            } else if (checkPermissions(salt_pw_perm[2], salt_pw_perm[0]).equals("admin")) {
+                return UserFactory.getUser(username, salt_pw_perm[2]);
             }
+        } else {
+            return null;
         }
         return null;
 
@@ -59,12 +59,12 @@ public class LogInHandler {
         return null;
     }
 
-    public HashMap<String, String[]> readDB(Path filepath){
+    public static LinkedHashMap<String, String[]> readDB(Path filepath){
         String delimiter = ":";
-        HashMap<String, String[]> userinfo = new HashMap<>();
+        LinkedHashMap<String, String[]> userinfo = new LinkedHashMap<>();
         File file = new File(filepath.toString());
         if (file.length() == 0) {
-            return new HashMap<>();
+            return new LinkedHashMap<>();
         }
         try{
             Scanner sc = new Scanner(file);
@@ -72,18 +72,18 @@ public class LogInHandler {
             while (sc.hasNextLine()){
                 String data = sc.nextLine();
                 String[] data_split = data.split(delimiter);
-                String[] salt_pw_perm = {data_split[1], data_split[2], data_split[3]};
+                String[] salt_pw_perm = {data_split[1], data_split[2], data_split[3], data_split[4]};
                 userinfo.put(data_split[0], salt_pw_perm);
-                }
+            }
             sc.close();
             return userinfo;
-            }
+        }
         catch (FileNotFoundException e){
             System.out.println("User credentials file not found");
             try {
                 if (file.createNewFile()){
                     System.out.println("User credentials file created");
-                                    }
+                }
                 else{
                     System.out.println("User credentials file was unable to be created.");
                     e.printStackTrace();
@@ -93,12 +93,12 @@ public class LogInHandler {
                 System.out.println("Userdata file was unable to be created");
                 f.printStackTrace();
             }
-            return new HashMap<>();
+            return new LinkedHashMap<>();
         }
     }
 
 
-    private static String hash(String str, String salt){
+    public static String hash(String str, String salt){
         //https://www.baeldung.com/java-password-hashing
         try{
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -106,7 +106,7 @@ public class LogInHandler {
             final byte[] hashbytes = md.digest(str.getBytes(StandardCharsets.UTF_8));
             return bytesToHex(hashbytes);
         }
-         catch (NoSuchAlgorithmException e) {
+        catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
         }
