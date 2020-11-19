@@ -16,9 +16,10 @@ import java.util.*;
 
 public class LogInHandler {
     private final Path datadir = Main.datadir;
-    private final Path usercredpath = Paths.get(datadir.toString(), "user_cred");
+    private final Path usercredpath = Paths.get(datadir.toString(), "user_cred.txt");
     private static final LogInHandler instance = new LogInHandler();
     private static UserFactory userFactory;
+    private User[] logged_in_users;
 
     private LogInHandler(){
         userFactory = new UserFactory();
@@ -58,10 +59,13 @@ public class LogInHandler {
         return null;
     }
 
-    private HashMap<String, String[]> readDB(Path filepath){
+    public HashMap<String, String[]> readDB(Path filepath){
         String delimiter = ":";
-        HashMap<String, String[]> userinfo = new HashMap<String, String[]>();
+        HashMap<String, String[]> userinfo = new HashMap<>();
         File file = new File(filepath.toString());
+        if (file.length() == 0) {
+            return new HashMap<>();
+        }
         try{
             Scanner sc = new Scanner(file);
 

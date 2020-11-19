@@ -9,11 +9,14 @@ public class UserFactory {
     public User getUser(String username, String userPermissions){
         String[] user_info = readDB(username, userinfopath);
         if (userPermissions.equalsIgnoreCase("admin")){
-            return new Admin(user_info);
+//            return new Admin(user_info);
+            return null;
         }
         else if (userPermissions.equalsIgnoreCase("student")){
-            return new Student(user_info);
+//            return new Student(user_info);
+            return null;
         }
+        return null;
     }
     private String[] readDB(String username, Path filepath){
         //todo fill in
