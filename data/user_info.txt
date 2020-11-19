@@ -1,0 +1,1 @@
+userid:name:matricID,gender,nationality,email,phone_number,course_of_study,date_matriculated,Timetable
