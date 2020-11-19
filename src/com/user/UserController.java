@@ -89,8 +89,11 @@ class StudentController extends UserController {
     private Student user;
     private final Path userinfopath = getUserinfopath();
     private final Path usercredpath = getUsercredpath();
+
     private HashMap<String, String> userinfoDB;
     private LinkedHashMap<String, String[]> usercredDB;
+    private Calendar defaultAccessTime;
+
     private static final StudentController instance = new StudentController(null);
 
     public StudentController(Student student) {
@@ -138,7 +141,6 @@ class StudentController extends UserController {
         }
         return new Student(acc_details, matricID, gender, nationality, email, course_of_study, phone_number,
                 date_matriculated, null);
-
     }
 
     public void refreshInfoDB(){
@@ -147,5 +149,13 @@ class StudentController extends UserController {
 
     public void refreshCredDB(){
         usercredDB = readUserCredDB();
+    }
+
+    public void setDefaultAccessTime(Calendar accessTime){
+        defaultAccessTime = accessTime;
+    }
+
+    public Calendar getDefaultAccessTime(){
+        return defaultAccessTime;
     }
 }
