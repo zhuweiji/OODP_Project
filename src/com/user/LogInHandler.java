@@ -17,7 +17,6 @@ import java.util.*;
 public class LogInHandler {
     private final Path usercredpath = Main.usercredpath;
     private static final LogInHandler instance = new LogInHandler();
-    private static UserFactory userFactory;
     private User[] logged_in_users;
 
     private LogInHandler(){ }
