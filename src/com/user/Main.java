@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class Main {
-    static Path datadir = Paths.get(System.getProperty("user.dir").toString(), "data");
+    public static Path datadir = Paths.get(System.getProperty("user.dir"), "data");
     public static void main(String[] args) {
         CommandInterface commandInterface = CommandInterface.startInterface();
 
