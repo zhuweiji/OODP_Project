@@ -1,0 +1,14 @@
+stud2|CZ3005|10004|Registered
+stud4|CZ1106|12345|Registered
+stud2|CZ3005|10002|Registered
+stud2|CZ3005|10004|Registered
+stud1|CZ1106|12345|Registered
+stud1|CZ1107|50000|Registered
+stud2|CZ1107|40003|Registered
+stud4|CZ3005|10003|Registered
+stud4|CZ1106|12345|On Waiting List
+stud4|CZ1107|40003|Registered
+stud3|CZAB1201|10009|On Waiting List
+stud3|CZ1107|50000|Registered
+stud2|CZ3005|10004|Registered
+stud3|CZ1107|40003|Registered
