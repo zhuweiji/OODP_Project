@@ -1,28 +1,50 @@
 package com.user;
 
 import java.io.Console;
-import java.util.ArrayList;
+import java.util.Scanner;
 
 public class CommandInterface {
-    private ArrayList<User> users = new ArrayList<User>();
-    private static final CommandInterface instance = new CommandInterface();
+    private final Scanner sc = new Scanner(System.in);
+    Console console = System.console();
+    private static CommandInterface instance = new CommandInterface();
 
-    public static CommandInterface startInterface(){
+    private CommandInterface(){
+    }
+
+    public static CommandInterface getInstance(){
         return instance;
     }
-    private CommandInterface(){
-        LogInHandler loginhandler = LogInHandler.startHandler();
-        Console console = System.console();
-        assert console != null : "Run program in cmd.";
 
-        String username = console.readLine("Enter your username: ");
-        char[] passwordArr = console.readPassword("Enter your password: ");
-        String password = new String(passwordArr);
-
-        loginhandler.login(username, password);
-
+    public void display(String str){
+        System.out.println(str);
+    }
+    public void inlinedisplay(String str){
+        System.out.print(str);
+    }
+    public void displayf(String str, String[] args){
+        String output = str;
+        for (String arg: args){
+            output = output.replaceFirst("[{][}]", arg);
+        }
+        System.out.println(output);
     }
 
+    public String input(String message){
+        System.out.print(message);
+        return sc.nextLine();
+    }
+
+    public String input(){
+        return sc.nextLine();
+    }
+
+    public boolean consoleAvail(){
+        return (console != null);
+    }
+
+    public char[] secretInput(String message){
+        return console.readPassword(message);
+    }
 
 
 }

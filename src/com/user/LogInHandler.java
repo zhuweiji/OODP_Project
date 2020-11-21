@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -17,7 +16,10 @@ import java.util.*;
 public class LogInHandler {
     private final Path usercredpath = Main.usercredpath;
     private static final LogInHandler instance = new LogInHandler();
-    private User[] logged_in_users;
+    private static final StudentController studentController = StudentController.getInstance();
+    private static final AdminController adminController = AdminController.getInstance();
+    public static final CommandInterface cmd = CommandInterface.getInstance();
+    private UserAcc[] logged_in_users;
 
     private LogInHandler(){ }
 
@@ -25,26 +27,35 @@ public class LogInHandler {
         return instance;
     }
 
-    public User login(String username, String password){
-
+    public boolean login(String username, String password){
         HashMap<String, String[]> userinfo = readDB(usercredpath);
-        String[] salt_pw_perm_id = userinfo.get(username);
-        if (salt_pw_perm_id == null){
-            return null;
-        }
-        String[] salt_pw_perm = Arrays.copyOf(salt_pw_perm_id, salt_pw_perm_id.length-1);
+        String[] id_salt_pw_perm = userinfo.get(username);
 
-        String hashed_pw = hash(password, salt_pw_perm[0]);
-        if (hashed_pw.equals(salt_pw_perm[1])) {
-            if (checkPermissions(salt_pw_perm[2], salt_pw_perm[0]).equals("student")) {
-                return UserFactory.getUser(username, salt_pw_perm[2]);
-            } else if (checkPermissions(salt_pw_perm[2], salt_pw_perm[0]).equals("admin")) {
-                return UserFactory.getUser(username, salt_pw_perm[2]);
-            }
-        } else {
-            return null;
+        if (id_salt_pw_perm == null){
+            return false;
         }
-        return null;
+
+        String hashed_pw = hash(password, id_salt_pw_perm[1]);
+
+        if (hashed_pw.equals(id_salt_pw_perm[2])) {
+            if (checkPermissions(id_salt_pw_perm[3], id_salt_pw_perm[1]).equals("student")) {
+                cmd.display("Logged in as student");
+                studentController.getExistingStudent(username, hashed_pw, id_salt_pw_perm[1],id_salt_pw_perm[0]);
+                // todo change to create com.user.StudentInterface
+                return true;
+            } else if (checkPermissions(id_salt_pw_perm[3], id_salt_pw_perm[1]).equals("admin")) {
+                cmd.display("Logged in as admin");
+                AdminInterface adminInterface = AdminInterface.getInstance(username, hashed_pw, id_salt_pw_perm[1],
+                        id_salt_pw_perm[0]);
+                adminInterface.run();
+                return true;
+            }
+                else {
+                System.out.println("Permissions are wrong");
+                    return false;
+            }
+        }
+        return false;
 
     }
 
@@ -55,7 +66,7 @@ public class LogInHandler {
         else if (hash("admin", salt).equals(hashed_permissions)){
             return "admin";
         }
-        return null;
+        return "none";
     }
 
     public static LinkedHashMap<String, String[]> readDB(Path filepath){
@@ -71,8 +82,10 @@ public class LogInHandler {
             while (sc.hasNextLine()){
                 String data = sc.nextLine();
                 String[] data_split = data.split(delimiter);
-                String[] salt_pw_perm = {data_split[1], data_split[2], data_split[3], data_split[4]};
-                userinfo.put(data_split[0], salt_pw_perm);
+                String userid = data_split[0];
+                String username = data_split[1];
+                String[] id_salt_pw_perm = {userid, data_split[2], data_split[3], data_split[4]};
+                userinfo.put(username, id_salt_pw_perm);
             }
             sc.close();
             return userinfo;

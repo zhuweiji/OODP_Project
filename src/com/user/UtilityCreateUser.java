@@ -24,10 +24,12 @@ public class UtilityCreateUser {
                 "03905aabed07b7ce74834fc248a1f4fee121db76916ca953f34cc1a0b2344ab5",
                 "35046c5b46c79bd0b2c8d21b29634dfbdde09ff85c9199349a6397b43c3d29ab"};
         String[] permissions = {"student","student","student","student","admin"};
-        for (int i = 0; i < 5; i++) {
-            String perm_hash = hash(permissions[i], salts[i]);
-            System.out.printf("%s:%s:%s:%s\n", usernames[i], salts[i], hashed_pw[i],perm_hash);
-        }
+//        for (int i = 0; i < 5; i++) {
+//            String perm_hash = hash(permissions[i], salts[i]);
+//            System.out.printf("%s:%s:%s:%s\n", usernames[i], salts[i], hashed_pw[i],perm_hash);
+//        }
+        System.out.println(hash(passwords[4], salts[4]));
+        System.out.println(hash(permissions[4], salts[4]));
     }
 
     private static String hash(String str, String salt) {
