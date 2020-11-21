@@ -131,7 +131,7 @@ class Student extends UserAcc {
 
     public String[] getAllDetails(){
         return new String[]{getUser_id(), name, matricID, gender, nationality, email, course_of_study,
-                phone_number, date_matriculated};
+                phone_number, date_matriculated, accessPeriod};
     }
 
     public String getName() {

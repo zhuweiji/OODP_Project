@@ -122,7 +122,8 @@ public class AdminInterface {
 
                         cmd.display("Student created with following details:");
                         cmd.displayf("Name: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
-                                "Course of study: {}\nPhone number: {}\nDate matriculated: {}",newStudent.getAllDetails());
+                                "Course of study: {}\nPhone number: {}\nDate matriculated: {}\nAccess Period: {}",
+                                newStudent.getAllDetails());
                         studentController.setUser(newStudent);
                         studentController.saveStudentToDB(newStudent);
                         System.out.println("saved!");
