@@ -1,7 +1,5 @@
 package com.user;
 
-import java.awt.*;
-
 public class AdminInterface {
     private Admin logged_on_user;
     private static StudentController studentController = StudentController.getInstance();
@@ -110,15 +108,27 @@ public class AdminInterface {
                         String date_matriculated = cmd.input("Enter date matriculated: ");
                         newStudent.setDate_matriculated(date_matriculated);
                         location++;
-                    cmd.display("Student created with following details:");
-                    cmd.displayf("Name: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
-                            "Course of study: {}\nPhone number: {}\nDate matriculated: {}",newStudent.getAllDetails());
-                    studentController.setUser(newStudent);
-                    studentController.saveStudentToDB(newStudent);
+                    case 8:
+                        String set_default = cmd.input("Set student's access period to default? y/n: ");
+                        String default_period;
+                        if (set_default == "y"){
+                            default_period = studentController.getDefaultStringAccessPeriod();
+                        }
+                        else{
+                            default_period = cmd.input("Enter access period");
+                        }
+                        newStudent.setAccessPeriod(default_period);
+
+
+                        cmd.display("Student created with following details:");
+                        cmd.displayf("Name: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
+                                "Course of study: {}\nPhone number: {}\nDate matriculated: {}",newStudent.getAllDetails());
+                        studentController.setUser(newStudent);
+                        studentController.saveStudentToDB(newStudent);
                         System.out.println("saved!");
-                    studentController.refreshInfoDB();
+                        studentController.refreshInfoDB();
                         System.out.println("infodb refreshed");
-                    studentController.readUserCredDB();
+                        studentController.readUserCredDB();
                         System.out.println("creddb refreshed");
                         complete = true;
                         break;
