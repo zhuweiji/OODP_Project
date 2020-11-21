@@ -1,7 +1,5 @@
 package com.user;
 
-import java.awt.*;
-
 public class AdminInterface {
     private Admin logged_on_user;
     private static StudentController studentController = StudentController.getInstance();
@@ -50,7 +48,7 @@ public class AdminInterface {
         return null;
     }
 
-    public Student CreateStudent(){
+    public void CreateStudent(){
         int num_tries = 3;
         String try_again_message = "Please try again.";
         String failure_message = "You have made " + num_tries + " wrong inputs, cancelling operation.";
@@ -69,10 +67,12 @@ public class AdminInterface {
         Student newStudent = studentController.getNewStudent(acc_info);
 
         int location = 0;
-        while (true) {
+        boolean complete = false;
+        while (!complete) {
             if (num_tries <= 0){
                 cmd.display(failure_message);
-                return null;
+                complete = true;
+                break;
             }
             try {
                 switch (location){
@@ -108,15 +108,31 @@ public class AdminInterface {
                         String date_matriculated = cmd.input("Enter date matriculated: ");
                         newStudent.setDate_matriculated(date_matriculated);
                         location++;
-                    cmd.display("Student created with following details:");
-                    cmd.displayf("Name: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
-                            "Course of study: {}\nPhone number: {}\nDate matriculated: {}",newStudent.getAllDetails());
-                    studentController.setUser(newStudent);
-                    studentController.saveStudentToDB(newStudent);
-                    studentController.refreshInfoDB();
-                    studentController.readUserCredDB();
+                    case 8:
+                        String set_default = cmd.input("Set student's access period to default? y/n: ");
+                        String default_period;
+                        if (set_default == "y"){
+                            default_period = studentController.getDefaultStringAccessPeriod();
+                        }
+                        else{
+                            default_period = cmd.input("Enter access period");
+                        }
+                        newStudent.setAccessPeriod(default_period);
+
+
+                        cmd.display("Student created with following details:");
+                        cmd.displayf("Name: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
+                                "Course of study: {}\nPhone number: {}\nDate matriculated: {}\nAccess Period: {}",
+                                newStudent.getAllDetails());
+                        studentController.setUser(newStudent);
+                        studentController.saveStudentToDB(newStudent);
                         System.out.println("saved!");
-                    break;
+                        studentController.refreshInfoDB();
+                        System.out.println("infodb refreshed");
+                        studentController.readUserCredDB();
+                        System.out.println("creddb refreshed");
+                        complete = true;
+                        break;
                 }
 
             }
