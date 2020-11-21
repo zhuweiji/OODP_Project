@@ -1,0 +1,4 @@
+0,Timothy Scott,U1921812F,male,Singapore,timo192@hotmail.com,CS,92118129,21-12-2019,12-21
+1,Thomas Franklin,U1209129S,male,Thai,tommycoke@gmail.com,CS,81281209,21-12-2019,12-21
+2,Bummy Bottoms,U1238891G,female,Malaysian,bummy1209@gmail.com,CSE,89128192,21-12-2019,12-21
+3,Corgi Hampterton,U1289109G,female,Singaporean,corgodesperado@gmail.com,CSE,90123123,20-12-2019,12-21

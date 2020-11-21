@@ -84,8 +84,11 @@ class UserController {
             Scanner sc = new Scanner(file);
             while (sc.hasNextLine()) {
                 String data = sc.nextLine();
-                String[] id_data = data.split(":");
-                userinfo.put(id_data[0], id_data[1]);
+                String[] id_data = data.split(",");
+                String[] user_data = Arrays.copyOfRange(id_data, 1, id_data.length);
+                String userdata = String.join(",", user_data);
+                userinfo.put(id_data[0], userdata);
+
             }
             return userinfo;
         } catch (FileNotFoundException e) {
@@ -109,21 +112,25 @@ class UserController {
         return LogInHandler.readDB(usercredpath);
     }
 
-    public void pushDB(Path filepath, String[] str) throws IOException {
+    public void pushDB(Path filepath, String[] str, String delimiter) throws IOException {
         File file = new File(filepath.toString());
-        BufferedWriter writer = new BufferedWriter(new FileWriter((file)));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+        writer.newLine();
         for (String item: str){
             writer.write(item);
+            writer.write(delimiter);
         }
+        writer.newLine();
+        writer.close();
     }
     public void saveUserCredentials(UserAcc user){
         int count = Integer.parseInt(useridCount);
         count++;
         useridCount=Integer.toString(count);
         String[] useracc_details = {user.getUser_id(),user.getUsername(),user.getSalt(),user.getPassword(),
-                user.getPermissions()};
+                user.getHashedPermissions()};
         try {
-            pushDB(usercredpath, useracc_details);
+            pushDB(usercredpath, useracc_details, ",");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -188,12 +195,17 @@ class StudentController extends UserController {
         UserAcc.acc_info acc_details = new UserAcc.acc_info(username, hashed_pw);
         acc_details.setSalt(salt);
         return new Student(acc_details, id, details[0], details[1], details[2], details[3], details[4], details[5],
-                details[6],details[7], details[8]);
+                details[6],details[7],details[8]);
+
 
     }
 
     public String[] fetchStudentDetails(String id) {
-        String[] details = userinfoDB.get(id).split(",");
+        String foo = userinfoDB.get(id);
+        if (foo == null){
+            return null;
+        }
+        String[] details = foo.split(",");
         String name = details[0];
         String matricID = details[1];
         String gender = details[2];
@@ -202,7 +214,7 @@ class StudentController extends UserController {
         String phone_number = details[5];
         String course_of_study = details[6];
         String date_matriculated = details[7];
-        Object Timetable = details[8];
+        String access_period = details[8];
 
         return details;
     }
@@ -211,7 +223,7 @@ class StudentController extends UserController {
     public void saveStudentToDB(Student student){
         saveUserCredentials(student);
         try {
-            pushDB(studentinfopath,student.getAllDetails());
+            pushDB(studentinfopath,student.getAllDetails(), ",");
         } catch (IOException e) {
             e.printStackTrace();
         }

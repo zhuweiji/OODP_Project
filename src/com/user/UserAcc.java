@@ -83,7 +83,11 @@ public class UserAcc {
 
     public String getUser_id(){ return user_id; }
 
-    public String getPermissions() {
+    public String getHashedPermissions() {
+        return permissions;
+    }
+
+    public String getPlainPermissions(){
         if (LogInHandler.hash("student", salt).equals(permissions)){
             return "student";
         }
@@ -126,7 +130,7 @@ class Student extends UserAcc {
     }
 
     public String[] getAllDetails(){
-        return new String[]{name, matricID, gender, nationality, email, course_of_study,
+        return new String[]{getUser_id(), name, matricID, gender, nationality, email, course_of_study,
                 phone_number, date_matriculated};
     }
 

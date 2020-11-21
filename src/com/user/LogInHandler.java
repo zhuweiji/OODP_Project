@@ -40,8 +40,9 @@ public class LogInHandler {
         if (hashed_pw.equals(id_salt_pw_perm[2])) {
             if (checkPermissions(id_salt_pw_perm[3], id_salt_pw_perm[1]).equals("student")) {
                 cmd.display("Logged in as student");
-                studentController.getExistingStudent(username, hashed_pw, id_salt_pw_perm[1],id_salt_pw_perm[0]);
-                // todo change to create com.user.StudentInterface
+                StudentInterface studentInterface = StudentInterface.getInstance(username, hashed_pw, id_salt_pw_perm[1],
+                id_salt_pw_perm[0]);
+                studentInterface.run();
                 return true;
             } else if (checkPermissions(id_salt_pw_perm[3], id_salt_pw_perm[1]).equals("admin")) {
                 cmd.display("Logged in as admin");
@@ -70,8 +71,9 @@ public class LogInHandler {
     }
 
     public static LinkedHashMap<String, String[]> readDB(Path filepath){
-        String delimiter = ":";
+        String delimiter = ",";
         LinkedHashMap<String, String[]> userinfo = new LinkedHashMap<>();
+
         File file = new File(filepath.toString());
         if (file.length() == 0) {
             return new LinkedHashMap<>();
@@ -81,6 +83,9 @@ public class LogInHandler {
 
             while (sc.hasNextLine()){
                 String data = sc.nextLine();
+                if (data.trim().isEmpty()){
+                    break;
+                }
                 String[] data_split = data.split(delimiter);
                 String userid = data_split[0];
                 String username = data_split[1];

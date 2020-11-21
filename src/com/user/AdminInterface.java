@@ -50,7 +50,7 @@ public class AdminInterface {
         return null;
     }
 
-    public Student CreateStudent(){
+    public void CreateStudent(){
         int num_tries = 3;
         String try_again_message = "Please try again.";
         String failure_message = "You have made " + num_tries + " wrong inputs, cancelling operation.";
@@ -69,10 +69,12 @@ public class AdminInterface {
         Student newStudent = studentController.getNewStudent(acc_info);
 
         int location = 0;
-        while (true) {
+        boolean complete = false;
+        while (!complete) {
             if (num_tries <= 0){
                 cmd.display(failure_message);
-                return null;
+                complete = true;
+                break;
             }
             try {
                 switch (location){
@@ -113,10 +115,13 @@ public class AdminInterface {
                             "Course of study: {}\nPhone number: {}\nDate matriculated: {}",newStudent.getAllDetails());
                     studentController.setUser(newStudent);
                     studentController.saveStudentToDB(newStudent);
-                    studentController.refreshInfoDB();
-                    studentController.readUserCredDB();
                         System.out.println("saved!");
-                    break;
+                    studentController.refreshInfoDB();
+                        System.out.println("infodb refreshed");
+                    studentController.readUserCredDB();
+                        System.out.println("creddb refreshed");
+                        complete = true;
+                        break;
                 }
 
             }
