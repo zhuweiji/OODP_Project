@@ -1,5 +1,5 @@
 import java.util.*;
-
+https://github.com/zhuweiji/OODP_Project/blob/master/Lecture
 public class Lecture implements Lesson {
 	public Calendar StartTime, EndTime;
 	public String Day, Venue;
