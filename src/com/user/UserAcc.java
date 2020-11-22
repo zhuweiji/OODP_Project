@@ -97,7 +97,8 @@ public class UserAcc {
     }
 }
 
-class Student extends UserAcc {
+class Student {
+    private String userid;
     private String name;
     private String matricID;
     private String gender;
@@ -108,11 +109,11 @@ class Student extends UserAcc {
     private String date_matriculated; // todo change to date format
     private String accessPeriod;
 
-    public Student(acc_info acc_details, String user_id, String name, String matricID, String gender, String nationality,
+    public Student(String user_id, String name, String matricID, String gender, String nationality,
                    String email, String course_of_study, String phone_number, String date_matriculated,
                    String accessPeriod) {
 
-        super(acc_details,user_id, "student");
+
         this.name = name;
         this.matricID = matricID;
         this.gender = gender;
@@ -125,13 +126,17 @@ class Student extends UserAcc {
 
     }
 
-    public Student(acc_info acc_details, String user_id){
-        super(acc_details,user_id, "student");
+    public Student(String user_id){
+        this.userid = user_id;
     }
 
     public String[] getAllDetails(){
-        return new String[]{getUser_id(), name, matricID, gender, nationality, email, course_of_study,
+        return new String[]{userid, name, matricID, gender, nationality, email, course_of_study,
                 phone_number, date_matriculated, accessPeriod};
+    }
+
+    public String getUserid() {
+        return userid;
     }
 
     public String getName() {
@@ -163,17 +168,11 @@ class Student extends UserAcc {
 
     public void setGender(String gender) {
         gender = gender.toLowerCase();
-        if (gender.equals("male") || gender.equals("female")){
-            this.gender = gender;
-        }
-        else if (gender.equals("m")){
-            this.gender = "male";
-        }
-        else if (gender.equals("f")){
-            this.gender = "female";
-        }
-        else{
-            throw new IllegalArgumentException("gender must be male or female");
+        switch (gender) {
+            case "male", "female" -> this.gender = gender;
+            case "m" -> this.gender = "male";
+            case "f" -> this.gender = "female";
+            default -> throw new IllegalArgumentException("gender must be male or female");
         }
     }
 
