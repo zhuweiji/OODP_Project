@@ -1,7 +1,0 @@
-Artifical Intelligence|SCSE|CZ3005|400|3
-Computer Organisation and Architecture|SCSE|CZ1106|450|3
-Data Structures and Algorithms|SCSE|CZ1107|350|3
-Introdution to Computational Thinking & Programming|SCSE|CZ1103|400|3
-Digital Logic|SCSE|CZ1105|400|3
-Financial Management|NBS|AB1201|600|4
-Principles of Economics|NBS|HE9091|550|4

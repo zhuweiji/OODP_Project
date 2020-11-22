@@ -1,6 +1,7 @@
 package com.user;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -115,15 +116,21 @@ class UserController {
         return LogInHandler.readDB(usercredpath);
     }
 
-    public void pushDB(Path filepath, String[] str, String delimiter) throws IOException {
+    public void pushDB(Path filepath, String[] str, String delimiter, boolean append) throws IOException {
+        // appends line
         File file = new File(filepath.toString());
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file, append));
         writer.newLine();
+        int count=0;
         for (String item: str){
+            count++;
             writer.write(item);
-            writer.write(delimiter);
+            if (count != str.length){
+                writer.write(delimiter);
+            }
+
         }
-        writer.newLine();
+//        writer.newLine();
         writer.close();
     }
     public void saveUserCredentials(UserAcc user){
@@ -133,7 +140,7 @@ class UserController {
         String[] useracc_details = {user.getUser_id(),user.getUsername(),user.getSalt(),user.getPassword(),
                 user.getHashedPermissions()};
         try {
-            pushDB(usercredpath, useracc_details, ",");
+            pushDB(usercredpath, useracc_details, ",",true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -143,16 +150,15 @@ class UserController {
         String username;
         String[] salt_pw_perm_id;
         for (HashMap.Entry<String, String[]> entry : usercredDB.entrySet()) {
-            if (entry.getValue()[4].equals(id)) {
+            if (entry.getValue()[0].equals(id)) {
                 username = entry.getKey();
                 salt_pw_perm_id = entry.getValue();
                 String[] result = new String[6];
                 result[0] = username;
                 System.arraycopy(salt_pw_perm_id, 0, result, 1, salt_pw_perm_id.length); // todo length of array is 5??
                 return result;
-            } else {
-                return null;
             }
+
         }
         return null;
     }
@@ -165,7 +171,7 @@ class StudentController extends UserController {
     private Student user;
     private final Path studentinfopath = getStudentinfopath();
 
-    private HashMap<String, String> userinfoDB = readUserInfoDB(studentinfopath);
+    private HashMap<String, String> studentinfoDB = readUserInfoDB(studentinfopath);
     private String defaultAccessPeriod;
 
     private static final StudentController instance = new StudentController();
@@ -207,7 +213,7 @@ class StudentController extends UserController {
     }
 
     public String[] fetchStudentDetails(String id) {
-        String foo = userinfoDB.get(id);
+        String foo = studentinfoDB.get(id);
         if (foo == null){
             return null;
         }
@@ -226,7 +232,7 @@ class StudentController extends UserController {
     }
 
     public String fetchStudentUIDFromMatricID(String matricID){
-        HashMap<String, String> db = userinfoDB;
+        HashMap<String, String> db = studentinfoDB;
         String[] details;
         for (Map.Entry<String, String> entry: db.entrySet()){
             details = entry.getValue().split(",");
@@ -238,7 +244,7 @@ class StudentController extends UserController {
     }
 
     public String[] fetchStudentDetailsFromMatricID(String matricID){
-        HashMap<String, String> db = userinfoDB;
+        HashMap<String, String> db = studentinfoDB;
         String[] details;
         for (Map.Entry<String, String> entry: db.entrySet()){
             details = entry.getValue().split(",");
@@ -255,18 +261,38 @@ class StudentController extends UserController {
         UserAcc user = new UserAcc(user_details[0], user_details[2],user_details[1],user_details[3],user_details[4]);
         saveUserCredentials(user);
         try {
-            pushDB(studentinfopath,student.getAllDetails(), ",");
+            pushDB(studentinfopath,student.getAllDetails(), ",",true);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void editExistingStudentInDB(String id, String[] details){
+    public void editExistingStudentInDB(String id, int index, String value) throws IOException {
+        String[] details = fetchStudentDetails(id);
+        details[index] = value;
+        StringBuffer sb = new StringBuffer();
+        int count=0;
+        for (String s : details) {
+            sb.append(s);
+            if (count< details.length){
+                sb.append(",");
+            }
+            count++;
+        }
+        studentinfoDB.put(id,sb.toString());
+        Files.write(Main.studentinfopath, "".getBytes());
+        boolean not_first_line = false;
+        for (String key: studentinfoDB.keySet()){
+            String[] output = new String[]{key,studentinfoDB.get(key)};
+            pushDB(studentinfopath,output , ",",not_first_line);
+            not_first_line = true;
+        }
 
     }
 
+
     public void refreshInfoDB(){
-        userinfoDB = readUserInfoDB(studentinfopath);
+        studentinfoDB = readUserInfoDB(studentinfopath);
     }
 
 
@@ -299,8 +325,7 @@ class AdminController extends UserController{
         return instance;
     }
 
-    @Override
-    public Admin getUser() {
+    public Admin getAdmin() {
         return user;
     }
 
@@ -309,7 +334,7 @@ class AdminController extends UserController{
     }
 
     public Admin getNewAdmin(UserAcc.acc_info acc_details){
-        Admin newadmin = new Admin(acc_details, instance.getUseridCount());
+        Admin newadmin = new Admin(instance.getUseridCount());
         setUser(newadmin);
         return newadmin;
     }
@@ -322,7 +347,7 @@ class AdminController extends UserController{
         }
         UserAcc.acc_info acc_details = new UserAcc.acc_info(username, hashed_pw);
         acc_details.setSalt(salt);
-        return new Admin(acc_details, id, admin_info[0], admin_info[1], admin_info[2]);
+        return new Admin(id, admin_info[0], admin_info[1], admin_info[2]);
     }
 
     public String[] fetchAdminDetails(String id){

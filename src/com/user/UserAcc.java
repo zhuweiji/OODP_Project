@@ -241,21 +241,20 @@ class Student {
 
 }
 
-class Admin extends UserAcc {
+class Admin {
     private String adminID;
     private String name;
     private String email;
 
-
-    public Admin(acc_info acc_info,String user_id, String adminID, String name, String email) {
-        super(acc_info,user_id, "admin");
+    public Admin(String user_id, String adminID, String name, String email) {
+        super();
         this.adminID = adminID;
         this.name = name;
         this.email = email;
     }
 
-    public Admin(acc_info acc_info,String user_id){
-        super(acc_info,user_id, "admin");
+    public Admin(String user_id){
+        super();
     }
 
     public String getAdminID() {

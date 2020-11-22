@@ -1,5 +1,7 @@
 package com.user;
 
+import java.io.IOException;
+
 public class AdminInterface {
     private Admin logged_on_user;
     private String defaultAccessPeriod; //todo change to Calendar format
@@ -27,6 +29,7 @@ public class AdminInterface {
         cmd.display("Welcome "+ logged_on_user.getName()+ " !");
         while (true){
             cmd.display("Here are your available options: ");
+            cmd.display("0: Edit Student's access period"); //todo implement change all student's access period
             cmd.display("1: Create new Admin user");
             cmd.display("2: Create new Student user");
             cmd.display("3: Update a course");
@@ -34,12 +37,13 @@ public class AdminInterface {
             cmd.display("5: Check available vacancy for an index number");
             cmd.display("6: Print student list by index number");
             cmd.display("7: Print student list by course");
-            cmd.display("0: Exit");
+            cmd.display("-1: Exit");
             int choice = Integer.parseInt(cmd.input("Enter your choice: "));
             switch (choice){
+                case 0 -> editAccessPeriod();
                 case 1 -> CreateAdmin();
                 case 2 -> CreateStudent();
-                case 0 -> System.exit(0);
+                case -1 -> System.exit(0);
             }
         }
 
@@ -51,6 +55,7 @@ public class AdminInterface {
     }
 
     public void CreateStudent(){
+        // allow current admin to create a new student
         int num_tries = 3;
         String try_again_message = "Please try again.";
         String failure_message = "You have made " + num_tries + " wrong inputs, cancelling operation.";
@@ -122,7 +127,6 @@ public class AdminInterface {
                         }
                         newStudent.setAccessPeriod(default_period);
 
-
                         cmd.display("Student created with following details:");
                         cmd.displayf("Name: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
                                 "Course of study: {}\nPhone number: {}\nDate matriculated: {}\nAccess Period: {}",
@@ -147,12 +151,23 @@ public class AdminInterface {
         }
     }
     public void editAccessPeriod(){
+        // allow admin to access period of a student
         String matricID = cmd.input("Enter Student's Matriculation ID");
         String id = studentController.fetchStudentUIDFromMatricID(matricID);
-        String details[] = studentController.fetchStudentDetails(id);
-        String access_period = details[8];
+        if (id==null){
+            System.out.println("Student with matriculation ID " +matricID+" was not found.");
+        }
+
         String accessPeriod = cmd.input("Enter access period in ?? format");
-        // todo fill in!!!!!!
+        try {
+            studentController.editExistingStudentInDB(id, 8,accessPeriod);
+        } catch (IOException e) {
+            System.out.println("couldn't edit the student at this time.");
+        }
+        //todo fix only can be called once
+        //each time you call the student_info.txt has a new line on top
+        // next times you call it will add a comma which breaks readDB or some other reading function
+        // todo remove comments before submission!
     }
     public void editDefaultAccessPeriod()
     {
