@@ -1,9 +1,8 @@
 package com.user;
-import java.io.Console;
-import java.io.File;  // Import the File class
+import com.ConsoleUserInterface;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 public class Main {
     public static final Path datadir = Paths.get(System.getProperty("user.dir"), "data");
@@ -12,7 +11,7 @@ public class Main {
     public static final Path admininfopath = Paths.get(datadir.toString(), "admin_info.txt");
     public static void main(String[] args) {
         LogInHandler loginhandler = LogInHandler.startHandler();
-        CommandInterface cmd = CommandInterface.getInstance();
+        ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
 
         String username = cmd.input("Enter your username: ");
         String password;

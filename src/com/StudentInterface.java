@@ -1,9 +1,12 @@
-package com.user;
+package com;
+
+import com.user.Student;
+import com.user.StudentController;
 
 public class StudentInterface {
     private Student logged_on_user;
     private static StudentController studentController = StudentController.getInstance();
-    private final CommandInterface cmd = CommandInterface.getInstance();
+    private final ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
     private static final StudentInterface instance = new StudentInterface();
 
     public static StudentInterface getInstance(String username,String hashed_pw,String salt,String id)

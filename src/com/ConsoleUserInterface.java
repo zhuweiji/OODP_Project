@@ -1,17 +1,17 @@
-package com.user;
+package com;
 
 import java.io.Console;
 import java.util.Scanner;
 
-public class CommandInterface {
+public class ConsoleUserInterface {
     private final Scanner sc = new Scanner(System.in);
     Console console = System.console();
-    private static CommandInterface instance = new CommandInterface();
+    private static ConsoleUserInterface instance = new ConsoleUserInterface();
 
-    private CommandInterface(){
+    private ConsoleUserInterface(){
     }
 
-    public static CommandInterface getInstance(){
+    public static ConsoleUserInterface getInstance(){
         return instance;
     }
 

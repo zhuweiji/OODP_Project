@@ -1,14 +1,19 @@
-package com.user;
+package com;
+
+import com.user.*;
 
 import java.io.IOException;
 
 public class AdminInterface {
+    /**
+     * UI layer that allows admins to perform
+     */
     private Admin logged_on_user;
     private String defaultAccessPeriod; //todo change to Calendar format
     private static final UserController userController = UserController.getInstance();
     private static final StudentController studentController = StudentController.getInstance();
     private static final AdminController adminController = AdminController.getInstance();
-    private final CommandInterface cmd = CommandInterface.getInstance();
+    private final ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
     private static final AdminInterface instance = new AdminInterface();
 
     public static AdminInterface getInstance(String username,String hashed_pw,String salt,String id)

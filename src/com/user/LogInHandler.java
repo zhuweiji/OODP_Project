@@ -1,5 +1,9 @@
 package com.user;
 
+import com.AdminInterface;
+import com.ConsoleUserInterface;
+import com.StudentInterface;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,7 +22,7 @@ public class LogInHandler {
     private static final LogInHandler instance = new LogInHandler();
     private static final StudentController studentController = StudentController.getInstance();
     private static final AdminController adminController = AdminController.getInstance();
-    public static final CommandInterface cmd = CommandInterface.getInstance();
+    public static final ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
     private UserAcc[] logged_in_users;
 
     private LogInHandler(){ }
