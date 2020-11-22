@@ -3,10 +3,21 @@ package com;
 import com.user.*;
 
 import java.io.IOException;
-
+/** Utilises ConsoleUI for UI functions
+ * @version 1
+ * @author zhuweiji,
+ */
 public class AdminInterface {
     /**
-     * UI layer that allows admins to perform
+     * UI layer that gates access to Admins to do whatever their permissions allow
+     * All UI actions that require user input are performed here
+     * Contains user-type controllers to allow editing of database entity objects
+     * All controllers are singletons
+     * @param userController - UserController class to allow creation of new UserAccs in db
+     * @param studentController - StudentController class to allow creation of new Students in db
+     * @param adminController - AdminController class to allow creation of new Admins in db
+     * @param ConsoleUserInterface - UI class that contains all UI functionality
+     * @param instance - stores the one instance of this class
      */
     private Admin logged_on_user;
     private String defaultAccessPeriod; //todo change to Calendar format
@@ -30,6 +41,10 @@ public class AdminInterface {
     }
 
     public void run(){
+        /**
+         * entry into admin functionality
+         * Admins can perform all functions in here
+         */
         cmd.display("\n\n-------------------------------");
         cmd.display("Welcome "+ logged_on_user.getName()+ " !");
         while (true){
@@ -60,7 +75,15 @@ public class AdminInterface {
     }
 
     public void CreateStudent(){
-        // allow current admin to create a new student
+        /**
+         * allows admins to create a new student object in memory and in db from the UI
+         * when run from console passwords are hidden from view
+         * if not run from console (IDE) then console class throws exception so passwords are shown (extended functionality)
+         * contains all relevant controllers to create Student
+         * Student is created using Student setters - no checking is done in UI layer
+         * @param num_tries - number of times user can make wrong inputs before function terminates
+         */
+
         int num_tries = 3;
         String try_again_message = "Please try again.";
         String failure_message = "You have made " + num_tries + " wrong inputs, cancelling operation.";
@@ -134,7 +157,7 @@ public class AdminInterface {
 
                         cmd.display("Student created with following details:");
                         cmd.displayf("Name: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
-                                "Course of study: {}\nPhone number: {}\nDate matriculated: {}\nAccess Period: {}",
+                                        "Course of study: {}\nPhone number: {}\nDate matriculated: {}\nAccess Period: {}",
                                 newStudent.getAllDetails());
                         studentController.setUser(newStudent);
                         studentController.saveStudentToDB(newStudent);
@@ -156,7 +179,10 @@ public class AdminInterface {
         }
     }
     public void editAccessPeriod(){
-        // allow admin to access period of a student
+        /**
+         * allows admin to change the access period of a specific student
+         * Implementation: get student details from db and edit then saving back in db
+         */
         String matricID = cmd.input("Enter Student's Matriculation ID");
         String id = studentController.fetchStudentUIDFromMatricID(matricID);
         if (id==null){
@@ -165,7 +191,7 @@ public class AdminInterface {
 
         String accessPeriod = cmd.input("Enter access period in ?? format");
         try {
-            studentController.editExistingStudentInDB(id, 8,accessPeriod);
+            studentController.editExistingStudentInDB(id, 8,accessPeriod); //index 8 is accessperiod from order in db
         } catch (IOException e) {
             System.out.println("couldn't edit the student at this time.");
         }
@@ -176,13 +202,14 @@ public class AdminInterface {
     }
     public void editDefaultAccessPeriod()
     {
+        //todo fill in
         String accessPeriod = cmd.input("Enter access period in ?? format");
         studentController.getStudent().setAccessPeriod(accessPeriod);
     }
 
     public void EditStudent(String matricID, String gender, String nationality,
-                                   String email, String course_of_study, String phone_number, String date_matriculated,
-                                   Object timetable){
+                            String email, String course_of_study, String phone_number, String date_matriculated,
+                            Object timetable){
 
     }
     public Student FetchStudent(){
