@@ -1,5 +1,7 @@
 package com.course;
 
+import com.lesson.Lesson;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;

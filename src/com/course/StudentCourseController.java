@@ -6,18 +6,12 @@ import java.util.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import db.CourseData;
-import db.IndexData;
-import db.StudentCourseData;
-import db.LessonData;
-import model.StudentCourse;
-import uml.Student;
+import com.lesson.Lesson;
 
 public class StudentCourseController{
 	
 	private static Scanner sc = new Scanner(System.in);
 	private static Student loggedInStudent;
-	loggedInStudent = s;
 	/**
 	 * Create a new course with the necessary information
 	 * @throws ParseException 

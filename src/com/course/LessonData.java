@@ -1,4 +1,5 @@
 package com.course;
+import com.lesson.Lesson;
 import uml.Lesson;
 
 import java.io.FileInputStream;
@@ -51,7 +52,6 @@ public class LessonData {
 	public static ArrayList <Lesson> lessonList = new ArrayList<Lesson>() ;
 	
     /** Initialise the courses before application starts
-     * @param filename
      * @throws IOException
      * @throws ParseException 
      */

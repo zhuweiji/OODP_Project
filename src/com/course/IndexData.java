@@ -4,7 +4,6 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import uml.Index;
 
 public class IndexData {
 	
@@ -82,7 +81,6 @@ public class IndexData {
 	}
 
     /** Initialise the courses before application starts
-     * @param filename
      * @throws IOException
      * @throws ParseException 
      */

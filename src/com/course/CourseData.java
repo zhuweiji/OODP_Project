@@ -49,7 +49,6 @@ public class CourseData {
 	
 	public static ArrayList<Course> courseList = new ArrayList<Course>();
     /** Initialise the courses before application starts
-     * @param filename
      * @throws IOException
      * @throws ParseException 
      */
