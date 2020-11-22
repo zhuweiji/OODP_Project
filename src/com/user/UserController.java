@@ -11,19 +11,18 @@ class UserController {
     private final Path admininfopath = Main.admininfopath;
     private LinkedHashMap<String, String[]> usercredDB = readUserCredDB();
     private UserAcc user;
-    public String useridCount;
+    public String useridCount; // might have state change if multiple controllers saving to db at once
 
     //singleton design pattern
-    private static final UserController instance = new UserController(null);
+    private static final UserController instance = new UserController();
 
-    public static UserController getInstance(UserAcc user) {
-        instance.setUser(user);
+    public static UserController getInstance() {
         instance.useridCount = instance.getUserCountFromDB();
         return instance;
     }
 
-    protected UserController(UserAcc user) {
-        this.user = user;
+    protected UserController() {
+
     }
     //end singleton pattern
 
@@ -36,6 +35,10 @@ class UserController {
             return null;
         }
         return user;
+    }
+
+    public UserAcc getNewUserAcc(UserAcc.acc_info acc_info, String permissions){
+        return new UserAcc(acc_info, instance.useridCount, permissions);
     }
 
     public Path getStudentinfopath(){
@@ -155,6 +158,8 @@ class UserController {
     }
 }
 
+// -------------------------------------------------------------------------------------------------------
+
 
 class StudentController extends UserController {
     private Student user;
@@ -163,19 +168,10 @@ class StudentController extends UserController {
     private HashMap<String, String> userinfoDB = readUserInfoDB(studentinfopath);
     private String defaultAccessPeriod;
 
-    private static final StudentController instance = new StudentController(null);
+    private static final StudentController instance = new StudentController();
 
-    public StudentController(Student student) {
-        super(student);
-    }
-
-    @Override
-    public Student getUser() {
-        return user;
-    }
-
-    public void setUser(Student user) {
-        this.user = user;
+    public StudentController() {
+        super();
     }
 
     public static StudentController getInstance(){
@@ -183,8 +179,18 @@ class StudentController extends UserController {
         return instance;
     }
 
-    public Student getNewStudent(UserAcc.acc_info acc_details){
-        Student newstudent = new Student(acc_details, instance.getUseridCount());
+    public Student getStudent() {
+        return user;
+    }
+
+    public void setUser(Student user) {
+        this.user = user;
+    }
+
+
+
+    public Student getNewStudent(){
+        Student newstudent = new Student(instance.getUseridCount());
         setUser(newstudent);
         return newstudent;
     }
@@ -194,7 +200,7 @@ class StudentController extends UserController {
         String[] details = fetchStudentDetails(id);
         UserAcc.acc_info acc_details = new UserAcc.acc_info(username, hashed_pw);
         acc_details.setSalt(salt);
-        return new Student(acc_details, id, details[0], details[1], details[2], details[3], details[4], details[5],
+        return new Student(id, details[0], details[1], details[2], details[3], details[4], details[5],
                 details[6],details[7],details[8]);
 
 
@@ -219,14 +225,43 @@ class StudentController extends UserController {
         return details;
     }
 
+    public String fetchStudentUIDFromMatricID(String matricID){
+        HashMap<String, String> db = userinfoDB;
+        String[] details;
+        for (Map.Entry<String, String> entry: db.entrySet()){
+            details = entry.getValue().split(",");
+            if (details[1].equals(matricID)){
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public String[] fetchStudentDetailsFromMatricID(String matricID){
+        HashMap<String, String> db = userinfoDB;
+        String[] details;
+        for (Map.Entry<String, String> entry: db.entrySet()){
+            details = entry.getValue().split(",");
+            if (details[1].equals(matricID)){
+                return details;
+            }
+        }
+        return null;
+    }
+
 
     public void saveStudentToDB(Student student){
-        saveUserCredentials(student);
+        String[] user_details = fetchUserAccDetails(student.getUserid());
+        UserAcc user = new UserAcc(user_details[0], user_details[2],user_details[1],user_details[3],user_details[4]);
+        saveUserCredentials(user);
         try {
             pushDB(studentinfopath,student.getAllDetails(), ",");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void editExistingStudentInDB(String id, String[] details){
 
     }
 
@@ -253,10 +288,10 @@ class AdminController extends UserController{
     private final Path admininfopath = getAdmininfopath();
     private HashMap<String, String> admininfoDB = readUserInfoDB(admininfopath);
 
-    private static final AdminController instance = new AdminController(null);
+    private static final AdminController instance = new AdminController();
 
-    public AdminController(Admin admin) {
-        super(admin);
+    public AdminController() {
+        super();
     }
 
     public static AdminController getInstance(){
@@ -296,9 +331,12 @@ class AdminController extends UserController{
             System.out.println("couldn't find this user's details in admin details file");
             return null;
         }
-        String[] values = details.split(",");
 
-        return values;
+        return details.split(",");
+    }
+
+    public void refreshAdminInfoDB(){
+        admininfoDB = readUserInfoDB(admininfopath);
     }
 
 }

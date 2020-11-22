@@ -2,7 +2,9 @@ package com.user;
 
 public class AdminInterface {
     private Admin logged_on_user;
-    private static StudentController studentController = StudentController.getInstance();
+    private String defaultAccessPeriod; //todo change to Calendar format
+    private static final UserController userController = UserController.getInstance();
+    private static final StudentController studentController = StudentController.getInstance();
     private static final AdminController adminController = AdminController.getInstance();
     private final CommandInterface cmd = CommandInterface.getInstance();
     private static final AdminInterface instance = new AdminInterface();
@@ -64,7 +66,8 @@ public class AdminInterface {
         }
 
         UserAcc.acc_info acc_info = new UserAcc.acc_info(username, password);
-        Student newStudent = studentController.getNewStudent(acc_info);
+        userController.getNewUserAcc(acc_info, "student");
+        Student newStudent = studentController.getNewStudent();
 
         int location = 0;
         boolean complete = false;
@@ -143,17 +146,21 @@ public class AdminInterface {
             }
         }
     }
-    public void editAccessPeriod(Student student){
+    public void editAccessPeriod(){
+        String matricID = cmd.input("Enter Student's Matriculation ID");
+        String id = studentController.fetchStudentUIDFromMatricID(matricID);
+        String details[] = studentController.fetchStudentDetails(id);
+        String access_period = details[8];
         String accessPeriod = cmd.input("Enter access period in ?? format");
-        student.setAccessPeriod(accessPeriod);
+        // todo fill in!!!!!!
     }
-    public void editAccessPeriod()
+    public void editDefaultAccessPeriod()
     {
         String accessPeriod = cmd.input("Enter access period in ?? format");
-        studentController.getUser().setAccessPeriod(accessPeriod);
+        studentController.getStudent().setAccessPeriod(accessPeriod);
     }
 
-    public void FillStudentDetails(String matricID, String gender, String nationality,
+    public void EditStudent(String matricID, String gender, String nationality,
                                    String email, String course_of_study, String phone_number, String date_matriculated,
                                    Object timetable){
 

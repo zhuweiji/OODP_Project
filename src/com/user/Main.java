@@ -48,6 +48,7 @@ public class Main {
             logged_in = loginhandler.login(username, password);
         }
 
+            cmd.display("\nThank you for using mySTARS!");
 
     }
 }
