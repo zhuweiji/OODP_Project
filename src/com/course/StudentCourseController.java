@@ -43,7 +43,7 @@ public class StudentCourseController{
 		}
 		else if (newObj instanceof Index){
 			indexList.add((Index) newObj);
-			IndexData.saveIndexes(indexList);
+			IndexData.saveIndex(indexList);
 		}
 		else if (newObj instanceof StudentCourse){
 			studentCourseList.add((StudentCourse) newObj);
@@ -69,7 +69,7 @@ public class StudentCourseController{
 				}
 				
 				// Adding
-				StudentCourse newStudentCourse = new StudentCourse(s.getUserid(), s.getUsername(), courseID, indexID, registerStatus);
+				StudentCourse newStudentCourse = new StudentCourse(s.getUserid(), s.getName(), courseID, indexID, registerStatus);
 			    writeObject(newStudentCourse);
 			    
 				// Update new vacancy & waiting list

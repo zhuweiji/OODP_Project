@@ -1,11 +1,12 @@
 package com.user;
 
 
+import com.course.CalendarController;
+
 import java.util.Calendar;
 
 public class Student {
     private String userid;
-    private String username;
     private String name;
     private String matricID;
     private String gender;
@@ -14,25 +15,26 @@ public class Student {
     private String phone_number;
     private String course_of_study;
     private String date_matriculated; // todo change to date format
-    private String accessPeriod;
+    private Calendar accessStart;
+    private Calendar accessEnd;
     private String notiMode;
 
-    public Student(String user_id, String username,String name, String matricID, String gender, String nationality,
+    public Student(String user_id,String name, String matricID, String gender, String nationality,
                    String email, String course_of_study, String phone_number, String date_matriculated,
-                   String accessPeriod, String notiMode) {
+                   Calendar accessStart, Calendar accessEnd, String notiMode) {
 
     	this.userid = user_id;
-    	this.username = username;
-        this.name = name;
-        this.matricID = matricID;
-        this.gender = gender;
-        this.nationality = nationality;
-        this.email = email;
-        this.course_of_study = course_of_study;
-        this.phone_number = phone_number;
-        this.date_matriculated = date_matriculated;
-        this.accessPeriod = accessPeriod;
-        this.notiMode = notiMode;
+        this.setName(name);
+        this.setMatricID(matricID);
+        this.setGender(gender);
+        this.setNationality(nationality);
+        this.setEmail(email);
+        this.setCourse_of_study(course_of_study);
+        this.setPhone_number(phone_number);
+        this.setDate_matriculated(date_matriculated);
+        this.setAccessStart(accessStart);
+        this.setAccessEnd(accessEnd);
+        this.setNotiMode(notiMode);
 
     }
 
@@ -40,17 +42,13 @@ public class Student {
         this.userid = user_id;
     }
 
-    public String[] getAllDetails(){
-        return new String[]{userid, name, matricID, gender, nationality, email, course_of_study,
-                phone_number, date_matriculated, accessPeriod};
-    }
-
     public String getUserid() {
         return userid;
     }
-    
-    public String getUsername() {
-        return username;
+
+    public String[] getAllDetails(){
+        return new String[]{userid, name, matricID, gender, nationality, email, course_of_study,
+                phone_number, date_matriculated, };
     }
 
     public String getName() {
@@ -143,14 +141,36 @@ public class Student {
         this.date_matriculated = date_matriculated;
     }
 
-    public Calendar getAccessPeriod() {
-        return null; //todo output calendar format
+    public Calendar getAccessStart() {
+        return accessStart;
     }
 
-    public void setAccessPeriod(String accessPeriod) {
-        this.accessPeriod = accessPeriod; //todo convert to Calendar format and verify correctness before changing back to String
+    public String getAccessStartStr(){
+        return CalendarController.caltoString(accessStart);
     }
-    
+
+    public void setAccessStart(Calendar accessStart) {
+        if (accessStart.compareTo(accessEnd) >0){
+            throw new IllegalArgumentException("Access start date cannot be later than end date");
+        }
+        this.accessStart = accessStart;
+    }
+
+    public Calendar getAccessEnd() {
+        return accessEnd;
+    }
+
+    public String getAccessEndStr(){
+        return CalendarController.caltoString(accessEnd);
+    }
+
+    public void setAccessEnd(Calendar accessEnd) {
+        if (accessStart.compareTo(accessEnd) <0){
+            throw new IllegalArgumentException("Access end date cannot be earlier than start date");
+        }
+        this.accessEnd = accessEnd;
+    }
+
     public String getNotiMode() {
         return notiMode;
     }

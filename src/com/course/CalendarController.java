@@ -1,4 +1,4 @@
-package com.lesson;
+package com.course;
 
 import java.util.*;
 import java.text.*;
@@ -7,9 +7,8 @@ import java.util.*;
 import java.text.*;
 
 public class CalendarController {
-	static Scanner sc = new Scanner(System.in);
 	static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-	public String CaltoString(Calendar cal) {
+	public static String caltoString(Calendar cal) {
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 		int month = cal.get(Calendar.MONTH);
 		int year = cal.get(Calendar.YEAR);
@@ -24,6 +23,7 @@ public class CalendarController {
 		cal.setTime(date);
 		return cal;
 	}
+
 }
 
 	

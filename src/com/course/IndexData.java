@@ -22,9 +22,7 @@ public class IndexData {
 
 	/** Read the contents of the given file.
 	 * 
-	 * @param fileName
-	 * @return
-	 * @throws IOException
+
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List read(String fileName) throws IOException {
@@ -52,7 +50,7 @@ public class IndexData {
 @SuppressWarnings({ "rawtypes", "unchecked"})
 	
 	
-	public static ArrayList<Index> initIndexes() throws IOException, ParseException {
+	public static ArrayList<Index> initIndex() throws IOException, ParseException {
 		
 		// read String from text file
 		ArrayList<String> stringArray = (ArrayList) read("src/data/Index.txt");
@@ -65,9 +63,9 @@ public class IndexData {
 				// pass in the string to the string tokenizer using delimiter "," 
 				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);	
 				
-				//first to fifth tokens
-				String  courseID = tokenizer.nextToken().trim();	
+				//first to fifth tokens	
 				int  indexID = Integer.parseInt(tokenizer.nextToken().trim());	
+				String  courseID = tokenizer.nextToken().trim();
 				String tutorialGroup = tokenizer.nextToken().trim();	
 				int vacancy = Integer.parseInt(tokenizer.nextToken().trim());
 				int waitingList = Integer.parseInt(tokenizer.nextToken().trim());
@@ -109,9 +107,6 @@ public class IndexData {
 		}
 	}
     /** Initialise the courses before application starts
-     * @param filename
-     * @throws IOException
-     * @throws ParseException 
      */
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 		public static void showIndex(String CourseID)throws IOException
@@ -127,8 +122,8 @@ public class IndexData {
 				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);	
 				
 				//first to fifth tokens
-				String  courseID = tokenizer.nextToken().trim();	
 				String  indexID = tokenizer.nextToken().trim();
+				String  courseID = tokenizer.nextToken().trim();	
 				
 				if(courseID.equalsIgnoreCase(CourseID))
 				{
@@ -141,10 +136,8 @@ public class IndexData {
 		}
 		
 		/** Save the courses that has been added during the session
-		 * @param CourseToUpdate
-		 * @throws IOException
 		 */
-		public static void saveIndexes(ArrayList<Index> IndexToUpdate) throws IOException {
+		public static void saveIndex(ArrayList<Index> IndexToUpdate) throws IOException {
 			ArrayList <String> cl = new ArrayList<String>() ;// to store Courses data
 
 	        for (int i = 0 ; i < IndexToUpdate.size() ; i++) {

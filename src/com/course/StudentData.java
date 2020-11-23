@@ -4,7 +4,6 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import com.lesson.CalendarController;
 import com.user.Student;
 
 public class StudentData {
@@ -23,10 +22,7 @@ public class StudentData {
 	}
 
 	/** Read the contents of the given file.
-	 * 
-	 * @param fileName
-	 * @return
-	 * @throws IOException
+	 *
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List read(String fileName) throws IOException {
@@ -46,35 +42,34 @@ public class StudentData {
 
 	public static ArrayList<Student> studentList = new ArrayList<Student>();
     /** Initialise the courses before application starts
-     * @param filename
-     * @throws IOException
-     * @throws ParseException 
      */
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static ArrayList<Student> initStudents() throws IOException, ParseException {
 		// read String from text file
 		ArrayList<String> stringArray = (ArrayList) read("src/data/students_info.txt");
-		
-		for (int i = 0; i < stringArray.size(); i++) {
-			String st = (String) stringArray.get(i);
-			
+
+		for (String s : stringArray) {
+			String st = (String) s;
+
 			// get individual 'fields' of the string separated by SEPARATOR
 			// pass in the string to the string tokenizer using delimiter ","
-			StringTokenizer star = new StringTokenizer(st, SEPARATOR); 
+			StringTokenizer star = new StringTokenizer(st, SEPARATOR);
 
 			String userid = star.nextToken().trim(); // first token
 			String name = star.nextToken().trim(); // first token
 			String matricNum = star.nextToken().trim(); // third token
-			char gender = (star.nextToken().trim()).charAt(0); // fourth token
+			String gender = (star.nextToken().trim()); // fourth token
 			String nationality = star.nextToken().trim(); // fifth token
 			String email = star.nextToken().trim(); // sixth token
-			int phoneno = Integer.parseInt((star.nextToken().trim())); //seventh token
+			String course_of_study = star.nextToken().trim();
+			String date_matriculated = star.nextToken().trim();
+			String phoneno = (star.nextToken().trim()); //seventh token
 			Calendar accessStart = CalendarController.stringToCalendar(star.nextToken().trim()); // eight token
 			Calendar accessEnd = CalendarController.stringToCalendar(star.nextToken().trim()); // nine token
 			String notiMode = star.nextToken().trim(); //tenth token
 
-			Student std = new Student(userid, name, matricNum, gender, nationality, email, phoneno, accessStart, accessEnd, notiMode);
-			
+			Student std = new Student(userid, name, matricNum, gender, nationality, email, course_of_study,date_matriculated ,phoneno, accessStart, accessEnd, notiMode);
+
 			// add to Students list
 			studentList.add(std);
 		}
@@ -85,8 +80,8 @@ public class StudentData {
 	public static void saveStudents(ArrayList<Student> al) throws IOException {
 		ArrayList<String> alw = new ArrayList<String>();// to store Studetns data
 
-		for (int i = 0; i < al.size(); i++) {
-			Student std = (Student) al.get(i);
+		for (Student student : al) {
+			Student std = (Student) student;
 			StringBuilder st = new StringBuilder();
 			st.append(std.getUserid().trim());
 			st.append(SEPARATOR);
@@ -102,9 +97,9 @@ public class StudentData {
 			st.append(SEPARATOR);
 			st.append(std.getEmail());
 			st.append(SEPARATOR);
-			st.append(CalendarController.CaltoString(std.getAccessStart()));
+			st.append(CalendarController.caltoString(std.getAccessStart()));
 			st.append(SEPARATOR);
-			st.append(CalendarController.CaltoString(std.getAccessEnd()));
+			st.append(CalendarController.caltoString(std.getAccessEnd()));
 			st.append(SEPARATOR);
 			st.append(std.getNotiMode());
 
