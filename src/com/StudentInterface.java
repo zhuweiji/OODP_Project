@@ -99,33 +99,26 @@ public class StudentInterface {
 			try {
 				choice = Integer.parseInt(sc.nextLine());
 				switch (choice) {
-					case 1: // Register Course
-						registerCourseUI();
-						break;
-					case 2: // Drop Course
-						dropCourseUI();
-						break;
-					case 3: // Check/Print Courses Registered
-						printRegisteredCourses(s);
-						break;
-					case 4: // Check Vacancies Available
-						checkVacancyUI();
-						break;
-					case 5: // Change Index Number of Course
-						changeIndexIDUI();
-						break;
-					case 6: // Swop Index Number with Another Student
-						swopIndexNumberUI();
-						break;
-					case 7: // Select Notification Mode
-						selectNotiModeUI();
-						break;
-					case 8: // Logout
+				// Register Course
+					case 1 -> registerCourseUI();
+				// Drop Course
+					case 2 -> dropCourseUI();
+				// Check/Print Courses Registered
+					case 3 -> printRegisteredCourses(s);
+				// Check Vacancies Available
+					case 4 -> checkVacancyUI();
+				// Change Index Number of Course
+					case 5 -> changeIndexIDUI();
+				// Swop Index Number with Another Student
+					case 6 -> swopIndexNumberUI();
+				// Select Notification Mode
+					case 7 -> selectNotiModeUI();
+				// Logout
+					case 8 -> {
 						System.out.println("Successfully Logged Out!");
 						System.out.println();
-						break StudentWhileLoop;
-					default:
-						System.out.println("Invalid Input! Please re-enter!");
+					}
+					default -> System.out.println("Invalid Input! Please re-enter!");
 				}
 			} catch (Exception e) {
 				System.out.println("Invalid Input! Please re-enter!");
