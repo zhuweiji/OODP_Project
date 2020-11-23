@@ -1,16 +1,11 @@
 package com.user;
 
+import com.Main;
+import com.course.*;
+
 import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
-
-import com.Main;
-import com.course.Course;
-import com.course.CourseData;
-import com.course.Index;
-import com.course.IndexData;
-import com.course.StudentCourse;
-import com.course.StudentCourseData;
 
 public class UserController {
     private final Path datadir = Main.datadir;

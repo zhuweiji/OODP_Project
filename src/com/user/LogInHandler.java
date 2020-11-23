@@ -6,9 +6,6 @@ import com.Main;
 import com.StudentInterface;
 import com.course.CalendarController;
 
-import java.util.Calendar;
-import java.util.TimerTask;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,8 +14,6 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Scanner;
 import java.util.*;
 
 

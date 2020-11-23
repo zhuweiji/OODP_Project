@@ -1,8 +1,14 @@
 package com.user;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 
 public class AccountData {
@@ -44,7 +50,7 @@ public class AccountData {
 	public static ArrayList<UserAcc> accountList = new ArrayList<UserAcc>();
 
     /** Initialise the courses before application starts
-     * @param filename
+     * 
      * @throws IOException
      * @throws ParseException 
      */

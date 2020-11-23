@@ -1,6 +1,6 @@
 package com.course;
-import com.lesson.Lesson;
 
+import com.lesson.Lesson;
 
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -91,7 +91,7 @@ public static ArrayList<Lesson> initLessons() throws IOException, ParseException
      * @throws ParseException 
      */
 	/** Save the courses that has been added during the session
-	 * @param CourseToUpdate
+	 *
 	 * @throws IOException
 	 */
 	public static void saveLessons(ArrayList<Lesson> LessonToUpdate) throws IOException {
