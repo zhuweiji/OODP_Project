@@ -12,8 +12,8 @@ public class Student {
     private String gender;
     private String nationality;
     private String email;
-    private String phone_number;
     private String course_of_study;
+    private String phone_number;
     private String date_matriculated; // todo change to date format
     private Calendar accessStart;
     private Calendar accessEnd;
@@ -150,8 +150,10 @@ public class Student {
     }
 
     public void setAccessStart(Calendar accessStart) {
-        if (accessStart.compareTo(accessEnd) >0){
-            throw new IllegalArgumentException("Access start date cannot be later than end date");
+        if (accessEnd != null) {
+            if (accessStart.compareTo(accessEnd) > 0) {
+                throw new IllegalArgumentException("Access start date cannot be later than end date");
+            }
         }
         this.accessStart = accessStart;
     }
@@ -165,8 +167,10 @@ public class Student {
     }
 
     public void setAccessEnd(Calendar accessEnd) {
-        if (accessStart.compareTo(accessEnd) <0){
-            throw new IllegalArgumentException("Access end date cannot be earlier than start date");
+        if (accessStart != null) {
+            if (accessEnd.compareTo(accessStart) < 0) {
+                throw new IllegalArgumentException("Access end date cannot be earlier than start date");
+            }
         }
         this.accessEnd = accessEnd;
     }

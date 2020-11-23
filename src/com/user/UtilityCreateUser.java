@@ -30,6 +30,12 @@ public class UtilityCreateUser {
 //        }
         System.out.println(hash(passwords[4], salts[4]));
         System.out.println(hash(permissions[4], salts[4]));
+        String salt = LogInHandler.getNextSalt().toString();
+        System.out.println("student");
+        System.out.println(salt);
+        System.out.println(hash("pw",salt));;
+        System.out.println(hash("student", salt));
+
     }
 
     private static String hash(String str, String salt) {

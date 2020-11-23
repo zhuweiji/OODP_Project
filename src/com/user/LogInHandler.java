@@ -18,7 +18,7 @@ import java.util.Scanner;
 import java.util.*;
 
 
-public class LogInHandler {
+public class LogInHandler extends Thread{
 	
 	public static ArrayList<UserAcc> accountList = AccountData.accountList;
 	// Account
@@ -36,6 +36,10 @@ public class LogInHandler {
 
     public static LogInHandler startHandler(){
         return instance;
+    }
+
+    public void run(){
+
     }
 
     public boolean login(String username, String password){
