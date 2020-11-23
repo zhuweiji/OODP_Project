@@ -116,7 +116,7 @@ public class StudentInterface {
 				// Logout
 					case 8 -> {
 						System.out.println("Successfully Logged Out!");
-						System.out.println();
+						System.exit(0);
 					}
 					default -> System.out.println("Invalid Input! Please re-enter!");
 				}

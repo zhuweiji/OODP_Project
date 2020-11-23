@@ -12,14 +12,25 @@ public class AdminInterface {
      * UI layer that allows admins to perform
      */
     private Admin logged_on_user;
-    private Calendar defaultAccessStart;
-    private Calendar defaultAccessEnd;
+
     private static final UserController userController = UserController.getInstance();
     private static final StudentController studentController = StudentController.getInstance();
     private static final AdminController adminController = AdminController.getInstance();
     private final ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
     private static final AdminInterface instance = new AdminInterface();
 
+    private Calendar defaultAccessStart;
+
+    {
+        try {
+            defaultAccessStart = CalendarController.stringToCalendar("24/11/2020 00:00");
+            defaultAccessEnd = CalendarController.stringToCalendar("28/11/2020 00:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Calendar defaultAccessEnd;
     public static AdminInterface getInstance(String username,String hashed_pw,String salt,String id)
     {
         Admin logged_on_user = adminController.getExistingAdmin(username, hashed_pw, salt, id);
@@ -127,9 +138,9 @@ public class AdminInterface {
                         location++;
                     case 8:
                         String set_default = cmd.input("Set student's access period to default? y/n: ");
-                        String default_period;
                         if (set_default == "y"){
-                            default_period = studentController.getDefaultStringAccessPeriod();
+                            newStudent.setAccessStart(defaultAccessStart);
+                            newStudent.setAccessEnd(defaultAccessEnd);
                         }
                         else{
                             try {
@@ -174,6 +185,7 @@ public class AdminInterface {
         String id = studentController.fetchStudentUIDFromMatricID(matricID);
         if (id==null){
             System.out.println("Student with matriculation ID " +matricID+" was not found.");
+            return;
         }
 
         String accessPeriod = cmd.input("Enter access period in ?? format");
@@ -181,6 +193,7 @@ public class AdminInterface {
             studentController.editExistingStudentInDB(id, 8,accessPeriod);
         } catch (IOException e) {
             System.out.println("couldn't edit the student at this time.");
+            return;
         }
         //todo fix only can be called once
         //each time you call the student_info.txt has a new line on top
