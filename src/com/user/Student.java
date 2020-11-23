@@ -32,7 +32,7 @@ public class Student {
         this.phone_number = phone_number;
         this.date_matriculated = date_matriculated;
         this.accessPeriod = accessPeriod;
-        this.notiMode	= notiMode;
+        this.notiMode = notiMode;
 
     }
 
@@ -152,13 +152,12 @@ public class Student {
     }
     
     public String getNotiMode() {
-		return notiMode;
-	}
-
-	public void setNotiMode(String notiMode) {
-		this.notiMode = notiMode;
-	}
-
+        return notiMode;
+    }
+    
+    public void setNotiMode(String notiMode) {
+        this.notiMode = notiMode;
+    }
 
 
 }

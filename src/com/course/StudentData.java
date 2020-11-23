@@ -71,7 +71,7 @@ public class StudentData {
 			int phoneno = Integer.parseInt((star.nextToken().trim())); //seventh token
 			Calendar accessStart = CalendarController.stringToCalendar(star.nextToken().trim()); // eight token
 			Calendar accessEnd = CalendarController.stringToCalendar(star.nextToken().trim()); // nine token
-			int notiMode = Integer.parseInt((star.nextToken().trim())); //tenth token
+			String notiMode = star.nextToken().trim(); //tenth token
 
 			Student std = new Student(userid, name, matricNum, gender, nationality, email, phoneno, accessStart, accessEnd, notiMode);
 			

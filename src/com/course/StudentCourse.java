@@ -4,7 +4,7 @@ package com.course;
 public class StudentCourse {
 
 	private String userid;
-	
+	private String username;
 	/**
 	 * List of courses under a school
 	 */
@@ -17,8 +17,9 @@ public class StudentCourse {
 	
 	private String registerStatus;
 	
-	public StudentCourse(String userid, String courseID, int indexID, String registerStatus) {
+	public StudentCourse(String userid, String username, String courseID, int indexID, String registerStatus) {
 		this.userid = userid;
+		this.username = username;
 		this.courseID = courseID;
 		this.indexID = indexID;
 		this.registerStatus = registerStatus;
@@ -32,6 +33,14 @@ public class StudentCourse {
 		this.userid = userid;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
 	public String getCourseID() {
 		return courseID;
 	}

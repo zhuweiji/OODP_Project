@@ -67,13 +67,14 @@ public class StudentCourseData {
 				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);	
 				
 				//first to fifth tokens
-				String  userName = tokenizer.nextToken().trim();	
+				String  userid = tokenizer.nextToken().trim();	
+				String  username = tokenizer.nextToken().trim();	
 				String  courseID = tokenizer.nextToken().trim();	
 				int indexID = Integer.parseInt(tokenizer.nextToken().trim());
 				String registerStatus = tokenizer.nextToken().trim();
 				
 				// create Course object from file data
-				StudentCourse course = new StudentCourse(userName, courseID, indexID, registerStatus);
+				StudentCourse course = new StudentCourse(userid, username, courseID, indexID, registerStatus);
 				// add to Courses list 
 				studentCourseList.add(course) ;
 		}
@@ -91,6 +92,8 @@ public class StudentCourseData {
 				StudentCourse course = (StudentCourse) CourseToUpdate.get(i);
 				StringBuilder stringBuild =  new StringBuilder() ;
 				stringBuild.append(course.getUserid().trim());
+				stringBuild.append(SEPARATOR);
+				stringBuild.append(course.getUsername().trim());
 				stringBuild.append(SEPARATOR);
 				stringBuild.append(course.getCourseID().trim());
 				stringBuild.append(SEPARATOR);

@@ -48,7 +48,7 @@ public class StudentController extends UserController {
         UserAcc.acc_info acc_details = new UserAcc.acc_info(username, hashed_pw);
         acc_details.setSalt(salt);
         return new Student(id, username, details[0], details[1], details[2], details[3], details[4], details[5],
-                details[6],details[7],details[8], details[9]);
+                details[6],details[7],details[8],details[9]);
 
 
     }

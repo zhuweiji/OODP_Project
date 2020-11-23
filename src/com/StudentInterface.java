@@ -18,6 +18,7 @@ import com.user.Student;
 import com.user.StudentController;
 import com.user.UserAcc;
 import com.user.LogInHandler;
+import com.course.NotificationController;
 
 public class StudentInterface {
 	private static Student logged_on_user;

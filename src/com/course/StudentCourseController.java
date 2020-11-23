@@ -69,7 +69,7 @@ public class StudentCourseController{
 				}
 				
 				// Adding
-				StudentCourse newStudentCourse = new StudentCourse(s.getUserid(), courseID, indexID, registerStatus);
+				StudentCourse newStudentCourse = new StudentCourse(s.getUserid(), s.getUsername(), courseID, indexID, registerStatus);
 			    writeObject(newStudentCourse);
 			    
 				// Update new vacancy & waiting list
