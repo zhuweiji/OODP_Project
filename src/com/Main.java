@@ -1,5 +1,6 @@
-package com.user;
+package com;
 import com.ConsoleUserInterface;
+import com.user.LogInHandler;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

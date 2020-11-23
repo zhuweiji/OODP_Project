@@ -2,8 +2,8 @@ package com.user;
 
 import com.AdminInterface;
 import com.ConsoleUserInterface;
+import com.Main;
 import com.StudentInterface;
-import com.user.UserAcc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
