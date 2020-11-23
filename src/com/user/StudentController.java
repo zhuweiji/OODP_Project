@@ -43,11 +43,11 @@ public class StudentController extends UserController {
     }
 
     public Student getExistingStudent(String username, String hashed_pw, String salt,
-                                      String id){
-        String[] details = fetchStudentDetails(id);
+                                      String userid){
+        String[] details = fetchStudentDetails(userid);
         UserAcc.acc_info acc_details = new UserAcc.acc_info(username, hashed_pw);
         acc_details.setSalt(salt);
-        return new Student(id, username, details[0], details[1], details[2], details[3], details[4], details[5],
+        return new Student(userid, username, details[0], details[1], details[2], details[3], details[4], details[5],
                 details[6],details[7],details[8],details[9]);
 
 

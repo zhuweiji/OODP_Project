@@ -55,7 +55,7 @@ public class IndexData {
 	public static ArrayList<Index> initIndexes() throws IOException, ParseException {
 		
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) read("src/db/indexes.txt");
+		ArrayList<String> stringArray = (ArrayList) read("src/data/Index.txt");
 		
         for (int i = 0 ; i < stringArray.size() ; i++) {
         	
@@ -116,7 +116,7 @@ public class IndexData {
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 		public static void showIndex(String CourseID)throws IOException
 		{
-			ArrayList<String> stringArray = (ArrayList) read("src/db/Index.txt");
+			ArrayList<String> stringArray = (ArrayList) read("src/com.course/Index.txt");
 			int t=0;
 			for (int i = 0 ; i < stringArray.size() ; i++) {
 	        	
@@ -162,6 +162,6 @@ public class IndexData {
 
 					cl.add(stringBuild.toString()) ;
 				}
-				write("src/db/index.txt",cl);
+				write("src/com.course/Index.txt",cl);
 		}
 }

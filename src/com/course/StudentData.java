@@ -102,9 +102,9 @@ public class StudentData {
 			st.append(SEPARATOR);
 			st.append(std.getEmail());
 			st.append(SEPARATOR);
-			st.append(CalendarMgr.calendarToString(std.getAccessStart()));
+			st.append(CalendarController.CaltoString(std.getAccessStart()));
 			st.append(SEPARATOR);
-			st.append(CalendarMgr.calendarToString(std.getAccessEnd()));
+			st.append(CalendarController.CaltoString(std.getAccessEnd()));
 			st.append(SEPARATOR);
 			st.append(std.getNotiMode());
 

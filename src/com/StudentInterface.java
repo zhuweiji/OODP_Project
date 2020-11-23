@@ -76,14 +76,10 @@ public class StudentInterface {
     private StudentInterface(){
         // should remain empty
     }
-
+    
     public void run() {
-        cmd.display("\n\n-------------------------------");
-        cmd.display("Welcome "+ logged_on_user.getName()+ " !");
-    }
-        
-    public static void showStudentOption(Student s){
-
+        System.out.println("Welcome "+ logged_on_user.getName()+ " !");
+        	Student s = null;
     		logged_on_user = s;
     		int choice;
     	
