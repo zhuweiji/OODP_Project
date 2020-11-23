@@ -48,15 +48,16 @@ public class AdminInterface {
         cmd.display("\n\n-------------------------------");
         cmd.display("Welcome "+ logged_on_user.getName()+ " !");
         while (true){
+            cmd.display("\n");
             cmd.display("Here are your available options: ");
             cmd.display("0: Edit Student's access period"); //todo implement change all student's access period
-            cmd.display("1: Create new Admin user");
+//            cmd.display("1: Create new Admin user");
             cmd.display("2: Create new Student user");
-            cmd.display("3: Update a course");
-            cmd.display("4: Add a new course");
-            cmd.display("5: Check available vacancy for an index number");
-            cmd.display("6: Print student list by index number");
-            cmd.display("7: Print student list by course");
+//            cmd.display("3: Update a course");
+//            cmd.display("4: Add a new course");
+//            cmd.display("5: Check available vacancy for an index number");
+//            cmd.display("6: Print student list by index number");
+//            cmd.display("7: Print student list by course");
             cmd.display("-1: Exit");
             int choice = Integer.parseInt(cmd.input("Enter your choice: "));
             switch (choice){
@@ -144,9 +145,9 @@ public class AdminInterface {
                         }
                         else{
                             try {
-                                String accessStartStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format");
+                                String accessStartStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format: ");
                                 Calendar accessStart = CalendarController.stringToCalendar(accessStartStr);
-                                String accessEndStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format");
+                                String accessEndStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format: ");
                                 Calendar accessEnd = CalendarController.stringToCalendar(accessEndStr);
                                 newStudent.setAccessStart(accessStart);
                                 newStudent.setAccessEnd(accessEnd);
@@ -181,19 +182,37 @@ public class AdminInterface {
     }
     public void editAccessPeriod(){
         // allow admin to access period of a student
-        String matricID = cmd.input("Enter Student's Matriculation ID");
+        String matricID = cmd.input("Enter Student's Matriculation ID: ");
         String id = studentController.fetchStudentUIDFromMatricID(matricID);
         if (id==null){
             System.out.println("Student with matriculation ID " +matricID+" was not found.");
             return;
         }
-
-        String accessPeriod = cmd.input("Enter access period in ?? format");
+        String SaccessStart;
+        String SaccessEnd;
+        Calendar accessStart;
+        Calendar accessEnd;
         try {
-            studentController.editExistingStudentInDB(id, 8,accessPeriod);
+            SaccessStart = cmd.input("Enter start of access period in dd/mm/yy hh:mm format: ");
+            accessStart = CalendarController.stringToCalendar(SaccessStart);
+            SaccessEnd = cmd.input("Enter end of access period in dd/mm/yy hh:mm format: ");
+            accessEnd = CalendarController.stringToCalendar(SaccessEnd);
+            if (accessStart.compareTo(accessEnd) >= 0){
+                System.out.println(accessStart.compareTo(accessEnd));
+                System.out.println("start period must be earlier than end period");
+                return;
+            }
+        } catch (ParseException e) {
+            System.out.println("You entered an invalid format.");
+            return;
+        }
+
+        try {
+            studentController.editExistingStudentInDB(id, 8,SaccessStart);
+            studentController.editExistingStudentInDB(id, 9, SaccessEnd);
         } catch (IOException e) {
             System.out.println("couldn't edit the student at this time.");
-            return;
+
         }
         //todo fix only can be called once
         //each time you call the student_info.txt has a new line on top

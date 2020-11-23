@@ -4,6 +4,10 @@ import com.user.LogInHandler;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Entry into program
+ * @author zhuweiji,
+ */
 public class Main {
     public static Path cwd;
     public static Path datadir;
@@ -13,14 +17,9 @@ public class Main {
     public static void main(String[] args) {
 
         get_data_paths();
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
-        System.out.println("cwd IS:");
-        System.out.println(cwd.toString());
-        System.out.println(datadir.toString());
 
         LogInHandler loginhandler = LogInHandler.startHandler();
         loginhandler.run();
-
     }
 
     /**

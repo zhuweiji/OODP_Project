@@ -50,7 +50,7 @@ public class AccountData {
 	public static ArrayList<UserAcc> accountList = new ArrayList<UserAcc>();
 
     /** Initialise the courses before application starts
-     * 
+     *
      * @throws IOException
      * @throws ParseException 
      */
