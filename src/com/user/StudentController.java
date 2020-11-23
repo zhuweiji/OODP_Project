@@ -47,8 +47,8 @@ public class StudentController extends UserController {
         String[] details = fetchStudentDetails(id);
         UserAcc.acc_info acc_details = new UserAcc.acc_info(username, hashed_pw);
         acc_details.setSalt(salt);
-        return new Student(id, details[0], details[1], details[2], details[3], details[4], details[5],
-                details[6],details[7],details[8]);
+        return new Student(id, username, details[0], details[1], details[2], details[3], details[4], details[5],
+                details[6],details[7],details[8], details[9]);
 
 
     }
@@ -68,6 +68,7 @@ public class StudentController extends UserController {
         String course_of_study = details[6];
         String date_matriculated = details[7];
         String access_period = details[8];
+        String notiMode = details[9];
 
         return details;
     }

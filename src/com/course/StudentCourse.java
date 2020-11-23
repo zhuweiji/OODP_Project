@@ -1,11 +1,12 @@
 package com.course;
 
+
 public class StudentCourse {
 
 	private String userid;
 	
 	/**
-	 * The course code unique to each module
+	 * List of courses under a school
 	 */
 	private String courseID;
 	
@@ -27,7 +28,7 @@ public class StudentCourse {
 		return userid;
 	}
 
-	public void setUserName(String userid) {
+	public void setUserid(String userid) {
 		this.userid = userid;
 	}
 
@@ -35,7 +36,7 @@ public class StudentCourse {
 		return courseID;
 	}
 
-	public void setCourseID(String courseID) {
+	public void setCourseID (String courseID) {
 		this.courseID = courseID;
 	}
 

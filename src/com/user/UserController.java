@@ -1,9 +1,15 @@
 package com.user;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+
+import com.course.Course;
+import com.course.CourseData;
+import com.course.Index;
+import com.course.IndexData;
+import com.course.StudentCourse;
+import com.course.StudentCourseData;
 
 public class UserController {
     private final Path datadir = Main.datadir;
@@ -13,6 +19,16 @@ public class UserController {
     private LinkedHashMap<String, String[]> usercredDB = readUserCredDB();
     private UserAcc user;
     public String useridCount; // might have state change if multiple controllers saving to db at once
+    public static ArrayList<StudentCourse> studentCourseList = StudentCourseData.studentCourseList;
+    public static ArrayList<Course> courseList = CourseData.courseList;
+	public static ArrayList<Index> indexList = IndexData.indexList;
+	//StudentCourse
+	public static ArrayList<StudentCourse> getStudentCourses(){ return studentCourseList; }
+	// Course
+	public static ArrayList<Course> getCourse(){ return courseList; }
+			
+	// Index
+	public static ArrayList<Index> getIndex(){ return indexList; }
 
     //singleton design pattern
     private static final UserController instance = new UserController();
@@ -162,6 +178,7 @@ public class UserController {
         }
         return null;
     }
+
 }
 
 // -------------------------------------------------------------------------------------------------------

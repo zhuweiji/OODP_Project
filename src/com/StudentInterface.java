@@ -119,7 +119,7 @@ public class StudentInterface {
     					changeIndexIDUI();
     					break;
     				case 6: // Swop Index Number with Another Student
-    					swopIndexIDUI();
+    					swopIndexNumberUI();
     					break;
     				case 7: // Select Notification Mode
     					selectNotiModeUI();
@@ -269,7 +269,7 @@ public class StudentInterface {
 		if (choice == 'Y' || choice == 'y'){
 			StudentCourseController.removeCourse(logged_on_user, IndexID);
 
-			NotificationMgr.sendAlertWaitlist(IndexID);
+			NotificationController.sendAlertWaitlist(IndexID);
 		}
     }
     
@@ -341,54 +341,9 @@ public class StudentInterface {
 			
 			System.out.println("Index Number " + currentIndexID + " has been changed to " + newIndexID);
 			
-			NotificationMgr.sendAlertWaitlist(currentIndexID);
+			NotificationController.sendAlertWaitlist(currentIndexID);
 		}
-	}
-    
-  /**  private static void swopIndexIDUI() throws IOException, ParseException{
-    	System.out.print("\nEnter Peer's Userid: "); String peerUserid = sc.nextLine();
-    	System.out.print("Enter Peer's Password: "); String peerPassword = sc.nextLine();
-    	
-    	UserAcc peerAcc = LogInHandler.login(peerUserid, peerPassword, "Student");
-    	ArrayList<Student> studList = getStudents();
-		if (!(peerAcc == null)) { // Successfully logged in
-    	for (Student peer : studList){
-    		if (peer.getUserid().equals(peerAcc.getUserid())){
-    				System.out.print("Enter Your Index Number: "); int yourIndexID = sc.nextInt();
-    				sc.nextLine();
-    				System.out.print("Enter Peer's Index Number: "); int peerIndexID = sc.nextInt();
-    				sc.nextLine();
-    				
-    				System.out.println();
-    				System.out.println("Student #1 (" + logged_on_user.getMatricNumber() + ")'s Index Information");
-    				System.out.println("================================================");
-    				PrintMgr.printIndexInfo(yourIndexID);
-    				
-    				System.out.println();
-    				System.out.println("Student #2 (" + peer.getMatricNumber() + ")'s Index Information");
-    				System.out.println("================================================");
-    				PrintMgr.printIndexInfo(peerIndexID);
-    				
-    				System.out.println();
-    				System.out.print("Confirm to Change Index Number? (Y/N): ");
-    				char choice = sc.nextLine().charAt(0);
-    				if (choice == 'Y' || choice == 'y'){
-    					StudentCourseMgr.removeCourse(logged_on_user, yourIndexID);
-    					StudentCourseMgr.registerCourse(logged_on_user, peerIndexID);
-
-    					StudentCourseMgr.removeCourse(peer, peerIndexID);
-    					StudentCourseMgr.registerCourse(peer, yourIndexID);
-    					
-    					System.out.println(logged_on_user.getMatricNumber() + "-Index Number " + yourIndexID + " has been successfully swopped with " + peer.getMatricNumber() + "-Index Number " + peerIndexID);
-    				}
-    			}
-    		}
-		}else{
-			System.out.println();
-			System.out.println("Incorrect peer's Userid or password!");
-		}
-    }*/
-    
+	}   
     
     
     private static void selectNotiModeUI() throws IOException, ParseException{
@@ -416,5 +371,50 @@ public class StudentInterface {
     		}
     	}
     }
+    
+    private static void swopIndexNumberUI() throws IOException, ParseException{
+    	System.out.print("\nEnter Peer's Username: "); String peerUsername = sc.nextLine();
+    	System.out.print("Enter Peer's Password: "); String peerPassword = sc.nextLine();
+    	
+    	UserAcc peerAcc = LogInHandler.compareUserPass(peerUsername, peerPassword);
+    	ArrayList<Student> studList = getStudents();
+		if (!(peerAcc == null)) { // Successfully logged in
+    	for (Student peer : studList){
+    		if (peer.getUsername().equals(peerAcc.getUsername())){
+    				System.out.print("Enter Your Index Number: "); int yourIndexID = sc.nextInt();
+    				sc.nextLine();
+    				System.out.print("Enter Peer's Index Number: "); int peerIndexID = sc.nextInt();
+    				sc.nextLine();
+    				
+    				System.out.println();
+    				System.out.println("Student #1 (" + logged_on_user.getMatricID() + ")'s Index Information");
+    				System.out.println("================================================");
+    				printIndexInfo(yourIndexID);
+    				
+    				System.out.println();
+    				System.out.println("Student #2 (" + peer.getMatricID() + ")'s Index Information");
+    				System.out.println("================================================");
+    		        printIndexInfo(peerIndexID);
+    				
+    				System.out.println();
+    				System.out.print("Confirm to Change Index Number? (Y/N): ");
+    				char choice = sc.nextLine().charAt(0);
+    				if (choice == 'Y' || choice == 'y'){
+    					StudentCourseController.removeCourse(logged_on_user, yourIndexID);
+    					StudentCourseController.registerCourse(logged_on_user, peerIndexID);
+
+    					StudentCourseController.removeCourse(peer, peerIndexID);
+    					StudentCourseController.registerCourse(peer, yourIndexID);
+    					
+    					System.out.println(logged_on_user.getMatricID() + "-Index ID " + yourIndexID + " has been successfully swopped with " + peer.getMatricID() + "-Index ID " + peerIndexID);
+    				}
+    			}
+    		}
+		}else{
+			System.out.println();
+			System.out.println("Incorrect peer's username or password!");
+		}
+    }
+
 }
 

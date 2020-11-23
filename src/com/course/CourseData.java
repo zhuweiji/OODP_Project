@@ -70,11 +70,10 @@ public class CourseData {
 				String  courseName = tokenizer.nextToken().trim();	
 				String school = tokenizer.nextToken().trim(); 
 				String  courseID = tokenizer.nextToken().trim();	
-				int totalCapacity = Integer.parseInt(tokenizer.nextToken().trim());
 				int acadUnits = Integer.parseInt(tokenizer.nextToken().trim());
 	
 				// create Course object from file data
-				Course course = new Course(courseName, school, courseID, totalCapacity, acadUnits);
+				Course course = new Course(courseName, school, courseID, acadUnits);
 				// add to Courses list 
 				courseList.add(course) ;
 		}
@@ -98,8 +97,6 @@ public class CourseData {
 				stringBuild.append(course.getSchool());
 				stringBuild.append(SEPARATOR);
 				stringBuild.append(course.getCourseID().trim().toUpperCase());
-				stringBuild.append(SEPARATOR);
-				stringBuild.append(course.getTotalCapacity());
 				stringBuild.append(SEPARATOR);
 				stringBuild.append(course.getAcadUnits());
 

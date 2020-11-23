@@ -1,14 +1,13 @@
-stud2|CZ3005|10004|Registered
-stud4|CZ1106|12345|Registered
-stud2|CZ3005|10002|Registered
-stud2|CZ3005|10004|Registered
-stud1|CZ1106|12345|Registered
-stud1|CZ1107|50000|Registered
-stud2|CZ1107|40003|Registered
-stud4|CZ3005|10003|Registered
-stud4|CZ1106|12345|On Waiting List
-stud4|CZ1107|40003|Registered
-stud3|CZAB1201|10009|On Waiting List
-stud3|CZ1107|50000|Registered
-stud2|CZ3005|10004|Registered
-stud3|CZ1107|40003|Registered
+0|CZ3005|10004|Registered
+0|CZ1106|12345|Registered
+1|CZ3005|10002|Registered
+2|CZ3005|10004|Registered
+1|CZ1106|12345|Registered
+3|CZ1107|50000|Registered
+3|CZ1106|40003|Registered
+1|AB1201|10003|Registered
+2|CZ1106|12345|On Waiting List
+1|CZ1107|40003|Registered
+0|AB1201|10009|On Waiting List
+2|CZ1107|50000|Registered
+3|AB1201|40003|Registered

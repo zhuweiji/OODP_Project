@@ -19,6 +19,10 @@ import java.util.*;
 
 
 public class LogInHandler {
+	
+	public static ArrayList<UserAcc> accountList = AccountData.accountList;
+	// Account
+	public static ArrayList<UserAcc> getAccounts(){ return accountList; }
     private final Path usercredpath = Main.usercredpath;
     private static final LogInHandler instance = new LogInHandler();
     private static final StudentController studentController = StudentController.getInstance();
@@ -66,6 +70,30 @@ public class LogInHandler {
         return false;
 
     }
+    
+    public static UserAcc compareUserPass(String username, String passwordToBeHash)
+	{
+		String salt;
+		ArrayList<UserAcc> accountList = getAccounts();
+		String securePassword;
+		
+		for (int i = 0; i < accountList.size(); i++) {
+			
+			//create user object to iterate
+			UserAcc user = (UserAcc) accountList.get(i);
+			
+			//retrieve salt from text data
+            salt = user.getSalt();
+            
+            //hash user password input with salt
+			securePassword = hash(passwordToBeHash, salt);
+			
+			//compare user input hash with hash retrieved from text data
+			if (username.toLowerCase().equals(user.getUsername().toLowerCase()) && securePassword.equals(user.getPassword())) {
+			}
+		}
+		return null;
+	}
 
     public String checkPermissions(String hashed_permissions, String salt){
         if (hash("student", salt).equals(hashed_permissions)){

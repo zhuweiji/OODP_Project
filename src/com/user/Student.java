@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 public class Student {
     private String userid;
+    private String username;
     private String name;
     private String matricID;
     private String gender;
@@ -14,12 +15,14 @@ public class Student {
     private String course_of_study;
     private String date_matriculated; // todo change to date format
     private String accessPeriod;
+    private String notiMode;
 
-    public Student(String user_id, String name, String matricID, String gender, String nationality,
+    public Student(String user_id, String username,String name, String matricID, String gender, String nationality,
                    String email, String course_of_study, String phone_number, String date_matriculated,
-                   String accessPeriod) {
+                   String accessPeriod, String notiMode) {
 
-
+    	this.userid = user_id;
+    	this.username = username;
         this.name = name;
         this.matricID = matricID;
         this.gender = gender;
@@ -29,6 +32,7 @@ public class Student {
         this.phone_number = phone_number;
         this.date_matriculated = date_matriculated;
         this.accessPeriod = accessPeriod;
+        this.notiMode	= notiMode;
 
     }
 
@@ -43,6 +47,10 @@ public class Student {
 
     public String getUserid() {
         return userid;
+    }
+    
+    public String getUsername() {
+        return username;
     }
 
     public String getName() {
@@ -142,6 +150,14 @@ public class Student {
     public void setAccessPeriod(String accessPeriod) {
         this.accessPeriod = accessPeriod; //todo convert to Calendar format and verify correctness before changing back to String
     }
+    
+    public String getNotiMode() {
+		return notiMode;
+	}
+
+	public void setNotiMode(String notiMode) {
+		this.notiMode = notiMode;
+	}
 
 
 

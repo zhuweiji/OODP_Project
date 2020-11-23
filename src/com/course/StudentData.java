@@ -53,7 +53,7 @@ public class StudentData {
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static ArrayList<Student> initStudents() throws IOException, ParseException {
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) read("src/planner/db/students.txt");
+		ArrayList<String> stringArray = (ArrayList) read("src/data/students_info.txt");
 		
 		for (int i = 0; i < stringArray.size(); i++) {
 			String st = (String) stringArray.get(i);
@@ -110,6 +110,6 @@ public class StudentData {
 
 			alw.add(st.toString());
 		}
-		IO.write("src/planner/db/students.txt", alw);
+		write("src/data/student_info.txt", alw);
 	}
 }

@@ -1,5 +1,6 @@
 package com.course;
 
+
 /**
  * Each course represents a specific subject under the school
  *
@@ -19,10 +20,6 @@ public class Course {
 	 */
 	private String courseID;
 	/**
-	 * Total capacity of the course
-	 */
-	private int totalCapacity;
-	/**
 	 * Academic units of the course
 	 */
 	private int acadUnits;
@@ -30,12 +27,11 @@ public class Course {
 	 * A list of index under the course
 	 */
 
-	public Course(String courseName, String school, String courseID, int totalCapacity, int acadUnits) {
+	public Course(String courseName, String school, String courseID, int acadUnits) {
 		super();
 		this.courseName = courseName;
 		this.school = school;
 		this.courseID = courseID;
-		this.totalCapacity = totalCapacity;
 		this.acadUnits = acadUnits;
 	}
 
@@ -63,14 +59,6 @@ public class Course {
 		this.courseID = courseID;
 	}
 	
-	public int getTotalCapacity() {
-		return totalCapacity;
-	}
-
-	public void setTotalCapacity(int totalCapacity) {
-		this.totalCapacity = totalCapacity;
-	}
-	
 	public int getAcadUnits() {
 		return acadUnits;
 	}
@@ -78,6 +66,7 @@ public class Course {
 	public void setAcadUnits(int acadUnits) {
 		this.acadUnits = acadUnits;
 	}
+	
 
 
 	
