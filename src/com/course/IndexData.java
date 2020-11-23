@@ -43,9 +43,6 @@ public class IndexData {
 	public static ArrayList <Index> indexList = new ArrayList<Index>() ;
 	
 	/** Initialise the indexes before application starts
-     * @param filename
-     * @throws IOException
-     * @throws ParseException 
      */
 @SuppressWarnings({ "rawtypes", "unchecked"})
 	
@@ -140,21 +137,21 @@ public class IndexData {
 		public static void saveIndex(ArrayList<Index> IndexToUpdate) throws IOException {
 			ArrayList <String> cl = new ArrayList<String>() ;// to store Courses data
 
-	        for (int i = 0 ; i < IndexToUpdate.size() ; i++) {
-					Index index = (Index) IndexToUpdate.get(i);
-					StringBuilder stringBuild =  new StringBuilder() ;
-					stringBuild.append(index.getIndexID());
-					stringBuild.append(SEPARATOR);
-					stringBuild.append(index.getCourseID().trim().toUpperCase());
-					stringBuild.append(SEPARATOR);
-					stringBuild.append(index.getTutorialGroup().trim().toUpperCase());
-					stringBuild.append(SEPARATOR);
-					stringBuild.append(index.getVacancy());
-					stringBuild.append(SEPARATOR);
-					stringBuild.append(index.getWaitingList());
+			for (Index value : IndexToUpdate) {
+				Index index = (Index) value;
+				StringBuilder stringBuild = new StringBuilder();
+				stringBuild.append(index.getIndexID());
+				stringBuild.append(SEPARATOR);
+				stringBuild.append(index.getCourseID().trim().toUpperCase());
+				stringBuild.append(SEPARATOR);
+				stringBuild.append(index.getTutorialGroup().trim().toUpperCase());
+				stringBuild.append(SEPARATOR);
+				stringBuild.append(index.getVacancy());
+				stringBuild.append(SEPARATOR);
+				stringBuild.append(index.getWaitingList());
 
-					cl.add(stringBuild.toString()) ;
-				}
+				cl.add(stringBuild.toString());
+			}
 				write("src/com.course/Index.txt",cl);
 		}
 }

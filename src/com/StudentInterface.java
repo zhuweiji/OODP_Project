@@ -265,7 +265,7 @@ public class StudentInterface {
 		if (choice == 'Y' || choice == 'y'){
 			StudentCourseController.removeCourse(logged_on_user, IndexID);
 
-			NotificationController.sendAlertWaitlist(IndexID);
+//			NotificationController.sendAlertWaitlist(IndexID);
 		}
 	}
 
@@ -337,7 +337,7 @@ public class StudentInterface {
 
 			System.out.println("Index Number " + currentIndexID + " has been changed to " + newIndexID);
 
-			NotificationController.sendAlertWaitlist(currentIndexID);
+//			NotificationController.sendAlertWaitlist(currentIndexID);
 		}
 	}
 

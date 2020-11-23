@@ -1,9 +1,12 @@
 package com.user;
 
 
+import com.course.CalendarController;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,14 +46,23 @@ public class StudentController extends UserController {
     }
 
     public Student getExistingStudent(String username, String hashed_pw, String salt,
-                                      String userid){
+                                      String userid) {
         String[] details = fetchStudentDetails(userid);
         UserAcc.acc_info acc_details = new UserAcc.acc_info(username, hashed_pw);
         acc_details.setSalt(salt);
-        return new Student(userid, username, details[0], details[1], details[2], details[3], details[4], details[5],
-                details[6],details[7],details[8],details[9]);
-
-
+        {
+            Calendar accessStart;
+            Calendar accessEnd;
+            try {
+                accessStart = CalendarController.stringToCalendar(details[8]);
+                accessEnd = CalendarController.stringToCalendar(details[9]);
+                return new Student(userid, details[0], details[1], details[2], details[3], details[4], details[5],
+                        details[6], details[7], accessStart, accessEnd, details[10]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     public String[] fetchStudentDetails(String id) {
@@ -67,8 +79,9 @@ public class StudentController extends UserController {
         String phone_number = details[5];
         String course_of_study = details[6];
         String date_matriculated = details[7];
-        String access_period = details[8];
-        String notiMode = details[9];
+        String access_start = details[8];
+        String access_end = details[9];
+        String notiMode = details[10];
 
         return details;
     }

@@ -1,15 +1,19 @@
 package com;
 
+import com.course.CalendarController;
 import com.user.*;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Calendar;
 
 public class AdminInterface {
     /**
      * UI layer that allows admins to perform
      */
     private Admin logged_on_user;
-    private String defaultAccessPeriod; //todo change to Calendar format
+    private Calendar defaultAccessStart;
+    private Calendar defaultAccessEnd;
     private static final UserController userController = UserController.getInstance();
     private static final StudentController studentController = StudentController.getInstance();
     private static final AdminController adminController = AdminController.getInstance();
@@ -128,9 +132,18 @@ public class AdminInterface {
                             default_period = studentController.getDefaultStringAccessPeriod();
                         }
                         else{
-                            default_period = cmd.input("Enter access period");
+                            try {
+                                String accessStartStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format");
+                                Calendar accessStart = CalendarController.stringToCalendar(accessStartStr);
+                                String accessEndStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format");
+                                Calendar accessEnd = CalendarController.stringToCalendar(accessEndStr);
+                                newStudent.setAccessStart(accessStart);
+                                newStudent.setAccessEnd(accessEnd);
+                            } catch (ParseException e) {
+                                cmd.display("Could not parse the datetime you entered. Please try again");
+                            }
                         }
-                        newStudent.setAccessPeriod(default_period);
+
 
                         cmd.display("Student created with following details:");
                         cmd.displayf("Name: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
@@ -176,8 +189,18 @@ public class AdminInterface {
     }
     public void editDefaultAccessPeriod()
     {
-        String accessPeriod = cmd.input("Enter access period in ?? format");
-        studentController.getStudent().setAccessPeriod(accessPeriod);
+        try{
+            String accessStartStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format");
+            Calendar accessStart = CalendarController.stringToCalendar(accessStartStr);
+            String accessEndStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format");
+            Calendar accessEnd = CalendarController.stringToCalendar(accessEndStr);
+            defaultAccessStart = accessStart;
+            defaultAccessEnd = accessEnd;
+        }
+        catch (ParseException e){
+            System.out.println("Input was unable to be parsed. Please check format");
+        }
+
     }
 
     public void EditStudent(String matricID, String gender, String nationality,
