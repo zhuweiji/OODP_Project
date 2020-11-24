@@ -38,8 +38,6 @@ public class Course {
 		this.school				= school;
 	}
 	
-	
-	
 
 	public Course(String courseName2, String school2, String courseID2, int totalCapacity, int acadUnits) {
 	}
@@ -53,7 +51,7 @@ public class Course {
 	
 	/**
 	 * Change the course code
-	 * @param courseCode
+	 *
 	 */
 	public void setCourseID(String courseID) {
 		this.courseID = courseID;
@@ -91,5 +89,6 @@ public class Course {
 		}
 		return false;
 	}
+
 
 }

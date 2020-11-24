@@ -4,24 +4,14 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import com.course.Course;
-import com.course.CourseData;
 import com.course.Index;
-import com.course.IndexData;
-import com.course.LessonData;
 import com.course.StudentCourse;
 import com.course.StudentCourseController;
-import com.course.StudentCourseData;
-import com.course.StudentData;
-import com.lesson.Lesson;
 import com.user.Student;
 import com.user.StudentController;
-import com.user.UserAcc;
-import com.user.LogInHandler;
 import com.user.DataListController;
-import com.user.IO;
-import com.user.*;
 import com.course.*;
+
 
 public class StudentInterface {
 	private static Student logged_on_user;

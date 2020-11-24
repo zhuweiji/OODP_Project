@@ -1,16 +1,9 @@
 package com.user;
-import java.io.File;  // Import the File class
-import java.io.FileNotFoundException;  // Import this class to handle errors
-import java.io.IOException;
-import java.io.PrintWriter;
+import com.LogInHandler;
+
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.*;
-import java.nio.file.Paths;
 
 
 public class UtilityCreateUser {
