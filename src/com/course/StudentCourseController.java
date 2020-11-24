@@ -1,58 +1,20 @@
 package com.course;
 
+import java.io.*;
 import java.text.*;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 
-import com.lesson.Lesson;
-import com.user.Student;
+import com.course.*;
+import com.user.*;
 
-
-public class StudentCourseController{
-	
+public class StudentCourseController {
 	/**
 	 * Create a new course with the necessary information
 	 * @throws ParseException 
 	 * @throws IOException 
 	 */	
-	public static ArrayList<Course> courseList = CourseData.courseList;
-	public static ArrayList<Index> indexList = IndexData.indexList;
-	public static ArrayList<StudentCourse> studentCourseList = StudentCourseData.studentCourseList;
-	public static ArrayList<Lesson> lessonList = LessonData.lessonList;
-	public static ArrayList<Student> studentList = StudentData.studentList;
-	
-	//Student
-	public static ArrayList<Student> getStudents(){ return studentList; }
-	
-	// Lesson
-	public static ArrayList<Lesson> getLesson(){ return lessonList; }
-	
-	// Course
-	public static ArrayList<Course> getCourse(){ return courseList; }
-		
-	// Index
-	public static ArrayList<Index> getIndex(){ return indexList; }
-	
-	//StudentCourse
-	public static ArrayList<StudentCourse> getStudentCourses(){ return studentCourseList; }
-	
-	public static void writeObject(Object newObj) throws IOException{
-		if (newObj instanceof Course){
-			courseList.add((Course) newObj);
-			CourseData.saveCourses(courseList);
-		}
-		else if (newObj instanceof Index){
-			indexList.add((Index) newObj);
-			IndexData.saveIndex(indexList);
-		}
-		else if (newObj instanceof StudentCourse){
-			studentCourseList.add((StudentCourse) newObj);
-			StudentCourseData.saveStudentCourses(studentCourseList);
-		}
-	}
-		
 	public static void registerCourse(Student s, int indexID) throws IOException, ParseException {
-		ArrayList<Index> indexList = getIndex();
+		ArrayList<Index> indexList = DataListController.getIndex();
 		for (Index i : indexList){
 			if (i.getIndexID() == indexID){
 				int vacancy = i.getVacancy();
@@ -69,13 +31,13 @@ public class StudentCourseController{
 				}
 				
 				// Adding
-				StudentCourse newStudentCourse = new StudentCourse(s.getUserid(), s.getName(), courseID, indexID, registerStatus);
-			    writeObject(newStudentCourse);
+				StudentCourse newStudentCourse = new StudentCourse(s.getUserName(), courseID, indexID, registerStatus);
+				DataListController.writeObject(newStudentCourse);
 			    
 				// Update new vacancy & waiting list
 				indexList.remove(i); 
-				Index newIndex = new Index(indexID,i.getCourseID(), i.getTutorialGroup(), vacancy, waitingList);
-			    writeObject(newIndex);
+			    Index newIndex = new Index(i.getCourseID(), indexID, i.getTutorialGroup(), vacancy, waitingList);
+			    DataListController.writeObject(newIndex);
 				
 				System.out.println();
 				if (registerStatus.equals("On Waiting List")){
@@ -88,14 +50,15 @@ public class StudentCourseController{
 				return;
 			}
 		}
+			
 	}
 	
 	public static void removeCourse(Student s, int indexID) throws IOException, ParseException{
-		ArrayList<StudentCourse> studentCourseList = getStudentCourses();
-		ArrayList<Index> indexList = getIndex();
+		ArrayList<StudentCourse> studentCourseList = DataListController.getStudentCourses();
+		ArrayList<Index> indexList = DataListController.getIndex();
 		
 		for(StudentCourse course : studentCourseList){
-			if (course.getIndexID() == indexID && course.getUserid().equals(s.getUserid())){
+			if (course.getIndexID() == indexID && course.getUserName().equals(s.getUserName())){
 				studentCourseList.remove(course);
 				StudentCourseData.saveStudentCourses(studentCourseList);
 
@@ -115,8 +78,8 @@ public class StudentCourseController{
 					if (i.getIndexID() == indexID){
 						// Update new vacancy & waiting list
 						indexList.remove(i); 
-					    Index newIndex = new Index(indexID,i.getCourseID(), i.getTutorialGroup(), vacancy, waitingList);
-					    writeObject(newIndex);
+					    Index newIndex = new Index(i.getCourseID(), indexID, i.getTutorialGroup(), vacancy, waitingList);
+					    DataListController.writeObject(newIndex);
 						
 						return;
 					}

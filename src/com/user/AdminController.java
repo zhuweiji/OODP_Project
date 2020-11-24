@@ -1,18 +1,26 @@
 package com.user;
 
 
+import com.course.Course;
+
+import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import com.user.*;
+import com.course.*;
 
 public class AdminController extends UserController{
     private Admin user;
     private final Path admininfopath = getAdmininfopath();
-    private HashMap<String, String> admininfoDB = readUserInfoDB(admininfopath);
+    private HashMap<String, Admin> admininfoDB = new HashMap<>();
+    private AccountData accountData = new AccountData();
 
     private static final AdminController instance = new AdminController();
 
     public AdminController() {
         super();
+        refreshAdminDB();
     }
 
     public static AdminController getInstance(){
@@ -46,17 +54,44 @@ public class AdminController extends UserController{
     }
 
     public String[] fetchAdminDetails(String id){
-        String details = admininfoDB.get(id);
+        Admin details = admininfoDB.get(id);
         if (details == null){
             System.out.println("couldn't find this user's details in admin details file");
             return null;
         }
 
-        return details.split(",");
+        return details.getAllDetails();
     }
 
-    public void refreshAdminInfoDB(){
-        admininfoDB = readUserInfoDB(admininfopath);
+    public void refreshAdminDB() {
+        ArrayList<Admin> newData = null;
+        try {
+            newData = accountData.initAdmins();
+        } catch (Exception e) {
+            System.out.println("Refresh course database encountered exception - " + e.getMessage());
+            return;
+        }
+        // Convert ArrayList -> HashMap
+        HashMap<String, Admin> newAdmininfoDB = new HashMap<>();
+        for (Admin admin : newData)
+            newAdmininfoDB.put(admin.getUserId(), admin);
+        // Replace our existing HashMap
+        admininfoDB = newAdmininfoDB;
+    }
+
+    public void saveAdminToDB(Admin admin){
+        refreshAdminDB();
+        String lastId = "";
+        for (Admin ad : admininfoDB.values()) {
+            if (ad.getAdminID().compareTo(lastId) > 0)
+                lastId = ad.getAdminID();
+        }
+        admin.setAdminID(lastId + 1);
+        try {
+            pushDB(admininfopath, admin.getAllDetails(), ",",true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

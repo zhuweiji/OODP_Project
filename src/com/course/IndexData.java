@@ -4,53 +4,26 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
+import com.user.IO;
+import com.course.Index;
 
 public class IndexData {
-	
-	@SuppressWarnings("rawtypes")
-	public static void write(String fileName, List data) throws IOException {
-		PrintWriter out = new PrintWriter(new FileWriter(fileName));
-
-		try {
-			for (int i = 0; i < data.size(); i++) {
-				out.println((String) data.get(i));
-			}
-		} finally {
-			out.close();
-		}
-	}
-
-	/** Read the contents of the given file.
-	 * 
-
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List read(String fileName) throws IOException {
-		List data = new ArrayList();
-		Scanner scanner = new Scanner(new FileInputStream(fileName));
-		try {
-			while (scanner.hasNextLine()) {
-				data.add(scanner.nextLine());
-			}
-		} finally {
-			scanner.close();
-		}
-		return data;
-	}
-	
 	public static final String SEPARATOR = "|";
 	
 	public static ArrayList <Index> indexList = new ArrayList<Index>() ;
 	
-	/** Initialise the indexes before application starts
+	/** Initialise the indexess before application starts
+     * @param filename
+     * @throws IOException
+     * @throws ParseException 
      */
-@SuppressWarnings({ "rawtypes", "unchecked"})
+	@SuppressWarnings({ "rawtypes", "unchecked"})
 	
 	
 	public static ArrayList<Index> initIndex() throws IOException, ParseException {
 		
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) read("src/data/Index.txt");
+		ArrayList<String> stringArray = (ArrayList) IO.read("data/Index.txt");
 		
         for (int i = 0 ; i < stringArray.size() ; i++) {
         	
@@ -60,15 +33,15 @@ public class IndexData {
 				// pass in the string to the string tokenizer using delimiter "," 
 				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);	
 				
-				//first to fifth tokens	
+				//first to fifth tokens
+				String  courseID = tokenizer.nextToken().trim();	
 				int  indexID = Integer.parseInt(tokenizer.nextToken().trim());	
-				String  courseID = tokenizer.nextToken().trim();
 				String tutorialGroup = tokenizer.nextToken().trim();	
-				int vacancy = Integer.parseInt(tokenizer.nextToken().trim());
+				int vacancies = Integer.parseInt(tokenizer.nextToken().trim());
 				int waitingList = Integer.parseInt(tokenizer.nextToken().trim());
 				
 				// create Course object from file data
-				Index index = new Index(indexID, courseID, tutorialGroup, vacancy, waitingList);
+				Index index = new Index(courseID, indexID, tutorialGroup, vacancies, waitingList);
 				// add to Courses list 
 				indexList.add(index) ;
 		}
@@ -76,13 +49,14 @@ public class IndexData {
 	}
 
     /** Initialise the courses before application starts
+     * @param filename
      * @throws IOException
      * @throws ParseException 
      */
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static void searchVacancy(String CourseID,int indexID)throws IOException
 	{
-		ArrayList<String> stringArray = (ArrayList) read("src/db/index.txt");
+		ArrayList<String> stringArray = (ArrayList) IO.read("data/Index.txt");
 		for (int i = 0 ; i < stringArray.size() ; i++) {
         	
 			String field = (String) stringArray.get(i);
@@ -94,21 +68,24 @@ public class IndexData {
 			//first to fifth tokens
 			String  courseID = tokenizer.nextToken().trim();	
 			int  indexID1 = Integer.parseInt(tokenizer.nextToken().trim());	
-			int vacancy = Integer.parseInt(tokenizer.nextToken().trim());
+			int vacancies = Integer.parseInt(tokenizer.nextToken().trim());
 			
 			if(courseID.equalsIgnoreCase(CourseID))
 			{
 				if(indexID == indexID1)
-				System.out.println("Index ID: "+indexID1+" \t Vacancies: "+vacancy);
+				System.out.println("Index Number: "+indexID1+" \t Vacancies: "+vacancies);
 			}
 		}
 	}
     /** Initialise the courses before application starts
+     * @param filename
+     * @throws IOException
+     * @throws ParseException 
      */
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 		public static void showIndex(String CourseID)throws IOException
 		{
-			ArrayList<String> stringArray = (ArrayList) read("src/com.course/Index.txt");
+			ArrayList<String> stringArray = (ArrayList) IO.read("data/Index.txt");
 			int t=0;
 			for (int i = 0 ; i < stringArray.size() ; i++) {
 	        	
@@ -119,13 +96,13 @@ public class IndexData {
 				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);	
 				
 				//first to fifth tokens
-				String  indexID = tokenizer.nextToken().trim();
 				String  courseID = tokenizer.nextToken().trim();	
+				String  indexID = tokenizer.nextToken().trim();
 				
 				if(courseID.equalsIgnoreCase(CourseID))
 				{
 					
-					System.out.println(t+1+") Index ID: "+indexID);
+					System.out.println(t+1+") Index Number: "+indexID);
 					t++;
 				}
 			}
@@ -133,25 +110,27 @@ public class IndexData {
 		}
 		
 		/** Save the courses that has been added during the session
+		 * @param CourseToUpdate
+		 * @throws IOException
 		 */
-		public static void saveIndex(ArrayList<Index> IndexToUpdate) throws IOException {
+		public static void saveIndexes(ArrayList<Index> IndexToUpdate) throws IOException {
 			ArrayList <String> cl = new ArrayList<String>() ;// to store Courses data
 
-			for (Index value : IndexToUpdate) {
-				Index index = (Index) value;
-				StringBuilder stringBuild = new StringBuilder();
-				stringBuild.append(index.getIndexID());
-				stringBuild.append(SEPARATOR);
-				stringBuild.append(index.getCourseID().trim().toUpperCase());
-				stringBuild.append(SEPARATOR);
-				stringBuild.append(index.getTutorialGroup().trim().toUpperCase());
-				stringBuild.append(SEPARATOR);
-				stringBuild.append(index.getVacancy());
-				stringBuild.append(SEPARATOR);
-				stringBuild.append(index.getWaitingList());
+	        for (int i = 0 ; i < IndexToUpdate.size() ; i++) {
+					Index index = (Index) IndexToUpdate.get(i);
+					StringBuilder stringBuild =  new StringBuilder() ;
+					stringBuild.append(index.getCourseID().trim().toUpperCase());
+					stringBuild.append(SEPARATOR);
+					stringBuild.append(index.getIndexID());
+					stringBuild.append(SEPARATOR);
+					stringBuild.append(index.getTutorialGroup());
+					stringBuild.append(SEPARATOR);
+					stringBuild.append(index.getVacancy());
+					stringBuild.append(SEPARATOR);
+					stringBuild.append(index.getWaitingList());
 
-				cl.add(stringBuild.toString());
-			}
-				write("src/com.course/Index.txt",cl);
+					cl.add(stringBuild.toString()) ;
+				}
+				IO.write("data/Index.txt",cl);
 		}
 }

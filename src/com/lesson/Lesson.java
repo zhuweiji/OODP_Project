@@ -1,26 +1,26 @@
 package com.lesson;
 
 public class Lesson {
-	private int indexNumber; 
+	private int indexID; 
 	private String lessonType;
 	private String lessonDay;
 	private String lessonVenue;
 	private String lessonTime;
 	
-	public Lesson (int indexNumber, String lessonType, String lessonDay, String lessonTime, String lessonVenue){
-		this.indexNumber = indexNumber;
+	public Lesson (int indexID, String lessonType, String lessonDay, String lessonTime, String lessonVenue){
+		this.indexID = indexID;
 		this.lessonType = lessonType;
 		this.lessonDay = lessonDay;
 		this.lessonTime = lessonTime;
 		this.lessonVenue = lessonVenue;
 	}
 
-	public int getIndexNumber() {
-		return indexNumber;
+	public int getIndexID() {
+		return indexID;
 	}
 
-	public void setIndexNumber(int indexNumber) {
-		this.indexNumber = indexNumber;
+	public void setIndexID(int indexID) {
+		this.indexID = indexID;
 	}
 
 	public String getLessonType() {
@@ -56,6 +56,6 @@ public class Lesson {
 	}
 	
 	public boolean equals(int o) {
-		return getIndexNumber() == o;
+		return getIndexID() == o;
 	}
 }

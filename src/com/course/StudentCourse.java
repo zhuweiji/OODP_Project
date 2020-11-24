@@ -3,10 +3,10 @@ package com.course;
 
 public class StudentCourse {
 
-	private String userid;
-	private String username;
+	private String userName;
+	
 	/**
-	 * List of courses under a school
+	 * The course code unique to each module
 	 */
 	private String courseID;
 	
@@ -17,35 +17,26 @@ public class StudentCourse {
 	
 	private String registerStatus;
 	
-	public StudentCourse(String userid, String username, String courseID, int indexID, String registerStatus) {
-		this.userid = userid;
-		this.username = username;
+	public StudentCourse(String userName, String courseID, int indexID, String registerStatus) {
+		this.userName = userName;
 		this.courseID = courseID;
 		this.indexID = indexID;
 		this.registerStatus = registerStatus;
 	}
 	
-	public String getUserid() {
-		return userid;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
 	public String getCourseID() {
 		return courseID;
 	}
 
-	public void setCourseID (String courseID) {
+	public void setCourseID(String courseID) {
 		this.courseID = courseID;
 	}
 

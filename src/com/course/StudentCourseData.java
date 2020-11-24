@@ -4,48 +4,16 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-
+import com.user.IO;
+import com.course.StudentCourse;
 
 public class StudentCourseData {
 
-	@SuppressWarnings("rawtypes")
-	public static void write(String fileName, List data) throws IOException {
-		PrintWriter out = new PrintWriter(new FileWriter(fileName));
-
-		try {
-			for (int i = 0; i < data.size(); i++) {
-				out.println((String) data.get(i));
-			}
-		} finally {
-			out.close();
-		}
-	}
-
-	/** Read the contents of the given file.
-	 * 
-	 * @param fileName
-	 * @return
-	 * @throws IOException
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List read(String fileName) throws IOException {
-		List data = new ArrayList();
-		Scanner scanner = new Scanner(new FileInputStream(fileName));
-		try {
-			while (scanner.hasNextLine()) {
-				data.add(scanner.nextLine());
-			}
-		} finally {
-			scanner.close();
-		}
-		return data;
-	}
-	
 	public static final String SEPARATOR = "|";
 
 	public static ArrayList <StudentCourse> studentCourseList = new ArrayList<StudentCourse>() ;
 	
-    /** Initialize the courses before application starts
+    /** Initialise the courses before application starts
      * @param filename
      * @throws IOException
      * @throws ParseException 
@@ -53,7 +21,7 @@ public class StudentCourseData {
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static ArrayList<StudentCourse> initStudentCourses() throws IOException, ParseException {
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) read("src/db/StudentCourse.txt");
+		ArrayList<String> stringArray = (ArrayList) IO.read("data/StudentCourse.txt");
 			
 		if (stringArray.size() == 0){
 			return new ArrayList<StudentCourse>();
@@ -67,14 +35,13 @@ public class StudentCourseData {
 				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);	
 				
 				//first to fifth tokens
-				String  userid = tokenizer.nextToken().trim();	
-				String  username = tokenizer.nextToken().trim();	
+				String  userName = tokenizer.nextToken().trim();	
 				String  courseID = tokenizer.nextToken().trim();	
 				int indexID = Integer.parseInt(tokenizer.nextToken().trim());
 				String registerStatus = tokenizer.nextToken().trim();
 				
 				// create Course object from file data
-				StudentCourse course = new StudentCourse(userid, username, courseID, indexID, registerStatus);
+				StudentCourse course = new StudentCourse(userName, courseID, indexID, registerStatus);
 				// add to Courses list 
 				studentCourseList.add(course) ;
 		}
@@ -91,9 +58,7 @@ public class StudentCourseData {
         for (int i = 0 ; i < CourseToUpdate.size() ; i++) {
 				StudentCourse course = (StudentCourse) CourseToUpdate.get(i);
 				StringBuilder stringBuild =  new StringBuilder() ;
-				stringBuild.append(course.getUserid().trim());
-				stringBuild.append(SEPARATOR);
-				stringBuild.append(course.getUsername().trim());
+				stringBuild.append(course.getUserName().trim());
 				stringBuild.append(SEPARATOR);
 				stringBuild.append(course.getCourseID().trim());
 				stringBuild.append(SEPARATOR);
@@ -103,6 +68,6 @@ public class StudentCourseData {
 				
 				courseList.add(stringBuild.toString()) ;
 			}
-			write("src/db/StudentCourse.txt", courseList);
+			IO.write("data/StudentCourse.txt", courseList);
 	}
 }

@@ -1,13 +1,13 @@
-0|edward40hands|CZ3005|10004|Registered
-0|edward40hands|CZ1106|12345|Registered
-1|coals2diamonds|CZ3005|10002|Registered
-2|pepsi|CZ3005|10004|Registered
-1|coals2diamonds|CZ1106|12345|Registered
-3|corgi|CZ1107|50000|Registered
-3|corgi|CZ1106|40003|Registered
-1|coals2diamonds|AB1201|10003|Registered
-2|pepsi|CZ1106|12345|On Waiting List
-1|coals2diamonds|CZ1107|40003|Registered
-0|edward40hands|AB1201|10009|On Waiting List
-2|pepsi|CZ1107|50000|Registered
-3|corgi|AB1201|40003|Registered
+edward40hands|CZ3005|10004|Registered
+edward40hands|CZ1106|12345|Registered
+coals2diamonds|CZ3005|10002|Registered
+pepsi|CZ3005|10004|Registered
+coals2diamonds|CZ1106|12345|Registered
+corgi|CZ1107|50000|Registered
+corgi|CZ1106|40003|Registered
+coals2diamonds|AB1201|10003|Registered
+pepsi|CZ1106|12345|On Waiting List
+coals2diamonds|CZ1107|40003|Registered
+edward40hands|AB1201|10009|On Waiting List
+pepsi|CZ1107|50000|Registered
+corgi|AB1201|40003|Registered

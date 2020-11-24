@@ -1,6 +1,5 @@
 package com.user;
 
-
 import com.Main;
 import com.course.CalendarController;
 
@@ -55,10 +54,10 @@ public class StudentController extends UserController {
             Calendar accessStart;
             Calendar accessEnd;
             try {
-                accessStart = CalendarController.stringToCalendar(details[8]);
-                accessEnd = CalendarController.stringToCalendar(details[9]);
+                accessStart = CalendarController.stringToCalendar(details[9]);
+                accessEnd = CalendarController.stringToCalendar(details[10]);
                 return new Student(userid, details[0], details[1], details[2], details[3], details[4], details[5],
-                        details[6], details[7], accessStart, accessEnd, details[10]);
+                        details[6], details[7], details[8], accessStart, accessEnd, details[11]);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

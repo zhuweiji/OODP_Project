@@ -4,41 +4,12 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import com.user.Student;
+import com.user.*;
 
 public class StudentData {
 	
-	@SuppressWarnings("rawtypes")
-	public static void write(String fileName, List data) throws IOException {
-		PrintWriter out = new PrintWriter(new FileWriter(fileName));
-
-		try {
-			for (int i = 0; i < data.size(); i++) {
-				out.println((String) data.get(i));
-			}
-		} finally {
-			out.close();
-		}
-	}
-
-	/** Read the contents of the given file.
-	 *
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List read(String fileName) throws IOException {
-		List data = new ArrayList();
-		Scanner scanner = new Scanner(new FileInputStream(fileName));
-		try {
-			while (scanner.hasNextLine()) {
-				data.add(scanner.nextLine());
-			}
-		} finally {
-			scanner.close();
-		}
-		return data;
-	}
 	
-	public static final String SEPARATOR = "|";
+	public static final String SEPARATOR = ",";
 
 	public static ArrayList<Student> studentList = new ArrayList<Student>();
     /** Initialise the courses before application starts
@@ -46,8 +17,8 @@ public class StudentData {
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static ArrayList<Student> initStudents() throws IOException, ParseException {
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) read("src/data/students_info.txt");
-
+		ArrayList<String> stringArray = (ArrayList) IO.read("data/student_info.txt");
+		studentList.clear();
 		for (String s : stringArray) {
 			String st = (String) s;
 
@@ -57,6 +28,7 @@ public class StudentData {
 
 			String userid = star.nextToken().trim(); // first token
 			String name = star.nextToken().trim(); // first token
+			String userName = star.nextToken().trim();
 			String matricNum = star.nextToken().trim(); // third token
 			String gender = (star.nextToken().trim()); // fourth token
 			String nationality = star.nextToken().trim(); // fifth token
@@ -68,7 +40,7 @@ public class StudentData {
 			Calendar accessEnd = CalendarController.stringToCalendar(star.nextToken().trim()); // nine token
 			String notiMode = star.nextToken().trim(); //tenth token
 
-			Student std = new Student(userid, name, matricNum, gender, nationality, email, course_of_study,date_matriculated ,phoneno, accessStart, accessEnd, notiMode);
+			Student std = new Student(userid, userName, name, matricNum, gender, nationality, email, course_of_study,date_matriculated ,phoneno, accessStart, accessEnd, notiMode);
 
 			// add to Students list
 			studentList.add(std);
@@ -84,6 +56,8 @@ public class StudentData {
 			Student std = (Student) student;
 			StringBuilder st = new StringBuilder();
 			st.append(std.getUserid().trim());
+			st.append(SEPARATOR);
+			st.append(std.getUserName().trim());
 			st.append(SEPARATOR);
 			st.append(std.getName().trim());
 			st.append(SEPARATOR);
@@ -105,6 +79,6 @@ public class StudentData {
 
 			alw.add(st.toString());
 		}
-		write("src/data/student_info.txt", alw);
+		IO.write("data/student_info.txt", alw);
 	}
 }

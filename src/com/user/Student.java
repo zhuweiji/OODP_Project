@@ -6,6 +6,7 @@ import com.course.CalendarController;
 import java.util.Calendar;
 
 public class Student {
+    private String userName;
     private String userid;
     private String name;
     private String matricID;
@@ -19,11 +20,12 @@ public class Student {
     private Calendar accessEnd;
     private String notiMode;
 
-    public Student(String user_id,String name, String matricID, String gender, String nationality,
+    public Student(String user_id,String userName,String name, String matricID, String gender, String nationality,
                    String email, String course_of_study, String phone_number, String date_matriculated,
                    Calendar accessStart, Calendar accessEnd, String notiMode) {
 
-    	this.userid = user_id;
+        this.userid = user_id;
+        this.setUserName(userName);
         this.setName(name);
         this.setMatricID(matricID);
         this.setGender(gender);
@@ -38,7 +40,7 @@ public class Student {
 
     }
 
-    public Student(String user_id){
+    public Student(String user_id, String string, String string2, String string3, String string4, String string5, String string6, Calendar calendar, Calendar calendar2, int choice){
         this.userid = user_id;
     }
 
@@ -59,18 +61,23 @@ public class Student {
         this.name = name;
     }
 
+    public String getUserName() { return userName; }
+
+    public void setUserName(String userName) { this.userName = userName; }
+
     public String getMatricID() {
         return matricID;
     }
 
     public void setMatricID(String matricID) {
-        final String regex = "^[U|S][0-9]{7}[A-Z]"; // U XXXXXXX G todo TEST
-        if (matricID.matches(regex)){
-            this.matricID = matricID;
-        }
-        else{
-            throw new IllegalArgumentException("Matriculation ID does not match format");
-        }
+//        final String regex = "^[U|S][0-9]{7}[A-Z]"; // U XXXXXXX G todo TEST
+//        if (matricID.matches(regex)){
+//            this.matricID = matricID;
+//        }
+//        else{
+//            throw new IllegalArgumentException("Matriculation ID does not match format");
+//        }
+        this.matricID = matricID;
 
     }
 
@@ -79,13 +86,14 @@ public class Student {
     }
 
     public void setGender(String gender) {
-        gender = gender.toLowerCase();
-        switch (gender) {
-            case "male", "female" -> this.gender = gender;
-            case "m" -> this.gender = "male";
-            case "f" -> this.gender = "female";
-            default -> throw new IllegalArgumentException("gender must be male or female");
-        }
+//        gender = gender.toLowerCase();
+//        switch (gender) {
+//            case "male", "female" -> this.gender = gender;
+//            case "m" -> this.gender = "male";
+//            case "f" -> this.gender = "female";
+//            default -> throw new IllegalArgumentException("gender must be male or female");
+//        }
+        this.gender = gender;
     }
 
     public String getNationality() {
@@ -101,13 +109,14 @@ public class Student {
     }
 
     public void setEmail(String email) {
-        final String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
-        if (email.matches(regex)){
-            this.email = email;
-        }
-        else{
-            throw new IllegalArgumentException("Entry was not an email format");
-        }
+//        final String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
+//        if (email.matches(regex)){
+//            this.email = email;
+//        }
+//        else{
+//            throw new IllegalArgumentException("Entry was not an email format");
+//        }
+        this.email = email;
     }
 
     public String getCourse_of_study() {
@@ -123,13 +132,15 @@ public class Student {
     }
 
     public void setPhone_number(String phone_number) {
-        final String regex = "^[0-9]{8}$|^[+][0-9]{10,11}"; // 8digit number or +countrycode phone number
-        if (phone_number.matches(regex)){
-            this.phone_number = phone_number;
-        }
-        else{
-            throw new IllegalArgumentException("Phone number must be 8 digits long or have country code");
-        }
+//        final String regex = "^[0-9]{8}$|^[+][0-9]{10,11}"; // 8digit number or +countrycode phone number
+//        if (phone_number.matches(regex)){
+//            this.phone_number = phone_number;
+//        }
+//        else{
+//            throw new IllegalArgumentException("Phone number must be 8 digits long or have country code");
+//        }
+
+        this.phone_number = phone_number;
 
     }
 

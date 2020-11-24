@@ -1,39 +1,64 @@
 package com.course;
 
+import java.util.*;
 
 /**
  * Each course represents a specific subject under the school
  *
  */
 public class Course {
-
 	/**
-	 * Full name of the course
-	 */
-	private String courseName;
-	/**
-	 * School of the course
-	 */
-	private String school;
-	/**
-	 * Unique identifier of the course
+	 * The course code unique to each module
 	 */
 	private String courseID;
+	
 	/**
-	 * Academic units of the course
+	 * The name of the course
 	 */
-	private int acadUnits;
+	private String courseName;
+	
 	/**
-	 * A list of index under the course
+	 * The number of Academic Unit (AU) of the course
 	 */
+	private int AU;
+	
+	/**
+	 * The school that offers the module
+	 */
+	private String school;
 
-	public Course(String courseName, String school, String courseID, int acadUnits) {
-		super();
-		this.courseName = courseName;
-		this.school = school;
-		this.courseID = courseID;
-		this.acadUnits = acadUnits;
+	
+
+	/** Constructor for Course
+	 */
+	public Course (String courseID, String courseName, int au, String school) {
+		this.courseID   		= courseID;
+		this.courseName			= courseName;
+		this.AU					= au;
+		this.school				= school;
 	}
+	
+	
+	
+
+	public Course(String courseName2, String school2, String courseID2, int totalCapacity, int acadUnits) {
+	}
+
+
+
+
+	public String getCourseID() {
+		return courseID;
+	}
+	
+	/**
+	 * Change the course code
+	 * @param courseCode
+	 */
+	public void setCourseID(String courseID) {
+		this.courseID = courseID;
+	}
+	
 
 	public String getCourseName() {
 		return courseName;
@@ -42,7 +67,15 @@ public class Course {
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
 	}
-	
+
+	public int getAU() {
+		return AU;
+	}
+
+	public void setAU(int aU) {
+		AU = aU;
+	}
+
 	public String getSchool() {
 		return school;
 	}
@@ -50,25 +83,13 @@ public class Course {
 	public void setSchool(String school) {
 		this.school = school;
 	}
-
-	public String getCourseID() {
-		return courseID;
-	}
-
-	public void setCourseID(String courseID) {
-		this.courseID = courseID;
-	}
 	
-	public int getAcadUnits() {
-		return acadUnits;
+	public boolean equals(Object o) {
+		if (o instanceof Course) {
+			Course st = (Course)o;
+			return (getCourseID().equals(st.getCourseID()));
+		}
+		return false;
 	}
-
-	public void setAcadUnits(int acadUnits) {
-		this.acadUnits = acadUnits;
-	}
-	
-
-
-	
 
 }
