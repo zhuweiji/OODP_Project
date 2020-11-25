@@ -11,3 +11,4 @@
 0|edward40hands|AB1201|10009|On Waiting List
 3|pepsi|CZ1107|50000|Registered
 2|corgi|AB1201|40003|Registered
+5|student|CZ1107|50000|Registered

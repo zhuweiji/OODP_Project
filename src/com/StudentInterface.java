@@ -17,9 +17,7 @@ import com.course.*;
 public class StudentInterface {
 	private static Student logged_on_user;
 
-
-
-	private static StudentController studentController = StudentController.getInstance();
+	private static final StudentController studentController = StudentController.getInstance();
 	private static final ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
 	private static final StudentInterface instance = new StudentInterface();
 	private static final LogInHandler loginhandler = LogInHandler.startHandler();
