@@ -4,10 +4,12 @@ import com.course.*;
 import com.user.*;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class AdminInterface {
     /**
@@ -16,12 +18,24 @@ public class AdminInterface {
     private Admin logged_on_user;
     private Calendar defaultAccessStart;
     private Calendar defaultAccessEnd;
+    private boolean defaultAccessAvail = true;
+    {
+        try {
+            defaultAccessStart = CalendarController.stringToCalendar("25/11/2020 00:00");
+            defaultAccessEnd = CalendarController.stringToCalendar("31/11/2020 23:59");
+        } catch (ParseException e) {
+            defaultAccessAvail = false;
+            e.printStackTrace();
+        }
+    }
+
     private static final UserController userController = UserController.getInstance();
     private static final StudentController studentController = StudentController.getInstance();
     private static final AdminController adminController = AdminController.getInstance();
     private final ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
     private static final AdminInterface instance = new AdminInterface();
     private static final CourseIndexController courseIndexController = CourseIndexController.getInstance();
+
 
     public static AdminInterface getInstance(String username,String hashed_pw,String salt,String id)
     {
@@ -40,6 +54,7 @@ public class AdminInterface {
         cmd.display("\n\n-------------------------------");
         cmd.display("Welcome "+ logged_on_user.getName()+ " !");
         while (true){
+            cmd.display("-----------------------------");
             cmd.display("Here are your available options: ");
             cmd.display("0: Edit Student's access period"); //todo implement change all student's access period
             cmd.display("1: Create new Admin user");
@@ -66,6 +81,7 @@ public class AdminInterface {
                 case 8 -> CheckVacancy();
                 case 9 -> DisplayStudentsByIndex();
                 case 10 -> DisplayStudentsByCourse();
+                case 11 -> editDefaultAccessPeriod();
                 case -1 -> System.exit(0);
             }
         }
@@ -185,6 +201,8 @@ public class AdminInterface {
                     break;
                 }
             }
+            // todo check if course has index numbers
+            // todo if not break
             if (!found)
                 System.out.println("Course ID does not exists. Please enter again.");
             else
@@ -418,11 +436,16 @@ public class AdminInterface {
         for (StudentCourse studentInCourse : studentByIndex)
         {
             StudentCourse course = null;
-            for (StudentCourse studentCourse : allStudents)
+            for (StudentCourse studentCourse : allStudents){
                 if (studentCourse.getUserid().equals(studentInCourse.getUserid())) {
                     course = studentCourse;
                     break;
                 }
+            }
+            if (course == null){
+                cmd.display("course was not found");
+            }
+
             for (Student student : students)
                 if (student.getUserid().equals(studentInCourse.getUserid())) {
                     System.out.println(student.getUserName() + " " + student.getMatricID() + " " + student.getName() + " " + course.getRegisterStatus());
@@ -472,29 +495,45 @@ public class AdminInterface {
                 break;
         }
         ArrayList<StudentCourse> studentByCourse = new ArrayList<StudentCourse>();
-        for (StudentCourse student : allStudents)
-            if (student.getCourseID().equals(courseID))
-                studentByCourse.add(student);
+        for (StudentCourse student : allStudents) {
+            if (student.getCourseID().equals(courseID)) {
+                boolean found = false;
+                for (StudentCourse i : studentByCourse) {
+                    if (i.getUserid().equals(student.getUserid())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found){
+                    studentByCourse.add(student);
+                }
+
+            }
+        }
+        System.out.println();
         System.out.println("Course Code: " + courseID);
+        boolean student_in_course = false;
         for (StudentCourse studentInCourse : studentByCourse)
         {
             for (Student student : students)
                 if (student.getUserid().equals(studentInCourse.getUserid())) {
-                    System.out.println(studentInCourse.getUsername() + " " + student.getMatricID() + " " + student.getName());
-                    break;
+                    student_in_course = true;
+                    System.out.println(" " + student.getMatricID() + " " + student.getName());
                 }
         }
+        if (!student_in_course){
+            System.out.println("This course has no registered students");
+        }
+        sleep(2);
 
     }
 
     public void CreateCourse() {
         ArrayList<Course> courseList = courseIndexController.getCourseinfoDB();
-
         String courseCode = "";
         boolean flag;
 
         Scanner sc = new Scanner(System.in);
-
         do {
             flag = false;
             System.out.print("Enter the course ID: ");
@@ -512,12 +551,23 @@ public class AdminInterface {
 
         int result = courseIndexController.addCourse(newCourse);
         if (result == 0) {
-            System.out.println("Successfully added new course");
-            System.out.println(newCourse.toString());
+            cmd.display("Successfully added new course");
+            cmd.display(newCourse.toString());
+            sleep(1);
+            cmd.display("");
+            cmd.display("Courses in system: ");
+
+            for (Course i:courseList) {
+                cmd.displayf("{} {} {} {}",i.getAllDetails());
+            }
+            cmd.display("");
+            sleep(2);
         }
         else {
             System.out.println("Encountered error while adding new course");
         }
+
+
     }
 
     public void CreateIndex(){
@@ -600,7 +650,7 @@ public class AdminInterface {
         }
 
         UserAcc.acc_info acc_info = new UserAcc.acc_info(username, password);
-        userController.getNewUserAcc(acc_info, "student");
+        UserAcc userAcc = userController.getNewUserAcc(acc_info, "student");
         Student newStudent = studentController.getNewStudent();
 
         int location = 0;
@@ -647,11 +697,14 @@ public class AdminInterface {
                         location++;
                     case 8:
                         String set_default = cmd.input("Set student's access period to default? y/n: ");
-                        String default_period;
-                        if (set_default == "y"){
-                            default_period = studentController.getDefaultStringAccessPeriod();
+                        if (set_default.equals("y") && defaultAccessAvail){
+                            newStudent.setAccessStart(defaultAccessStart);
+                            newStudent.setAccessEnd(defaultAccessEnd);
                         }
                         else{
+                            if (!defaultAccessAvail){
+                                cmd.display("Default access not available.");
+                            }
                             try {
                                 String accessStartStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format");
                                 Calendar accessStart = CalendarController.stringToCalendar(accessStartStr);
@@ -660,23 +713,46 @@ public class AdminInterface {
                                 newStudent.setAccessStart(accessStart);
                                 newStudent.setAccessEnd(accessEnd);
                             } catch (ParseException e) {
-                                cmd.display("Could not parse the datetime you entered. Please try again");
+                                throw new IllegalArgumentException("Could not parse the datetime you entered. Please try again");
+                            }
+                        }
+                        location++;
+                    case 9:
+                        String notiMode = cmd.input("Enter student's notification mode\n SMS or Email or Both");
+                        newStudent.setNotiMode(notiMode);
+
+                        studentController.setUser(newStudent);
+                        studentController.saveStudentToDB(userAcc, newStudent);
+                        System.out.println("saved!");
+                        cmd.display("\n\n\n--------------------------------\n");
+                        cmd.display("Student created with following details:");
+                        cmd.displayf("Userid: {}\nName: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
+                                        "Course of study: {}\nPhone number: {}\nDate matriculated: {}\n" +
+                                        "Access Start: {}\nAccess End: {}",
+                                newStudent.getAllDetails());
+
+                        sleep(2);
+
+                        ArrayList<Student> studentlist = StudentData.studentList;
+                        for (Student i: studentlist){
+                            int count = 4;
+                            for (String details: i.getAllDetails()){
+                                if (count == 0){
+                                    break;
+                                }
+                                System.out.println(details);
+                                count--;
                             }
                         }
 
+                        sleep(1);
 
-                        cmd.display("Student created with following details:");
-                        cmd.displayf("Name: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
-                                "Course of study: {}\nPhone number: {}\nDate matriculated: {}\nAccess Period: {}",
-                                newStudent.getAllDetails());
-                        studentController.setUser(newStudent);
-                        studentController.saveStudentToDB(newStudent);
-                        System.out.println("saved!");
                         studentController.refreshInfoDB();
                         System.out.println("infodb refreshed");
                         studentController.readUserCredDB();
                         System.out.println("creddb refreshed");
                         complete = true;
+                        System.out.println("\n\n");
                         break;
                 }
 
@@ -695,13 +771,30 @@ public class AdminInterface {
         if (id==null){
             System.out.println("Student with matriculation ID " +matricID+" was not found.");
         }
+        String SaccessStart;
+        Calendar accessStart;
+        String SaccessEnd;
+        Calendar accessEnd;
 
-        String accessPeriod = cmd.input("Enter access period in ?? format");
-        try {
-            studentController.editExistingStudentInDB(id, 8,accessPeriod);
-        } catch (IOException e) {
-            System.out.println("couldn't edit the student at this time.");
+        for (int i = 0; i < 3; i++) {
+            try{
+                SaccessStart = cmd.input("Enter start access period in dd/mm/yy hh/mm format");
+                accessStart = CalendarController.stringToCalendar(SaccessStart);
+                SaccessEnd = cmd.input("Enter end access period in dd/mm/yy hh/mm format");
+                accessEnd = CalendarController.stringToCalendar(SaccessEnd);
+                try {
+                    studentController.editExistingStudentInDB(id, 9,SaccessStart);
+                    studentController.editExistingStudentInDB(id, 10,SaccessEnd);
+                } catch (IOException e) {
+                    System.out.println("couldn't edit the student at this time.");
+                }
+                return;
+            }
+            catch (ParseException f){
+                System.out.println("The access period you entered did not match format");
+            }
         }
+
         //todo fix only can be called once
         //each time you call the student_info.txt has a new line on top
         // next times you call it will add a comma which breaks readDB or some other reading function
@@ -712,10 +805,12 @@ public class AdminInterface {
         try{
             String accessStartStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format");
             Calendar accessStart = CalendarController.stringToCalendar(accessStartStr);
-            String accessEndStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format");
+            String accessEndStr = cmd.input("Enter end of access period in dd/mm/yy hh:mm format");
             Calendar accessEnd = CalendarController.stringToCalendar(accessEndStr);
             defaultAccessStart = accessStart;
             defaultAccessEnd = accessEnd;
+            cmd.display("Default access period successfully changed for this session.");
+            cmd.display("");
         }
         catch (ParseException e){
             System.out.println("Input was unable to be parsed. Please check format");
@@ -724,11 +819,19 @@ public class AdminInterface {
     }
 
     public void EditStudent(String matricID, String gender, String nationality,
-                                   String email, String course_of_study, String phone_number, String date_matriculated,
-                                   Object timetable){
+                            String email, String course_of_study, String phone_number, String date_matriculated,
+                            Object timetable){
 
     }
     public Student FetchStudent(){
         return null;
+    }
+
+    private void sleep(long seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

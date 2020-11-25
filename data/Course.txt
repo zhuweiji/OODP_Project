@@ -5,3 +5,8 @@ CZ1105|Digital Logic|3|SCSE
 AB1201|Financial Management|4|NBS
 CZ3005|Artifical Intelligence|3|SCSE
 HE9091|Principles of Economics|4|NBS
+EE8086|Astronomy|3|EEE
+CZ2001|Algorithms|3|SCSE
+CZ2004|Human Computer Interaction|3|SCSE
+CZ2007|Database Management|3|SCSE
+CZ2005|Operating Systems|3|SCSE

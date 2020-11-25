@@ -4,16 +4,13 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import com.user.IO;
-import com.course.Course;
-
 public class CourseData {
 
 	public static final String SEPARATOR = "|";
 	
 	public static ArrayList<Course> courseList = new ArrayList<Course>();
     /** Initialise the courses before application starts
-     * @param filename
+     *
      * @throws IOException
      * @throws ParseException 
      */

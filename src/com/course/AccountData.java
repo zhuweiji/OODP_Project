@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import com.user.Admin;
-import com.user.IO;
 import com.user.UserAcc;
 
 public class AccountData {
@@ -17,7 +16,7 @@ public class AccountData {
 
 
     /** Initialise the courses before application starts
-     * @param filename
+     *
      * @throws IOException
      * @throws ParseException 
      */

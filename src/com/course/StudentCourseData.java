@@ -5,8 +5,6 @@ import java.text.*;
 import java.util.*;
 
 import com.Main;
-import com.user.IO;
-
 
 public class StudentCourseData {
 
@@ -36,14 +34,14 @@ public class StudentCourseData {
 				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);	
 				
 				//first to fifth tokens
-				String  userid = tokenizer.nextToken().trim();	
-				String  username = tokenizer.nextToken().trim();	
+				String userID = tokenizer.nextToken().trim();
+				String  userName = tokenizer.nextToken().trim();	
 				String  courseID = tokenizer.nextToken().trim();	
 				int indexID = Integer.parseInt(tokenizer.nextToken().trim());
 				String registerStatus = tokenizer.nextToken().trim();
 				
 				// create Course object from file data
-				StudentCourse course = new StudentCourse(userid, username, courseID, indexID, registerStatus);
+				StudentCourse course = new StudentCourse(userID, userName, courseID, indexID, registerStatus);
 				// add to Courses list 
 				studentCourseList.add(course) ;
 		}
@@ -58,7 +56,7 @@ public class StudentCourseData {
 		ArrayList <String> courseList = new ArrayList<String>() ;// to store Courses data
 
         for (int i = 0 ; i < CourseToUpdate.size() ; i++) {
-				StudentCourse course = (StudentCourse) CourseToUpdate.get(i);
+				StudentCourse course = CourseToUpdate.get(i);
 				StringBuilder stringBuild =  new StringBuilder() ;
 				stringBuild.append(course.getUserid().trim());
 				stringBuild.append(SEPARATOR);

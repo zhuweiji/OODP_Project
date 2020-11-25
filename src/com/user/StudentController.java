@@ -16,7 +16,6 @@ public class StudentController extends UserController {
     private final Path studentinfopath = getStudentinfopath();
 
     private HashMap<String, String> studentinfoDB = readUserInfoDB(studentinfopath);
-    private String defaultAccessPeriod;
 
     private static final StudentController instance = new StudentController();
 
@@ -112,10 +111,8 @@ public class StudentController extends UserController {
     }
 
 
-    public void saveStudentToDB(Student student){
-        String[] user_details = fetchUserAccDetails(student.getUserid());
-        UserAcc user = new UserAcc(user_details[0], user_details[2],user_details[1],user_details[3],user_details[4]);
-        saveUserCredentials(user);
+    public void saveStudentToDB(UserAcc userAcc, Student student){
+        saveUserCredentials(userAcc);
         try {
             pushDB(studentinfopath,student.getAllDetails(), ",",true);
         } catch (IOException e) {
@@ -146,22 +143,12 @@ public class StudentController extends UserController {
 
     }
 
-
     public void refreshInfoDB(){
         studentinfoDB = readUserInfoDB(studentinfopath);
-    }
-
-
-    public void setDefaultAccessPeriod(String accessTime){
-        defaultAccessPeriod = accessTime;
-        //todo change to Calendar
     }
 
     public Calendar getDefaultAccessPeriod(){
         return null;
     }
 
-    public String getDefaultStringAccessPeriod(){
-        return defaultAccessPeriod;
-    }
 }

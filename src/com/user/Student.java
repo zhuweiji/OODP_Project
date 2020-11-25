@@ -49,8 +49,10 @@ public class Student {
     }
 
     public String[] getAllDetails(){
+        String SaccessStart = CalendarController.caltoString(accessStart);
+        String SaccessEnd = CalendarController.caltoString(accessEnd);
         return new String[]{userid, name, matricID, gender, nationality, email, course_of_study,
-                phone_number, date_matriculated, };
+                phone_number, date_matriculated,SaccessStart,SaccessEnd };
     }
 
     public String getName() {
@@ -85,14 +87,14 @@ public class Student {
     }
 
     public void setGender(String gender) {
-//        gender = gender.toLowerCase();
-//        switch (gender) {
-//            case "male", "female" -> this.gender = gender;
-//            case "m" -> this.gender = "male";
-//            case "f" -> this.gender = "female";
-//            default -> throw new IllegalArgumentException("gender must be male or female");
-//        }
-        this.gender = gender;
+        gender = gender.toLowerCase();
+        switch (gender) {
+            case "male", "female" -> this.gender = gender;
+            case "m" -> this.gender = "male";
+            case "f" -> this.gender = "female";
+            default -> throw new IllegalArgumentException("gender must be male or female");
+        }
+//        this.gender = gender;
     }
 
     public String getNationality() {
@@ -108,14 +110,14 @@ public class Student {
     }
 
     public void setEmail(String email) {
-//        final String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
-//        if (email.matches(regex)){
-//            this.email = email;
-//        }
-//        else{
-//            throw new IllegalArgumentException("Entry was not an email format");
-//        }
-        this.email = email;
+        final String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
+        if (email.matches(regex)){
+            this.email = email;
+        }
+        else{
+            throw new IllegalArgumentException("Entry was not an email format");
+        }
+//        this.email = email;
     }
 
     public String getCourse_of_study() {
@@ -131,15 +133,15 @@ public class Student {
     }
 
     public void setPhone_number(String phone_number) {
-//        final String regex = "^[0-9]{8}$|^[+][0-9]{10,11}"; // 8digit number or +countrycode phone number
-//        if (phone_number.matches(regex)){
-//            this.phone_number = phone_number;
-//        }
-//        else{
-//            throw new IllegalArgumentException("Phone number must be 8 digits long or have country code");
-//        }
+        final String regex = "^[0-9]{8}$|^[+][0-9]{10,11}"; // 8digit number or +countrycode phone number
+        if (phone_number.matches(regex)){
+            this.phone_number = phone_number;
+        }
+        else{
+            throw new IllegalArgumentException("Phone number must be 8 digits long or have country code");
+        }
 
-        this.phone_number = phone_number;
+//        this.phone_number = phone_number;
 
     }
 
@@ -190,8 +192,23 @@ public class Student {
     }
     
     public void setNotiMode(String notiMode) {
-        this.notiMode = notiMode;
+        boolean set = false;
+        for (AvailNotiModes c : AvailNotiModes.values()) {
+            if (c.name().equals(notiMode)) {
+                this.notiMode = notiMode;
+                set = true;
+                break;
+            }
+        }
+        if (!set){
+            throw new IllegalArgumentException("notiMode is not available");
+        }
+
     }
 
-
+enum AvailNotiModes{
+        SMS,
+        EMAIL,
+        Both,
+}
 }

@@ -3,9 +3,8 @@ package com.user;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.user.*;
 import com.course.*;
-import com.lesson.Lesson;
+import com.course.Lesson;
 
 public class DataListController {
 	

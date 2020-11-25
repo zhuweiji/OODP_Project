@@ -8,7 +8,6 @@ import com.course.*;
 import com.user.*;
 
 public class StudentCourseController {
-	
 	/**
 	 * Create a new course with the necessary information
 	 * @throws ParseException 
