@@ -1,0 +1,7 @@
+CZ1107|Data Structures and Algorithms|3|SCSE
+CZ1106|Computer Organisation and Architecture|3|SCSE
+CZ1105|Digital Logic|3|SCSE
+|CZ1103|Introdution to Computational Thinking & Programming|3|SCSE
+AB1201|Financial Management|4|NBS
+CZ3005|Artifical Intelligence|3|SCSE
+HE9091|Principles of Economics|4|NBS

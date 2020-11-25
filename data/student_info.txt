@@ -1,0 +1,5 @@
+0,edward40hands,Timothy Scott,U1921812F,male,Singapore,timo192@hotmail.com,CS,92118129,21/12/2019 00:00,20/11/2020 00:00,25/11/2020 23:59,SMS
+1,coals2diamonds,Thomas Franklin,U1209129S,male,Thai,tommycoke@gmail.com,CS,81281209,21/12/2019 00:00,20/11/2020 00:00,25/11/2020 23:59,EMAIL
+2,corgi,Bummy Bottoms,U1238891G,female,Malaysian,bummy1209@gmail.com,CSE,89128192,21/12/2019 00:00,20/11/2020 00:00,25/11/2020 23:59,SMS
+3,pepsi,Corgi Hampterton,U1289109G,female,Singaporean,corgodesperado@gmail.com,CSE,90123123,20/12/2019 00:00,20/11/2020 00:00,25/11/2020 23:59,SMS
+5,student,Daniel Wellington,U1822938G,male,Singaporean,abc@gmail.com,CSE,91123123,20/12/2019 00:00,20/11/2020 00:00,25/11/2020 23:59,SMS
