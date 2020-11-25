@@ -92,10 +92,11 @@ public class Course {
 	}
 	public String[] getAllDetails() {
 		return new String[] {
-				courseName,
-				school,
 				courseID,
-				Integer.toString(AU) };
+				courseName,
+				Integer.toString(AU),
+				school,
+		};
 	}
 
 	public String toString() {
