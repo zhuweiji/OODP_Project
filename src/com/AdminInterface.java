@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class AdminInterface {
     /**
@@ -679,19 +680,24 @@ public class AdminInterface {
                             }
                         }
 
-
-                        cmd.display("Student created with following details:");
-                        cmd.displayf("Name: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
-                                        "Course of study: {}\nPhone number: {}\nDate matriculated: {}\nAccess Period: {}",
-                                newStudent.getAllDetails());
                         studentController.setUser(newStudent);
                         studentController.saveStudentToDB(userAcc, newStudent);
                         System.out.println("saved!");
+
+                        cmd.display("Student created with following details:");
+                        cmd.displayf("Userid: {}\nName: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
+                                        "Course of study: {}\nPhone number: {}\nDate matriculated: {}\n" +
+                                        "Access Start: {}\nAccess End: {}",
+                                newStudent.getAllDetails());
+
+                        TimeUnit.SECONDS.sleep(1);
+
                         studentController.refreshInfoDB();
                         System.out.println("infodb refreshed");
                         studentController.readUserCredDB();
                         System.out.println("creddb refreshed");
                         complete = true;
+                        System.out.println("\n\n");
                         break;
                 }
 
@@ -700,6 +706,8 @@ public class AdminInterface {
                 num_tries --;
                 cmd.display(e.getMessage());
                 cmd.display(try_again_message);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

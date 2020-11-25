@@ -112,7 +112,6 @@ public class StudentController extends UserController {
 
 
     public void saveStudentToDB(UserAcc userAcc, Student student){
-        String[] user_details = fetchUserAccDetails(student.getUserid());
         saveUserCredentials(userAcc);
         try {
             pushDB(studentinfopath,student.getAllDetails(), ",",true);

@@ -49,8 +49,10 @@ public class Student {
     }
 
     public String[] getAllDetails(){
+        String SaccessStart = CalendarController.caltoString(accessStart);
+        String SaccessEnd = CalendarController.caltoString(accessEnd);
         return new String[]{userid, name, matricID, gender, nationality, email, course_of_study,
-                phone_number, date_matriculated, };
+                phone_number, date_matriculated,SaccessStart,SaccessEnd };
     }
 
     public String getName() {
