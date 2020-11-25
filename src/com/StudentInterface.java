@@ -3,6 +3,7 @@ package com;
 import java.io.*;
 import java.text.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import com.course.Index;
 import com.course.StudentCourse;
@@ -16,10 +17,10 @@ import com.course.*;
 public class StudentInterface {
 	private static Student logged_on_user;
 
-	
+
 
 	private static StudentController studentController = StudentController.getInstance();
-	private final ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
+	private static final ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
 	private static final StudentInterface instance = new StudentInterface();
 	private static final LogInHandler loginhandler = LogInHandler.startHandler();
 	private static Scanner sc = new Scanner(System.in);
@@ -28,7 +29,7 @@ public class StudentInterface {
 	{
 		Student logged_on_user = studentController.getExistingStudent(Userid, hashed_pw, salt, id);
 		if (logged_on_user != null){
-			instance.logged_on_user = logged_on_user;
+			StudentInterface.logged_on_user = logged_on_user;
 		}
 		return instance;
 	}
@@ -39,8 +40,6 @@ public class StudentInterface {
 
 	public void run() {
 		System.out.println("Welcome "+ logged_on_user.getName()+ " !");
-		Student s = null;
-		logged_on_user = s;
 		int choice;
 
 		StudentWhileLoop:
@@ -65,7 +64,7 @@ public class StudentInterface {
 				// Drop Course
 					case 2 -> dropCourseUI();
 				// Check/Print Courses Registered
-					case 3 -> PrintController.printRegisteredCourses(s);
+					case 3 -> PrintController.printRegisteredCourses(logged_on_user);
 				// Check Vacancies Available
 					case 4 -> checkVacancyUI();
 				// Change Index ID of Course
@@ -82,8 +81,11 @@ public class StudentInterface {
 					}
 					default -> System.out.println("Invalid Input! Please re-enter!");
 				}
-			} catch (Exception e) {
+			} catch (ParseException e) {
 				System.out.println("Invalid Input! Please re-enter!");
+			}
+			catch (IOException f){
+				f.printStackTrace();
 			}
 			System.out.println();
 		}
@@ -93,24 +95,26 @@ public class StudentInterface {
 	private static void registerCourseUI() throws ParseException, IOException{
 		ArrayList<StudentCourse> studentCourseList = DataListController.getStudentCourses();
 		ArrayList<Index> indexList = DataListController.getIndex();
-		
+
 		int indexID = 0;
-		while(true){
 			try{
-				System.out.print("Enter the Index ID: "); indexID = sc.nextInt();
-				sc.nextLine();
-				break;
+				String foo = cmd.input("Enter the Index ID: ");
+				indexID = Integer.parseInt(foo);
 			} catch (Exception f){
-				sc.nextLine();
 				System.out.println("Invalid input! Index ID must be a ID!");
+				sleep(1);
+				return;
 			}
-		}
-	   
+
 		// To check if the index ID input by the user exists in the database or not
 		boolean foundIndexID = false;
 		for(Index i: indexList){
-			if(i.getIndexID() == indexID){
+			System.out.println(i.getIndexID());
+			System.out.println(indexID);
+			System.out.println(i.getIndexID() == indexID);
+			if(i.getIndexID() == (indexID)){
 				foundIndexID = true;
+				break;
 			}
 		}
 		if(!foundIndexID){
@@ -118,7 +122,7 @@ public class StudentInterface {
 			System.out.println("Index ID you entered is not found!");
 			return;
 		}
-		
+
 		// To check if the student has already registered to the course's index ID
 		for(StudentCourse sc: studentCourseList){
 			if(sc.getUsername().equals(logged_on_user.getUserName()) && sc.getIndexID() == indexID){
@@ -129,7 +133,7 @@ public class StudentInterface {
 		}
 
 		PrintController.printIndexInfo(indexID);
-		
+
 		System.out.println();
 		System.out.print("Confirm to Add Course? (Y/N): ");
 		char choice = sc.nextLine().charAt(0);
@@ -137,16 +141,16 @@ public class StudentInterface {
 			StudentCourseController.registerCourse(logged_on_user, indexID);
 		}
 	}
-	
+
 	private static void dropCourseUI() throws ParseException, IOException{
 		PrintController.printRegisteredCourses(logged_on_user);
-		
+
 		System.out.println();
 		System.out.print("Enter the index ID to drop: "); int indexID = sc.nextInt();
 		sc.nextLine();
-		
+
 		PrintController.printIndexInfo(indexID);
-		
+
 		System.out.println();
 		System.out.print("Confirm to Drop Course? (Y/N): ");
 		char choice = sc.nextLine().charAt(0);
@@ -156,10 +160,10 @@ public class StudentInterface {
 			NotificationController.sendAlertWaitlist(indexID);
 		}
 	}
-	
+
 	private static void checkVacancyUI() throws IOException, ParseException{
 		ArrayList<Index> indexList = DataListController.getIndex();
-		
+
 		int indexID = 0;
 		while(true){
 			try{
@@ -171,7 +175,7 @@ public class StudentInterface {
 				System.out.println("Invalid input! Index ID must be a ID!");
 			}
 		}
-	   
+
 		// To check if the index ID input by the user exists in the database or not
 		boolean foundIndexID = false;
 		for(Index i: indexList){
@@ -184,51 +188,51 @@ public class StudentInterface {
 			System.out.println("Index ID you entered is not found!");
 			return;
 		}
-		
+
 		PrintController.printIndexInfo(indexID);
-		
+
 		for(Index index : indexList){
 			if (index.getIndexID() == indexID){
-				
+
 				System.out.println();
-				System.out.print("Vacancy: " + index.getVacancy()); 
+				System.out.print("Vacancy: " + index.getVacancy());
 				System.out.print("\t\tWaiting List: " + index.getWaitingList());
 				System.out.println();
-				
+
 				return;
 			}
 		}
 	}
-	
+
 	private static void changeIndexIDUI() throws IOException, ParseException{
 		System.out.print("\nEnter Current Index ID: "); int currentIndexID = sc.nextInt();
 		sc.nextLine();
 		System.out.print("Enter New Index ID: "); int newIndexID = sc.nextInt();
 		sc.nextLine();
-		
+
 		System.out.println();
 		System.out.println("Current Index Information");
 		System.out.println("=========================");
 		PrintController.printIndexInfo(currentIndexID);
-		
+
 		System.out.println();
 		System.out.println("New Index Information");
 		System.out.println("=====================");
 		PrintController.printIndexInfo(newIndexID);
-		
+
 		System.out.println();
 		System.out.print("Confirm to Change Index ID? (Y/N): ");
 		char choice = sc.nextLine().charAt(0);
 		if (choice == 'Y' || choice == 'y'){
 			StudentCourseController.removeCourse(logged_on_user, currentIndexID);
 			StudentCourseController.registerCourse(logged_on_user, newIndexID);
-			
+
 			System.out.println("Index ID " + currentIndexID + " has been changed to " + newIndexID);
-			
+
 			NotificationController.sendAlertWaitlist(currentIndexID);
 		}
 	}
-	
+
 	private void swopIndexIDUI() throws IOException, ParseException{
 		String peerUsername = cmd.input("Enter Peer's Username");
 		char[] peerPasswordArr = cmd.secretInput("Enter Peer's Password: ");
@@ -247,17 +251,17 @@ public class StudentInterface {
 					sc.nextLine();
 					System.out.print("Enter Peer's Index ID: "); int peerIndexID = sc.nextInt();
 					sc.nextLine();
-					
+
 					System.out.println();
 					System.out.println("Student #1 (" + logged_on_user.getMatricID() + ")'s Index Information");
 					System.out.println("================================================");
 					PrintController.printIndexInfo(yourIndexID);
-					
+
 					System.out.println();
 					System.out.println("Student #2 (" + peer.getMatricID() + ")'s Index Information");
 					System.out.println("================================================");
 					PrintController.printIndexInfo(peerIndexID);
-					
+
 					System.out.println();
 					System.out.print("Confirm to Change Index ID? (Y/N): ");
 					char choice = sc.nextLine().charAt(0);
@@ -267,7 +271,7 @@ public class StudentInterface {
 
 						StudentCourseController.removeCourse(peer, peerIndexID);
 						StudentCourseController.registerCourse(peer, yourIndexID);
-						
+
 						System.out.println(logged_on_user.getMatricID() + "-Index ID " + yourIndexID + " has been successfully swopped with " + peer.getMatricID() + "-Index ID " + peerIndexID);
 					}
 				}
@@ -277,7 +281,7 @@ public class StudentInterface {
 			System.out.println("Incorrect peer's username or password!");
 		}
 	}
-	
+
 	private static void selectNotiModeUI() throws IOException, ParseException{
 		System.out.println("Please select your notification mode:");
 		System.out.println("=====================================");
@@ -299,15 +303,22 @@ public class StudentInterface {
 		for(Student s : studentList){
 			if (s.getUserName().equals(logged_on_user.getUserName())){
 				// Updating
-				studentList.remove(s); 
+				studentList.remove(s);
 				Student newStud = new Student(s.getUserid(), s.getUserName(), s.getName() ,
 						s.getMatricID(), s.getGender(), s.getNationality(), s.getEmail(), s.getCourse_of_study(),
 						s.getPhone_number(),s.getDate_matriculated(), s.getAccessStart(), s.getAccessEnd(), notiMode);
 				DataListController.writeObject(newStud);
-				
+
 				// necessary to prevent re-looping of updated textfile
 				return;
 			}
+		}
+	}
+	private static void sleep(long seconds) {
+		try {
+			TimeUnit.SECONDS.sleep(seconds);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 }
