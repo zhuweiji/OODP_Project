@@ -19,13 +19,15 @@ public class Main {
 
     public static void main(String[] args)throws ParseException, IOException {
 
+        get_data_paths();
+
         StudentData.initStudents();
 		CourseData.initCourses();
 		IndexData.initIndex();
 		LessonData.initLessons();
 		StudentCourseData.initStudentCourses();
         AccountData.initAccounts();
-        get_data_paths();
+
 
         LogInHandler loginhandler = LogInHandler.startHandler();
 

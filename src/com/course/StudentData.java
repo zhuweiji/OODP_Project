@@ -19,9 +19,14 @@ public class StudentData {
 	public static ArrayList<Student> initStudents() throws IOException, ParseException {
 		// read String from text file
 		ArrayList<String> stringArray = (ArrayList) IO.read(Main.studentinfopath.toString());
+		if (stringArray == null){
+			System.out.println("Couldn't read from student info database");
+			return null;
+		}
+
 		studentList.clear();
 		for (String s : stringArray) {
-			String st = (String) s;
+			String st = s;
 
 			// get individual 'fields' of the string separated by SEPARATOR
 			// pass in the string to the string tokenizer using delimiter ","

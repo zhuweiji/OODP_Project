@@ -31,13 +31,15 @@ public class IO {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List read(String fileName) throws IOException {
 		List data = new ArrayList();
-		Scanner scanner = new Scanner(new FileInputStream(fileName));
-		try {
+		int count = 0;
+		try (Scanner scanner = new Scanner(new FileInputStream(fileName))) {
 			while (scanner.hasNextLine()) {
 				data.add(scanner.nextLine());
+				count++;
 			}
-		} finally {
-			scanner.close();
+		}
+		if (count == 0){
+			return null;
 		}
 		return data;
 	}
