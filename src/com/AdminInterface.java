@@ -611,7 +611,7 @@ public class AdminInterface {
         }
 
         UserAcc.acc_info acc_info = new UserAcc.acc_info(username, password);
-        userController.getNewUserAcc(acc_info, "student");
+        UserAcc userAcc = userController.getNewUserAcc(acc_info, "student");
         Student newStudent = studentController.getNewStudent();
 
         int location = 0;
@@ -659,12 +659,12 @@ public class AdminInterface {
                     case 8:
                         String set_default = cmd.input("Set student's access period to default? y/n: ");
                         String default_period;
-                        if (set_default == "y" && defaultAccessAvail){
+                        if (set_default.equals("y") && defaultAccessAvail){
                             newStudent.setAccessStart(defaultAccessStart);
                             newStudent.setAccessEnd(defaultAccessEnd);
                         }
                         else{
-                            if (defaultAccessAvail == false){
+                            if (!defaultAccessAvail){
                                 cmd.display("Default access not available.");
                             }
                             try {
@@ -685,7 +685,7 @@ public class AdminInterface {
                                         "Course of study: {}\nPhone number: {}\nDate matriculated: {}\nAccess Period: {}",
                                 newStudent.getAllDetails());
                         studentController.setUser(newStudent);
-                        studentController.saveStudentToDB(newStudent);
+                        studentController.saveStudentToDB(userAcc, newStudent);
                         System.out.println("saved!");
                         studentController.refreshInfoDB();
                         System.out.println("infodb refreshed");
