@@ -19,7 +19,7 @@ public class Main {
 
     public static void main(String[] args)throws ParseException, IOException {
 
-        get_data_paths();
+        get_data_paths(false);
 
         StudentData.initStudents();
 		CourseData.initCourses();
@@ -33,12 +33,23 @@ public class Main {
 
         loginhandler.run();
     }
-    private static void get_data_paths(){
-        cwd = Paths.get(System.getProperty("user.dir"));
-        if (ConsoleUserInterface.getInstance().consoleAvail()){
+    private static void get_data_paths(boolean visualstudio){
+//        if (visualstudio){
+//            cwd = Paths.get(System.getProperty("user.dir"),"bin");
+//            System.out.println("\n\n\n\n\n");
+//            System.out.println(cwd.toString());
+//        }
+//        else{
+//            cwd = Paths.get(System.getProperty("user.dir"));
+//        }
+            cwd = Paths.get(System.getProperty("user.dir"));
+        if (ConsoleUserInterface.getInstance().consoleAvail() && !visualstudio){
             cwd = cwd.getParent();
         }
+
         datadir = Paths.get(cwd.toString(), "data");
+        System.out.println(datadir.toString());
+
         usercredpath = Paths.get(datadir.toString(), "user_cred.txt");
         studentinfopath = Paths.get(datadir.toString(), "student_info.txt");
         admininfopath = Paths.get(datadir.toString(), "admin_info.txt");
@@ -46,6 +57,8 @@ public class Main {
         indexinfopath = Paths.get(datadir.toString(), "Index.txt");
         studentcoursepath = Paths.get(datadir.toString(),"StudentCourse.txt");
     }
+
+
 }
 
 

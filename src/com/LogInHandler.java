@@ -80,7 +80,7 @@ public class LogInHandler{
         String[] id_salt_pw_perm = userinfo.get(username);
 
         if (id_salt_pw_perm == null){
-            System.out.println("Could not read from user credentials file");
+            System.out.println("Username was incorrect");
             return null;
         }
 
@@ -91,7 +91,8 @@ public class LogInHandler{
         }
 
         if (hashed_pw.equals(id_salt_pw_perm[2])) {
-            if (checkPermissions(id_salt_pw_perm[3], id_salt_pw_perm[1]).equals("student")) {
+            if (checkPermissions(id_salt_pw_perm[3], id_salt_pw_perm[1]).equals(permissions.student.name()) ||
+                    checkPermissions(id_salt_pw_perm[3], id_salt_pw_perm[1]).equals(permissions.admin.name())) {
                 return new String[]{id_salt_pw_perm[0],
                                     username,
                                     id_salt_pw_perm[1],
