@@ -4,6 +4,7 @@ import com.course.*;
 import com.user.*;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -658,7 +659,6 @@ public class AdminInterface {
                         location++;
                     case 8:
                         String set_default = cmd.input("Set student's access period to default? y/n: ");
-                        String default_period;
                         if (set_default.equals("y") && defaultAccessAvail){
                             newStudent.setAccessStart(defaultAccessStart);
                             newStudent.setAccessEnd(defaultAccessEnd);
@@ -675,7 +675,7 @@ public class AdminInterface {
                                 newStudent.setAccessStart(accessStart);
                                 newStudent.setAccessEnd(accessEnd);
                             } catch (ParseException e) {
-                                cmd.display("Could not parse the datetime you entered. Please try again");
+                                throw new IllegalArgumentException("Could not parse the datetime you entered. Please try again");
                             }
                         }
 
@@ -710,13 +710,30 @@ public class AdminInterface {
         if (id==null){
             System.out.println("Student with matriculation ID " +matricID+" was not found.");
         }
+        String SaccessStart;
+        Calendar accessStart;
+        String SaccessEnd;
+        Calendar accessEnd;
 
-        String accessPeriod = cmd.input("Enter access period in ?? format");
-        try {
-            studentController.editExistingStudentInDB(id, 8,accessPeriod);
-        } catch (IOException e) {
-            System.out.println("couldn't edit the student at this time.");
+        for (int i = 0; i < 3; i++) {
+            try{
+                SaccessStart = cmd.input("Enter start access period in dd/mm/yy hh/mm format");
+                accessStart = CalendarController.stringToCalendar(SaccessStart);
+                SaccessEnd = cmd.input("Enter end access period in dd/mm/yy hh/mm format");
+                accessEnd = CalendarController.stringToCalendar(SaccessEnd);
+                try {
+                    studentController.editExistingStudentInDB(id, 9,SaccessStart);
+                    studentController.editExistingStudentInDB(id, 10,SaccessEnd);
+                } catch (IOException e) {
+                    System.out.println("couldn't edit the student at this time.");
+                }
+                return;
+            }
+            catch (ParseException f){
+                System.out.println("The access period you entered did not match format");
+            }
         }
+
         //todo fix only can be called once
         //each time you call the student_info.txt has a new line on top
         // next times you call it will add a comma which breaks readDB or some other reading function
