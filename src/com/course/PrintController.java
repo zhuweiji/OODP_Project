@@ -4,9 +4,8 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import com.course.*;
 import com.user.*;
-import com.lesson.Lesson;
+
 /**
  * Manages the printing of the student list and staff list
  * @version 1.0

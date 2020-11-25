@@ -1,4 +1,4 @@
-package com.lesson;
+package com.course;
 
 public class Lesson {
 	private int indexID; 

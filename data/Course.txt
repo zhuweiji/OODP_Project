@@ -9,3 +9,4 @@ EE8086|Astronomy|3|EEE
 CZ2001|Algorithms|3|SCSE
 CZ2004|Human Computer Interaction|3|SCSE
 CZ2007|Database Management|3|SCSE
+CZ2005|Operating Systems|3|SCSE

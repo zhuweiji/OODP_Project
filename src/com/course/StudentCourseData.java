@@ -5,8 +5,6 @@ import java.text.*;
 import java.util.*;
 
 import com.Main;
-import com.user.IO;
-import com.course.StudentCourse;
 
 public class StudentCourseData {
 

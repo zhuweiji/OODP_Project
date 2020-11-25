@@ -1,4 +1,4 @@
-package com.user;
+package com.course;
 
 import java.io.*;
 import java.util.*;

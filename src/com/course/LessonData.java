@@ -5,16 +5,13 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import com.user.IO;
-import com.lesson.Lesson;
-
 public class LessonData {
 	public static final String SEPARATOR = "|";
 	
 	public static ArrayList <Lesson> lessonList = new ArrayList<Lesson>() ;
 	
     /** Initialise the courses before application starts
-     * @param filename
+     *
      * @throws IOException
      * @throws ParseException 
      */
@@ -54,7 +51,7 @@ public static ArrayList<Lesson> initLessons() throws IOException, ParseException
      * @throws ParseException 
      */
 	/** Save the courses that has been added during the session
-	 * @param CourseToUpdate
+	 *
 	 * @throws IOException
 	 */
 	public static void saveLessons(ArrayList<Lesson> LessonToUpdate) throws IOException {
