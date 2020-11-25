@@ -26,7 +26,7 @@ public class Course {
 	 * The school that offers the module
 	 */
 	private String school;
-
+	private int totalCapacity;
 	/** Constructor for Course
 	 */
 	public Course (String courseID, String courseName, int au, String school) {
@@ -37,7 +37,12 @@ public class Course {
 	}
 	
 
-	public Course(String courseName2, String school2, String courseID2, int totalCapacity, int acadUnits) {
+	public Course(String courseName, String school, String courseID, int totalCapacity, int acadUnits) {
+		this.courseName = courseName;
+		this.school = school;
+		this.courseID = courseID;
+		this.totalCapacity = totalCapacity;
+		this.AU = acadUnits;
 	}
 
 

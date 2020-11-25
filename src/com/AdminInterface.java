@@ -503,12 +503,10 @@ public class AdminInterface {
 
     public void CreateCourse() {
         ArrayList<Course> courseList = courseIndexController.getCourseinfoDB();
-
         String courseCode = "";
         boolean flag;
 
         Scanner sc = new Scanner(System.in);
-
         do {
             flag = false;
             System.out.print("Enter the course ID: ");
@@ -532,6 +530,8 @@ public class AdminInterface {
         else {
             System.out.println("Encountered error while adding new course");
         }
+
+
     }
 
     public void CreateIndex(){
@@ -695,7 +695,7 @@ public class AdminInterface {
                                         "Access Start: {}\nAccess End: {}",
                                 newStudent.getAllDetails());
 
-                        TimeUnit.SECONDS.sleep(2);
+                        sleep(2);
 
                         ArrayList<Student> studentlist = StudentData.studentList;
                         for (Student i: studentlist){
@@ -708,6 +708,8 @@ public class AdminInterface {
                                 count--;
                             }
                         }
+
+                        sleep(1);
 
                         studentController.refreshInfoDB();
                         System.out.println("infodb refreshed");
@@ -723,8 +725,6 @@ public class AdminInterface {
                 num_tries --;
                 cmd.display(e.getMessage());
                 cmd.display(try_again_message);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -787,5 +787,13 @@ public class AdminInterface {
     }
     public Student FetchStudent(){
         return null;
+    }
+
+    private void sleep(long seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
