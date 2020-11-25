@@ -64,12 +64,12 @@ public class AccountData {
 			st.append(acc.getHashedPermissions().trim());
 			alw.add(st.toString());
 		}
-		IO.write("data/user_cred.txt", alw);
+		IO.write(Main.usercredpath.toString(), alw);
 	}
 
 	public static ArrayList<Admin> initAdmins() throws IOException {
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) IO.read("data/admin_info.txt");
+		ArrayList<String> stringArray = (ArrayList) IO.read(Main.admininfopath.toString());
 		adminList.clear();
 
 		for (int i = 0; i < stringArray.size(); i++) {

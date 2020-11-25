@@ -73,7 +73,8 @@ public class StudentController extends UserController {
         String[] details = foo.split(",");
         String name = details[0];
         String matricID = details[1];
-        String gender = details[2];
+        String gender =
+                details[2];
         String nationality = details[3];
         String email = details[4];
         String phone_number = details[5];

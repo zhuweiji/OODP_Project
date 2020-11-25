@@ -55,7 +55,7 @@ public class IndexData {
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static void searchVacancy(String CourseID,int indexID)throws IOException
 	{
-		ArrayList<String> stringArray = (ArrayList) IO.read("data/Index.txt");
+		ArrayList<String> stringArray = (ArrayList) IO.read(Main.indexinfopath.toString());
 		for (int i = 0 ; i < stringArray.size() ; i++) {
         	
 			String field = (String) stringArray.get(i);
@@ -129,6 +129,6 @@ public class IndexData {
 
 					cl.add(stringBuild.toString()) ;
 				}
-				IO.write("data/Index.txt",cl);
+				IO.write(Main.indexinfopath.toString(),cl);
 		}
 }

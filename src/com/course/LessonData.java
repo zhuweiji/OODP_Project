@@ -12,7 +12,8 @@ public class LessonData {
 	
 	public static ArrayList <Lesson> lessonList = new ArrayList<Lesson>() ;
 	
-    /** Initialise the courses before application starts
+    /** Initial
+	 * ise the courses before application starts
      *
      * @throws IOException
      * @throws ParseException 
