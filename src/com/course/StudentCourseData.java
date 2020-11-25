@@ -26,23 +26,22 @@ public class StudentCourseData {
 			return new ArrayList<StudentCourse>();
 		}
         for (int i = 0 ; i < stringArray.size() ; i++) {
-        	
 				String field = (String) stringArray.get(i);
-				
+
 				// get individual 'fields' of the string separated by SEPARATOR
-				// pass in the string to the string tokenizer using delimiter "," 
-				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);	
-				
+				// pass in the string to the string tokenizer using delimiter ","
+				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);
+
 				//first to fifth tokens
 				String userID = tokenizer.nextToken().trim();
-				String  userName = tokenizer.nextToken().trim();	
-				String  courseID = tokenizer.nextToken().trim();	
+				String  userName = tokenizer.nextToken().trim();
+				String  courseID = tokenizer.nextToken().trim();
 				int indexID = Integer.parseInt(tokenizer.nextToken().trim());
 				String registerStatus = tokenizer.nextToken().trim();
-				
+
 				// create Course object from file data
 				StudentCourse course = new StudentCourse(userID, userName, courseID, indexID, registerStatus);
-				// add to Courses list 
+				// add to Courses list
 				studentCourseList.add(course) ;
 		}
 		return studentCourseList ;

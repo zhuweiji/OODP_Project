@@ -359,28 +359,16 @@ public class AdminInterface {
     }
 
     public void DisplayStudentsByIndex() {
-        StudentCourseData studentData = new StudentCourseData();
-        StudentData studentsData = new StudentData();
-        IndexData indexData = new IndexData();
+        ArrayList<Student> students = new ArrayList<>();
+        ArrayList<Index> allIndexes = new ArrayList<>();
         ArrayList<StudentCourse> allStudents = new ArrayList<>();
         try {
             allStudents = StudentCourseData.initStudentCourses();
-        } catch (Exception e) {
-            System.out.println("Display students by course encountered exception - " + e.getMessage());
-            return;
-        }
-        ArrayList<Student> students = new ArrayList<>();
-        try {
             students = StudentData.initStudents();
-        } catch (Exception e) {
-            System.out.println("Display students by course encountered exception - " + e.getMessage());
-            return;
-        }
-        ArrayList<Index> allIndexes = new ArrayList<>();
-        try {
             allIndexes = IndexData.initIndex();
         } catch (Exception e) {
-            System.out.println("Display students by index encountered exception - " + e.getMessage());
+            System.out.println("Display students by course encountered exception - " + e.getMessage());
+            e.printStackTrace();
             return;
         }
 
@@ -404,11 +392,24 @@ public class AdminInterface {
                 break;
         }
         ArrayList<Index> indexByCourse = new ArrayList<Index>();
-        for (Index index : allIndexes)
+        for (Index index : allIndexes){
+            boolean found = false;
             if (index.getCourseID().equals(courseID)) {
-                indexByCourse.add(index);
-                System.out.println(index.getIndexID());
+                for (Index i: indexByCourse){
+                    if (i.getIndexID() == index.getIndexID()) {
+                        found = true;
+                        break;
+                    }
+                    }
+                if (!found){
+                    indexByCourse.add(index);
+                }
             }
+        }
+        for (Index i: indexByCourse){
+            System.out.println(i.getIndexID());
+        }
+
         int indexid = 0;
         while (true)
         {
@@ -428,11 +429,29 @@ public class AdminInterface {
         }
 
         ArrayList<StudentCourse> studentByIndex = new ArrayList<StudentCourse>();
-        for (StudentCourse student : allStudents)
-            if (student.getCourseID().equals(courseID) && student.getIndexID() == indexid)
-                studentByIndex.add(student);
+        boolean found = false;
+
+        for (StudentCourse student : allStudents){
+            if (student.getCourseID().equals(courseID) && student.getIndexID() == indexid){
+                for (StudentCourse i : studentByIndex){
+                    if (i.getUserid().equals(student.getUserid())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found){
+                    studentByIndex.add(student);
+                }
+            }
+
+
+        }
+
+        System.out.println();
+        cmd.display("=================");
         System.out.println("Course ID: " + courseID);
         System.out.println("Index ID: " + indexid);
+
         for (StudentCourse studentInCourse : studentByIndex)
         {
             StudentCourse course = null;
@@ -448,27 +467,19 @@ public class AdminInterface {
 
             for (Student student : students)
                 if (student.getUserid().equals(studentInCourse.getUserid())) {
-                    System.out.println(student.getUserName() + " " + student.getMatricID() + " " + student.getName() + " " + course.getRegisterStatus());
+                    System.out.println("Name: " + student.getName() + "\tMatricID: " + student.getMatricID());
                     break;
                 }
         }
+        sleep(2);
 
     }
 
-
-
     public void DisplayStudentsByCourse() {
-        StudentCourseData studentData = new StudentCourseData();
-        StudentData studentsData = new StudentData();
         ArrayList<StudentCourse> allStudents = new ArrayList<>();
-        try {
-            allStudents = StudentCourseData.initStudentCourses();
-        } catch (Exception e) {
-            System.out.println("Display students by course encountered exception - " + e.getMessage());
-            return;
-        }
         ArrayList<Student> students = new ArrayList<>();
         try {
+            allStudents = StudentCourseData.initStudentCourses();
             students = StudentData.initStudents();
         } catch (Exception e) {
             System.out.println("Display students by course encountered exception - " + e.getMessage());
