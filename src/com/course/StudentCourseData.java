@@ -56,7 +56,9 @@ public class StudentCourseData {
 
         for (int i = 0 ; i < CourseToUpdate.size() ; i++) {
 				StudentCourse course = CourseToUpdate.get(i);
-				StringBuilder stringBuild =  new StringBuilder() ;
+				StringBuilder stringBuild =  new StringBuilder();
+				stringBuild.append(course.getUserid().trim());
+				stringBuild.append(SEPARATOR);
 				stringBuild.append(course.getUsername().trim());
 				stringBuild.append(SEPARATOR);
 				stringBuild.append(course.getCourseID().trim());

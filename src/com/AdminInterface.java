@@ -4,7 +4,6 @@ import com.course.*;
 import com.user.*;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,6 +18,7 @@ public class AdminInterface {
     private Calendar defaultAccessStart;
     private Calendar defaultAccessEnd;
     private boolean defaultAccessAvail = true;
+
     {
         try {
             defaultAccessStart = CalendarController.stringToCalendar("25/11/2020 00:00");
@@ -37,23 +37,22 @@ public class AdminInterface {
     private static final CourseIndexController courseIndexController = CourseIndexController.getInstance();
 
 
-    public static AdminInterface getInstance(String username,String hashed_pw,String salt,String id)
-    {
+    public static AdminInterface getInstance(String username, String hashed_pw, String salt, String id) {
         Admin logged_on_user = adminController.getExistingAdmin(username, hashed_pw, salt, id);
-        if (logged_on_user != null){
+        if (logged_on_user != null) {
             instance.logged_on_user = logged_on_user;
         }
         return instance;
     }
 
-    private AdminInterface(){
+    private AdminInterface() {
         // should remain empty
     }
 
-    public void run(){
+    public void run() {
         cmd.display("\n\n-------------------------------");
-        cmd.display("Welcome "+ logged_on_user.getName()+ " !");
-        while (true){
+        cmd.display_colored("Welcome " + logged_on_user.getName() + " !", ConsoleUserInterface.ConsoleColors.RED);
+        while (true) {
             cmd.display("-----------------------------");
             cmd.display("Here are your available options: ");
             cmd.display("0: Edit Student's access period"); //todo implement change all student's access period
@@ -69,7 +68,7 @@ public class AdminInterface {
             cmd.display("10: Print student list by course");
             cmd.display("-1: Exit");
             int choice = Integer.parseInt(cmd.input("Enter your choice: "));
-            switch (choice){
+            switch (choice) {
                 case 0 -> editAccessPeriod();
                 case 1 -> CreateAdmin();
                 case 2 -> CreateStudent();
@@ -88,8 +87,7 @@ public class AdminInterface {
 
     }
 
-    private Course ReadCourseHelper(String courseID, Scanner sc)
-    {
+    private Course ReadCourseHelper(String courseID, Scanner sc) {
         System.out.print("Enter the course's name: ");
         String courseName = sc.nextLine();
 
@@ -125,18 +123,17 @@ public class AdminInterface {
         return new Course(courseName, school, courseID, totalCapacity, acadUnits);
     }
 
-    public Admin CreateAdmin(){
+    public void CreateAdmin() {
         int num_tries = 3;
         String try_again_message = "Please try again.";
         String failure_message = "You have made " + num_tries + " wrong inputs, cancelling operation.";
 
         String username = cmd.input("Enter new admin's username: ");
         String password;
-        if (cmd.consoleAvail()){
+        if (cmd.consoleAvail()) {
             char[] password_char = cmd.secretInput("Enter new admin's password: ");
             password = new String(password_char);
-        }
-        else{
+        } else {
             password = cmd.input("Enter new admin's password: ");
         }
 
@@ -147,13 +144,13 @@ public class AdminInterface {
         int location = 0;
         boolean complete = false;
         while (!complete) {
-            if (num_tries <= 0){
+            if (num_tries <= 0) {
                 cmd.display(failure_message);
                 complete = true;
                 break;
             }
             try {
-                switch (location){
+                switch (location) {
                     case 0:
                         String name = cmd.input("Enter admin name: ");
                         newAdmin.setName(name);
@@ -164,7 +161,7 @@ public class AdminInterface {
                         location++;
 
                         cmd.display("Admin created with following details:");
-                        System.out.println("Name: " + newAdmin.getName() + ", E-mail: " + newAdmin.getEmail() );
+                        System.out.println("Name: " + newAdmin.getName() + ", E-mail: " + newAdmin.getEmail());
                         adminController.setUser(newAdmin);
                         adminController.saveAdminToDB(newAdmin);
                         System.out.println("saved!");
@@ -176,22 +173,19 @@ public class AdminInterface {
                         break;
                 }
 
-            }
-            catch (IllegalArgumentException e){
-                num_tries --;
+            } catch (IllegalArgumentException e) {
+                num_tries--;
                 cmd.display(e.getMessage());
                 cmd.display(try_again_message);
             }
         }
-        return newAdmin;
     }
 
     public void CheckVacancy() {
         ArrayList<Course> courseList = courseIndexController.getCourseinfoDB();
         Scanner sc = new Scanner(System.in);
         String courseID = "";
-        while (true)
-        {
+        while (true) {
             boolean found = false;
             System.out.print("Enter course ID: ");
             courseID = sc.nextLine().toUpperCase();
@@ -224,8 +218,7 @@ public class AdminInterface {
                 System.out.println(index.getIndexID());
             }
         int indexid = 0;
-        while (true)
-        {
+        while (true) {
             boolean found = false;
             System.out.print("Enter index ID: ");
             indexid = sc.nextInt();
@@ -249,8 +242,7 @@ public class AdminInterface {
         ArrayList<Course> courseList = courseIndexController.getCourseinfoDB();
         Scanner sc = new Scanner(System.in);
         String courseCode = "";
-        while (true)
-        {
+        while (true) {
             boolean found = false;
             System.out.print("Enter course ID: ");
             courseCode = sc.nextLine().toUpperCase();
@@ -272,8 +264,7 @@ public class AdminInterface {
         if (result == 0) {
             System.out.println("Successfully updated course");
             System.out.println(existingCourse.toString());
-        }
-        else {
+        } else {
             System.out.println("Encountered error while updating course");
         }
     }
@@ -294,8 +285,7 @@ public class AdminInterface {
             return;
         }
 
-        while (true)
-        {
+        while (true) {
             boolean found = false;
             System.out.print("Enter course ID: ");
             courseID = sc.nextLine().toUpperCase();
@@ -317,8 +307,7 @@ public class AdminInterface {
                 System.out.println(index.getIndexID());
             }
         int indexid = 0;
-        while (true)
-        {
+        while (true) {
             boolean found = false;
             System.out.print("Enter index ID to modify: ");
             indexid = sc.nextInt();
@@ -333,8 +322,7 @@ public class AdminInterface {
             else
                 break;
         }
-        if (updateVacancy)
-        {
+        if (updateVacancy) {
             System.out.print("Please enter new vacancy: ");
             int newVacancy = sc.nextInt();
             for (Index index : indexByCourse) {
@@ -343,9 +331,7 @@ public class AdminInterface {
                     courseIndexController.updateIndex(index, indexid);
                 }
             }
-        }
-        else
-        {
+        } else {
             System.out.print("Please enter new index ID: ");
             int newIndexid = sc.nextInt();
             for (Index index : indexByCourse) {
@@ -359,9 +345,9 @@ public class AdminInterface {
     }
 
     public void DisplayStudentsByIndex() {
-        ArrayList<Student> students = new ArrayList<>();
-        ArrayList<Index> allIndexes = new ArrayList<>();
-        ArrayList<StudentCourse> allStudents = new ArrayList<>();
+        ArrayList<Student> students;
+        ArrayList<Index> allIndexes;
+        ArrayList<StudentCourse> allStudents;
         try {
             allStudents = StudentCourseData.initStudentCourses();
             students = StudentData.initStudents();
@@ -375,8 +361,7 @@ public class AdminInterface {
         ArrayList<Course> courseList = courseIndexController.getCourseinfoDB();
         String courseID = "";
         Scanner sc = new Scanner(System.in);
-        while (true)
-        {
+        while (true) {
             boolean found = false;
             System.out.print("Enter course ID: ");
             courseID = sc.nextLine().toUpperCase();
@@ -392,27 +377,26 @@ public class AdminInterface {
                 break;
         }
         ArrayList<Index> indexByCourse = new ArrayList<Index>();
-        for (Index index : allIndexes){
+        for (Index index : allIndexes) {
             boolean found = false;
             if (index.getCourseID().equals(courseID)) {
-                for (Index i: indexByCourse){
+                for (Index i : indexByCourse) {
                     if (i.getIndexID() == index.getIndexID()) {
                         found = true;
                         break;
                     }
-                    }
-                if (!found){
+                }
+                if (!found) {
                     indexByCourse.add(index);
                 }
             }
         }
-        for (Index i: indexByCourse){
+        for (Index i : indexByCourse) {
             System.out.println(i.getIndexID());
         }
 
-        int indexid = 0;
-        while (true)
-        {
+        int indexid;
+        while (true) {
             boolean found = false;
             System.out.print("Enter index ID: ");
             indexid = sc.nextInt();
@@ -431,15 +415,15 @@ public class AdminInterface {
         ArrayList<StudentCourse> studentByIndex = new ArrayList<StudentCourse>();
         boolean found = false;
 
-        for (StudentCourse student : allStudents){
-            if (student.getCourseID().equals(courseID) && student.getIndexID() == indexid){
-                for (StudentCourse i : studentByIndex){
+        for (StudentCourse student : allStudents) {
+            if (student.getCourseID().equals(courseID) && student.getIndexID() == indexid) {
+                for (StudentCourse i : studentByIndex) {
                     if (i.getUserid().equals(student.getUserid())) {
                         found = true;
                         break;
                     }
                 }
-                if (!found){
+                if (!found) {
                     studentByIndex.add(student);
                 }
             }
@@ -452,16 +436,15 @@ public class AdminInterface {
         System.out.println("Course ID: " + courseID);
         System.out.println("Index ID: " + indexid);
 
-        for (StudentCourse studentInCourse : studentByIndex)
-        {
+        for (StudentCourse studentInCourse : studentByIndex) {
             StudentCourse course = null;
-            for (StudentCourse studentCourse : allStudents){
+            for (StudentCourse studentCourse : allStudents) {
                 if (studentCourse.getUserid().equals(studentInCourse.getUserid())) {
                     course = studentCourse;
                     break;
                 }
             }
-            if (course == null){
+            if (course == null) {
                 cmd.display("course was not found");
             }
 
@@ -489,8 +472,7 @@ public class AdminInterface {
         ArrayList<Course> courseList = courseIndexController.getCourseinfoDB();
         String courseID = "";
         Scanner sc = new Scanner(System.in);
-        while (true)
-        {
+        while (true) {
             boolean found = false;
             System.out.print("Enter course ID: ");
             courseID = sc.nextLine().toUpperCase();
@@ -515,7 +497,7 @@ public class AdminInterface {
                         break;
                     }
                 }
-                if(!found){
+                if (!found) {
                     studentByCourse.add(student);
                 }
 
@@ -524,15 +506,14 @@ public class AdminInterface {
         System.out.println();
         System.out.println("Course Code: " + courseID);
         boolean student_in_course = false;
-        for (StudentCourse studentInCourse : studentByCourse)
-        {
+        for (StudentCourse studentInCourse : studentByCourse) {
             for (Student student : students)
                 if (student.getUserid().equals(studentInCourse.getUserid())) {
                     student_in_course = true;
                     System.out.println(" " + student.getMatricID() + " " + student.getName());
                 }
         }
-        if (!student_in_course){
+        if (!student_in_course) {
             System.out.println("This course has no registered students");
         }
         sleep(2);
@@ -568,20 +549,19 @@ public class AdminInterface {
             cmd.display("");
             cmd.display("Courses in system: ");
 
-            for (Course i:courseList) {
-                cmd.displayf("{} {} {} {}",i.getAllDetails());
+            for (Course i : courseList) {
+                cmd.displayf("{} {} {} {}", i.getAllDetails());
             }
             cmd.display("");
             sleep(2);
-        }
-        else {
+        } else {
             System.out.println("Encountered error while adding new course");
         }
 
 
     }
 
-    public void CreateIndex(){
+    public void CreateIndex() {
         ArrayList<Course> courseList = courseIndexController.getCourseinfoDB();
 
         String courseCode = "";
@@ -620,8 +600,7 @@ public class AdminInterface {
                 System.out.println(index.getIndexID());
             }
         int indexid = 0;
-        while (true)
-        {
+        while (true) {
             boolean found = false;
             System.out.print("Enter index ID to add: ");
             indexid = sc.nextInt();
@@ -638,13 +617,13 @@ public class AdminInterface {
         }
         String Sindexid = Integer.toString(indexid);
         int IcourseCode = Integer.parseInt(courseCode);
-        Index index = new Index(Sindexid, IcourseCode, "TBC",0,0);
+        Index index = new Index(Sindexid, IcourseCode, "TBC", 0, 0);
         courseIndexController.addIndex(index);
         System.out.println("Index ID successfully added!");
 
     }
 
-    public void CreateStudent(){
+    public void CreateStudent() {
         // allow current admin to create a new student
         int num_tries = 3;
         String try_again_message = "Please try again.";
@@ -652,11 +631,10 @@ public class AdminInterface {
 
         String username = cmd.input("Enter new user's username: ");
         String password;
-        if (cmd.consoleAvail()){
+        if (cmd.consoleAvail()) {
             char[] password_char = cmd.secretInput("Enter new user's password: ");
             password = new String(password_char);
-        }
-        else{
+        } else {
             password = cmd.input("Enter new user's password: ");
         }
 
@@ -667,13 +645,13 @@ public class AdminInterface {
         int location = 0;
         boolean complete = false;
         while (!complete) {
-            if (num_tries <= 0){
+            if (num_tries <= 0) {
                 cmd.display(failure_message);
                 complete = true;
                 break;
             }
             try {
-                switch (location){
+                switch (location) {
                     case 0:
                         String name = cmd.input("Enter student name: ");
                         newStudent.setName(name);
@@ -708,12 +686,11 @@ public class AdminInterface {
                         location++;
                     case 8:
                         String set_default = cmd.input("Set student's access period to default? y/n: ");
-                        if (set_default.equals("y") && defaultAccessAvail){
+                        if (set_default.equals("y") && defaultAccessAvail) {
                             newStudent.setAccessStart(defaultAccessStart);
                             newStudent.setAccessEnd(defaultAccessEnd);
-                        }
-                        else{
-                            if (!defaultAccessAvail){
+                        } else {
+                            if (!defaultAccessAvail) {
                                 cmd.display("Default access not available.");
                             }
                             try {
@@ -745,10 +722,10 @@ public class AdminInterface {
                         sleep(2);
 
                         ArrayList<Student> studentlist = StudentData.studentList;
-                        for (Student i: studentlist){
+                        for (Student i : studentlist) {
                             int count = 4;
-                            for (String details: i.getAllDetails()){
-                                if (count == 0){
+                            for (String details : i.getAllDetails()) {
+                                if (count == 0) {
                                     break;
                                 }
                                 System.out.println(details);
@@ -767,20 +744,20 @@ public class AdminInterface {
                         break;
                 }
 
-            }
-            catch (IllegalArgumentException e){
-                num_tries --;
+            } catch (IllegalArgumentException e) {
+                num_tries--;
                 cmd.display(e.getMessage());
                 cmd.display(try_again_message);
             }
         }
     }
-    public void editAccessPeriod(){
+
+    public void editAccessPeriod() {
         // allow admin to access period of a student
         String matricID = cmd.input("Enter Student's Matriculation ID");
         String id = studentController.fetchStudentUIDFromMatricID(matricID);
-        if (id==null){
-            System.out.println("Student with matriculation ID " +matricID+" was not found.");
+        if (id == null) {
+            System.out.println("Student with matriculation ID " + matricID + " was not found.");
         }
         String SaccessStart;
         Calendar accessStart;
@@ -788,20 +765,19 @@ public class AdminInterface {
         Calendar accessEnd;
 
         for (int i = 0; i < 3; i++) {
-            try{
+            try {
                 SaccessStart = cmd.input("Enter start access period in dd/mm/yy hh/mm format");
                 accessStart = CalendarController.stringToCalendar(SaccessStart);
                 SaccessEnd = cmd.input("Enter end access period in dd/mm/yy hh/mm format");
                 accessEnd = CalendarController.stringToCalendar(SaccessEnd);
                 try {
-                    studentController.editExistingStudentInDB(id, 9,SaccessStart);
-                    studentController.editExistingStudentInDB(id, 10,SaccessEnd);
+                    studentController.editExistingStudentInDB(id, 9, SaccessStart);
+                    studentController.editExistingStudentInDB(id, 10, SaccessEnd);
                 } catch (IOException e) {
                     System.out.println("couldn't edit the student at this time.");
                 }
                 return;
-            }
-            catch (ParseException f){
+            } catch (ParseException f) {
                 System.out.println("The access period you entered did not match format");
             }
         }
@@ -811,9 +787,9 @@ public class AdminInterface {
         // next times you call it will add a comma which breaks readDB or some other reading function
         // todo remove comments before submission!
     }
-    public void editDefaultAccessPeriod()
-    {
-        try{
+
+    public void editDefaultAccessPeriod() {
+        try {
             String accessStartStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format");
             Calendar accessStart = CalendarController.stringToCalendar(accessStartStr);
             String accessEndStr = cmd.input("Enter end of access period in dd/mm/yy hh:mm format");
@@ -822,8 +798,7 @@ public class AdminInterface {
             defaultAccessEnd = accessEnd;
             cmd.display("Default access period successfully changed for this session.");
             cmd.display("");
-        }
-        catch (ParseException e){
+        } catch (ParseException e) {
             System.out.println("Input was unable to be parsed. Please check format");
         }
 
@@ -831,10 +806,11 @@ public class AdminInterface {
 
     public void EditStudent(String matricID, String gender, String nationality,
                             String email, String course_of_study, String phone_number, String date_matriculated,
-                            Object timetable){
+                            Object timetable) {
 
     }
-    public Student FetchStudent(){
+
+    public Student FetchStudent() {
         return null;
     }
 
