@@ -8,8 +8,6 @@ import com.Main;
 import com.user.*;
 
 public class StudentData {
-	
-	
 	public static final String SEPARATOR = ",";
 
 	public static ArrayList<Student> studentList = new ArrayList<Student>();

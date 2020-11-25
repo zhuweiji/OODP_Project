@@ -36,6 +36,7 @@ public class AdminInterface {
     private static final AdminInterface instance = new AdminInterface();
     private static final CourseIndexController courseIndexController = CourseIndexController.getInstance();
 
+
     public static AdminInterface getInstance(String username,String hashed_pw,String salt,String id)
     {
         Admin logged_on_user = adminController.getExistingAdmin(username, hashed_pw, salt, id);
@@ -695,6 +696,18 @@ public class AdminInterface {
                                 newStudent.getAllDetails());
 
                         TimeUnit.SECONDS.sleep(2);
+
+                        ArrayList<Student> studentlist = StudentData.studentList;
+                        for (Student i: studentlist){
+                            int count = 4;
+                            for (String details: i.getAllDetails()){
+                                if (count == 0){
+                                    break;
+                                }
+                                System.out.println(details);
+                                count--;
+                            }
+                        }
 
                         studentController.refreshInfoDB();
                         System.out.println("infodb refreshed");
