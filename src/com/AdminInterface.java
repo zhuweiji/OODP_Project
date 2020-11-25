@@ -16,6 +16,17 @@ public class AdminInterface {
     private Admin logged_on_user;
     private Calendar defaultAccessStart;
     private Calendar defaultAccessEnd;
+    private boolean defaultAccessAvail = true;
+    {
+        try {
+            defaultAccessStart = CalendarController.stringToCalendar("25/11/2020 00:00");
+            defaultAccessEnd = CalendarController.stringToCalendar("31/11/2020 23:59");
+        } catch (ParseException e) {
+            defaultAccessAvail = false;
+            e.printStackTrace();
+        }
+    }
+
     private static final UserController userController = UserController.getInstance();
     private static final StudentController studentController = StudentController.getInstance();
     private static final AdminController adminController = AdminController.getInstance();
@@ -648,10 +659,14 @@ public class AdminInterface {
                     case 8:
                         String set_default = cmd.input("Set student's access period to default? y/n: ");
                         String default_period;
-                        if (set_default == "y"){
-                            default_period = studentController.getDefaultStringAccessPeriod();
+                        if (set_default == "y" && defaultAccessAvail){
+                            newStudent.setAccessStart(defaultAccessStart);
+                            newStudent.setAccessEnd(defaultAccessEnd);
                         }
                         else{
+                            if (defaultAccessAvail == false){
+                                cmd.display("Default access not available.");
+                            }
                             try {
                                 String accessStartStr = cmd.input("Enter start of access period in dd/mm/yy hh:mm format");
                                 Calendar accessStart = CalendarController.stringToCalendar(accessStartStr);
@@ -667,7 +682,7 @@ public class AdminInterface {
 
                         cmd.display("Student created with following details:");
                         cmd.displayf("Name: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
-                                "Course of study: {}\nPhone number: {}\nDate matriculated: {}\nAccess Period: {}",
+                                        "Course of study: {}\nPhone number: {}\nDate matriculated: {}\nAccess Period: {}",
                                 newStudent.getAllDetails());
                         studentController.setUser(newStudent);
                         studentController.saveStudentToDB(newStudent);
@@ -724,8 +739,8 @@ public class AdminInterface {
     }
 
     public void EditStudent(String matricID, String gender, String nationality,
-                                   String email, String course_of_study, String phone_number, String date_matriculated,
-                                   Object timetable){
+                            String email, String course_of_study, String phone_number, String date_matriculated,
+                            Object timetable){
 
     }
     public Student FetchStudent(){

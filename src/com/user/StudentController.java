@@ -16,7 +16,6 @@ public class StudentController extends UserController {
     private final Path studentinfopath = getStudentinfopath();
 
     private HashMap<String, String> studentinfoDB = readUserInfoDB(studentinfopath);
-    private String defaultAccessPeriod;
 
     private static final StudentController instance = new StudentController();
 
@@ -146,22 +145,12 @@ public class StudentController extends UserController {
 
     }
 
-
     public void refreshInfoDB(){
         studentinfoDB = readUserInfoDB(studentinfopath);
-    }
-
-
-    public void setDefaultAccessPeriod(String accessTime){
-        defaultAccessPeriod = accessTime;
-        //todo change to Calendar
     }
 
     public Calendar getDefaultAccessPeriod(){
         return null;
     }
 
-    public String getDefaultStringAccessPeriod(){
-        return defaultAccessPeriod;
-    }
 }
