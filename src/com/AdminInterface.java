@@ -679,18 +679,22 @@ public class AdminInterface {
                                 throw new IllegalArgumentException("Could not parse the datetime you entered. Please try again");
                             }
                         }
+                        location++;
+                    case 9:
+                        String notiMode = cmd.input("Enter student's notification mode\n SMS or Email or Both");
+                        newStudent.setNotiMode(notiMode);
 
                         studentController.setUser(newStudent);
                         studentController.saveStudentToDB(userAcc, newStudent);
                         System.out.println("saved!");
-
+                        cmd.display("\n\n\n--------------------------------\n");
                         cmd.display("Student created with following details:");
                         cmd.displayf("Userid: {}\nName: {}\nMatriculation ID: {}\nGender: {}\nNationality: {}\nEmail: {}\n" +
                                         "Course of study: {}\nPhone number: {}\nDate matriculated: {}\n" +
                                         "Access Start: {}\nAccess End: {}",
                                 newStudent.getAllDetails());
 
-                        TimeUnit.SECONDS.sleep(1);
+                        TimeUnit.SECONDS.sleep(2);
 
                         studentController.refreshInfoDB();
                         System.out.println("infodb refreshed");

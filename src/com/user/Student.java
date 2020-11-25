@@ -192,8 +192,23 @@ public class Student {
     }
     
     public void setNotiMode(String notiMode) {
-        this.notiMode = notiMode;
+        boolean set = false;
+        for (AvailNotiModes c : AvailNotiModes.values()) {
+            if (c.name().equals(notiMode)) {
+                this.notiMode = notiMode;
+                set = true;
+                break;
+            }
+        }
+        if (!set){
+            throw new IllegalArgumentException("notiMode is not available");
+        }
+
     }
 
-
+enum AvailNotiModes{
+        SMS,
+        EMAIL,
+        Both,
+}
 }

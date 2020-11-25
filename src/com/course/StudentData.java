@@ -26,28 +26,24 @@ public class StudentData {
 
 		studentList.clear();
 		for (String s : stringArray) {
-			String st = s;
-
 			// get individual 'fields' of the string separated by SEPARATOR
 			// pass in the string to the string tokenizer using delimiter ","
-			StringTokenizer star = new StringTokenizer(st, SEPARATOR);
+			StringTokenizer star = new StringTokenizer(s, SEPARATOR);
 
 			String userid = star.nextToken().trim(); // first token
-			String name = star.nextToken().trim(); // first token
 			String userName = star.nextToken().trim();
+			String name = star.nextToken().trim(); // first token
 			String matricNum = star.nextToken().trim(); // third token
 			String gender = (star.nextToken().trim()); // fourth token
 			String nationality = star.nextToken().trim(); // fifth token
 			String email = star.nextToken().trim(); // sixth token
 			String course_of_study = star.nextToken().trim();
-			String date_matriculated = star.nextToken().trim();
 			String phoneno = (star.nextToken().trim()); //seventh token
+			String date_matriculated = star.nextToken().trim();
 			Calendar accessStart = CalendarController.stringToCalendar(star.nextToken().trim()); // eight token
 			Calendar accessEnd = CalendarController.stringToCalendar(star.nextToken().trim()); // nine token
 			String notiMode = star.nextToken().trim(); //tenth token
-
-			Student std = new Student(userid, userName, name, matricNum, gender, nationality, email, course_of_study,date_matriculated ,phoneno, accessStart, accessEnd, notiMode);
-
+			Student std = new Student(userid, userName, name, matricNum, gender, nationality, email, course_of_study,phoneno,date_matriculated, accessStart, accessEnd, notiMode);
 			// add to Students list
 			studentList.add(std);
 		}
