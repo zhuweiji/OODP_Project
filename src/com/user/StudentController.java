@@ -25,6 +25,7 @@ public class StudentController extends UserController {
     }
 
     public static StudentController getInstance(){
+
         instance.useridCount = instance.getUserCountFromDB();
         return instance;
     }

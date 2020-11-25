@@ -90,14 +90,14 @@ public class NotificationController {
 				for(StudentCourse sc : studentCourseList){
 					if ((sc.getIndexID() == indexID) && sc.getRegisterStatus().equals("On Waiting List")){
 						for (Student s : studentList){
-							if (s.getUserName().equals(sc.getUserName())){
+							if (s.getUserName().equals(sc.getUsername())){
 								int vacancy = i.getVacancy();
 								int waitingList = i.getWaitingList();
 								
 								if (vacancy > 0){
 									// save to studentCourses.txt
 									studentCourseList.remove(sc);
-									StudentCourse newSc = new StudentCourse(sc.getUserName(), sc.getCourseID(), indexID, "Registered");
+									StudentCourse newSc = new StudentCourse(sc.getUserid(),sc.getUsername(), sc.getCourseID(), indexID, "Registered");
 									DataListController.writeObject(newSc);
 									
 									// decrement vacancy and waitinglist by 1
@@ -113,15 +113,15 @@ public class NotificationController {
 									i.setVacancy(vacancy);
 									i.setWaitingList(waitingList);
 									
-									if (s.getNotiMode() == "SMS"){
+									if (s.getNotiMode().equals("SMS")){
 										// Sending Fake SMS
 										sendSMS(s);
 									}
-									else if (s.getNotiMode() == "Email"){
+									else if (s.getNotiMode().equals("Email")){
 										// Sending Actual Email
 										sendEmail(s, i.getCourseID());
 									}
-									else if (s.getNotiMode() == "Both"){
+									else if (s.getNotiMode().equals("Both")){
 										sendBoth(s, i.getCourseID());
 									}									
 								}

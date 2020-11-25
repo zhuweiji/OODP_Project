@@ -27,8 +27,6 @@ public class Course {
 	 */
 	private String school;
 
-	
-
 	/** Constructor for Course
 	 */
 	public Course (String courseID, String courseName, int au, String school) {
@@ -41,8 +39,6 @@ public class Course {
 
 	public Course(String courseName2, String school2, String courseID2, int totalCapacity, int acadUnits) {
 	}
-
-
 
 
 	public String getCourseID() {
@@ -88,6 +84,20 @@ public class Course {
 			return (getCourseID().equals(st.getCourseID()));
 		}
 		return false;
+	}
+	public String[] getAllDetails() {
+		return new String[] {
+				courseName,
+				school,
+				courseID,
+				Integer.toString(AU) };
+	}
+
+	public String toString() {
+		return "Course Name: " + courseName
+				+ ", School: " + school
+				+ ", CourseID: " + courseID
+				+ ", Academic Units: " + AU;
 	}
 
 

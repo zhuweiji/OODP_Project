@@ -1,19 +1,12 @@
 package com;
 
-import com.course.CalendarController;
-import com.course.Course;
-import com.course.StudentCourse;
-import com.course.StudentCourseData;
-import com.course.StudentData;
-import com.course.IndexData;
-import com.course.Index;
+import com.course.*;
 import com.user.*;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class AdminInterface {
@@ -28,7 +21,7 @@ public class AdminInterface {
     private static final AdminController adminController = AdminController.getInstance();
     private final ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
     private static final AdminInterface instance = new AdminInterface();
-    private static CourseIndexController courseIndexController = CourseIndexController.getInstance();
+    private static final CourseIndexController courseIndexController = CourseIndexController.getInstance();
 
     public static AdminInterface getInstance(String username,String hashed_pw,String salt,String id)
     {
@@ -200,7 +193,7 @@ public class AdminInterface {
         IndexData indexData = new IndexData();
         ArrayList<Index> allIndexes = new ArrayList<>();
         try {
-            allIndexes = indexData.initIndex();
+            allIndexes = IndexData.initIndex();
         } catch (Exception e) {
             System.out.println("Display students by index encountered exception - " + e.getMessage());
             return;
@@ -277,7 +270,7 @@ public class AdminInterface {
 
         ArrayList<Index> allIndexes = new ArrayList<>();
         try {
-            allIndexes = indexData.initIndex();
+            allIndexes = IndexData.initIndex();
         } catch (Exception e) {
             System.out.println("Display students by index encountered exception - " + e.getMessage());
             return;
@@ -353,7 +346,7 @@ public class AdminInterface {
         IndexData indexData = new IndexData();
         ArrayList<StudentCourse> allStudents = new ArrayList<>();
         try {
-            allStudents = studentData.initStudentCourses();
+            allStudents = StudentCourseData.initStudentCourses();
         } catch (Exception e) {
             System.out.println("Display students by course encountered exception - " + e.getMessage());
             return;
@@ -367,7 +360,7 @@ public class AdminInterface {
         }
         ArrayList<Index> allIndexes = new ArrayList<>();
         try {
-            allIndexes = indexData.initIndex();
+            allIndexes = IndexData.initIndex();
         } catch (Exception e) {
             System.out.println("Display students by index encountered exception - " + e.getMessage());
             return;
@@ -446,7 +439,7 @@ public class AdminInterface {
         StudentData studentsData = new StudentData();
         ArrayList<StudentCourse> allStudents = new ArrayList<>();
         try {
-            allStudents = studentData.initStudentCourses();
+            allStudents = StudentCourseData.initStudentCourses();
         } catch (Exception e) {
             System.out.println("Display students by course encountered exception - " + e.getMessage());
             return;
@@ -487,7 +480,7 @@ public class AdminInterface {
         {
             for (Student student : students)
                 if (student.getUserid().equals(studentInCourse.getUserid())) {
-                    System.out.println(studentInCourse.getUserName() + " " + student.getMatricID() + " " + student.getName());
+                    System.out.println(studentInCourse.getUsername() + " " + student.getMatricID() + " " + student.getName());
                     break;
                 }
         }
@@ -536,7 +529,7 @@ public class AdminInterface {
         IndexData indexData = new IndexData();
         ArrayList<Index> allIndexes = new ArrayList<>();
         try {
-            allIndexes = indexData.initIndex();
+            allIndexes = IndexData.initIndex();
         } catch (Exception e) {
             System.out.println("Display students by index encountered exception - " + e.getMessage());
             return;
@@ -582,8 +575,9 @@ public class AdminInterface {
             else
                 break;
         }
-
-        Index index = new Index(indexid, courseCode, "TBC",0,0);
+        String Sindexid = Integer.toString(indexid);
+        int IcourseCode = Integer.parseInt(courseCode);
+        Index index = new Index(Sindexid, IcourseCode, "TBC",0,0);
         courseIndexController.addIndex(index);
         System.out.println("Index ID successfully added!");
 

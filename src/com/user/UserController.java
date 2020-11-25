@@ -92,7 +92,7 @@ public class UserController {
             }
             return Integer.toString(count);
         } catch (IOException e) {
-            System.out.println("Print user credentials file not found");
+            System.out.println("User credentials file not found");
             e.printStackTrace();
         }
         return null;

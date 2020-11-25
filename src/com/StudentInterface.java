@@ -21,6 +21,7 @@ public class StudentInterface {
 	private static StudentController studentController = StudentController.getInstance();
 	private final ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
 	private static final StudentInterface instance = new StudentInterface();
+	private static final LogInHandler loginhandler = LogInHandler.startHandler();
 	private static Scanner sc = new Scanner(System.in);
 
 		public static StudentInterface getInstance(String Userid,String hashed_pw,String salt,String id)
@@ -120,7 +121,7 @@ public class StudentInterface {
 		
 		// To check if the student has already registered to the course's index ID
 		for(StudentCourse sc: studentCourseList){
-			if(sc.getUserName().equals(logged_on_user.getUserName()) && sc.getIndexID() == indexID){
+			if(sc.getUsername().equals(logged_on_user.getUserName()) && sc.getIndexID() == indexID){
 				System.out.println();
 				System.out.println("You have already registered to the course's index ID!");
 				return;
@@ -228,15 +229,20 @@ public class StudentInterface {
 		}
 	}
 	
-	private static void swopIndexIDUI() throws IOException, ParseException{
-		System.out.print("\nEnter Peer's Username: "); String peerUsername = sc.nextLine();
-		System.out.print("Enter Peer's Password: "); String peerPassword = sc.nextLine();
-		
-		Account peerAcc = UserValidationMgr.compareUserPass(peerUsername, peerPassword, "Student");
+	private void swopIndexIDUI() throws IOException, ParseException{
+		String peerUsername = cmd.input("Enter Peer's Username");
+		char[] peerPasswordArr = cmd.secretInput("Enter Peer's Password: ");
+		String peerPassword = new String(peerPasswordArr);
+		String[] peerCredentials = loginhandler.login(peerUsername, peerPassword);
+
 		ArrayList<Student> studList = DataListController.getStudents();
-		if (!(peerAcc == null)) { // Successfully logged in
+		if (peerCredentials != null) { // Successfully logged in
+			Student peerAcc = studentController.getExistingStudent(peerCredentials[0],
+																   peerCredentials[2],
+																   peerCredentials[1],
+																   peerCredentials[0]);
 		for (Student peer : studList){
-			if (peer.getUserName().equals(peerAcc.getUsername())){
+			if (peer.getUserName().equals(peerAcc.getUserName())){
 					System.out.print("Enter Your Index ID: "); int yourIndexID = sc.nextInt();
 					sc.nextLine();
 					System.out.print("Enter Peer's Index ID: "); int peerIndexID = sc.nextInt();
@@ -280,16 +286,23 @@ public class StudentInterface {
 		System.out.println("(3) Send both");
 		int choice = sc.nextInt();
 		sc.nextLine();
-		
+		String notiMode;
+		switch (choice){
+			case 1 -> notiMode = "SMS";
+			case 2 -> notiMode = "Email";
+			case 3 -> notiMode = "SMS/Email";
+			default -> notiMode = "SMS/Email";
+		}
+
 		ArrayList<Student> studentList = DataListController.getStudents();
 		System.out.println("Size: " + studentList.size());
 		for(Student s : studentList){
 			if (s.getUserName().equals(logged_on_user.getUserName())){
 				// Updating
 				studentList.remove(s); 
-				Student newStud = new Student(s.getUserName(), s.getName() ,
-						s.getMatricID(), s.getGender(), s.getNationality(), s.getPhone_number(),
-						s.getEmail(), s.getAccessStart(), s.getAccessEnd(), choice);
+				Student newStud = new Student(s.getUserid(), s.getUserName(), s.getName() ,
+						s.getMatricID(), s.getGender(), s.getNationality(), s.getEmail(), s.getCourse_of_study(),
+						s.getPhone_number(),s.getDate_matriculated(), s.getAccessStart(), s.getAccessEnd(), notiMode);
 				DataListController.writeObject(newStud);
 				
 				// necessary to prevent re-looping of updated textfile

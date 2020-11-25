@@ -16,20 +16,23 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.*;
 
+enum permissions{
+    student,
+    admin,
+    ;
+}
 
 public class LogInHandler{
-	
-	public static ArrayList<UserAcc> accountList = AccountData.accountList;
-	// Account
-	public static ArrayList<UserAcc> getAccounts(){ return accountList; }
+
+    public static ArrayList<UserAcc> accountList = AccountData.accountList;
+    // Account
+    public static ArrayList<UserAcc> getAccounts(){ return accountList; }
     private final Path usercredpath = Main.usercredpath;
     private static final LogInHandler instance = new LogInHandler();
     private static final StudentController studentController = StudentController.getInstance();
     private static final AdminController adminController = AdminController.getInstance();
     public static final ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
     private UserAcc[] logged_in_users;
-    
-    
 
     private LogInHandler(){ }
 
@@ -38,29 +41,17 @@ public class LogInHandler{
     }
 
     public void run(){
-        String username = cmd.input("Enter your username: ");
-        String password;
-        if (cmd.consoleAvail()){
-            char[] passwordArr = cmd.secretInput("Enter your password: ");
-            password = new String(passwordArr);
-        }
-        else{
-            password = cmd.input("Enter your password: ");
-        }
-        boolean logged_in = login(username,password);
+        String[] usercredentials;
 
         int attempts = 5;
-        while (!logged_in){
+        do{
             if (attempts <= 0){
                 cmd.display("You have entered too many wrong attempts. The program will now exit");
                 System.exit(-1);
-                break;
             }
-            cmd.display("You have entered the wrong username or password");
-            attempts--;
-            cmd.display("You have "+ attempts+" attempts left.");
 
-            username = cmd.input("Enter your username: ");
+            String username = cmd.input("Enter your username: ");
+            String password;
             if (cmd.consoleAvail()){
                 char[] passwordArr = cmd.secretInput("Enter your password: ");
                 password = new String(passwordArr);
@@ -68,62 +59,90 @@ public class LogInHandler{
             else{
                 password = cmd.input("Enter your password: ");
             }
-            logged_in = login(username, password);
-        }
+            usercredentials = login(username,password);
+
+            if (usercredentials != null){
+                startAccessInterface(usercredentials);
+            }
+            else{
+                cmd.display("You have entered the wrong username or password");
+                attempts--;
+                cmd.display("You have "+ attempts+" attempts left.");
+            }
+
+        }while(usercredentials == null);
 
         cmd.display("\nThank you for using mySTARS!");
     }
 
-    public boolean login(String username, String password){
+    public String[] login(String username, String password){
         HashMap<String, String[]> userinfo = readDB(usercredpath);
         String[] id_salt_pw_perm = userinfo.get(username);
 
         if (id_salt_pw_perm == null){
-            return false;
+            System.out.println("Could not read from user credentials file");
+            return null;
         }
 
         String hashed_pw = hash(password, id_salt_pw_perm[1]);
+        if (hashed_pw == null){
+            System.out.println("No such algorithm error thrown on hash function");
+            return null;
+        }
 
         if (hashed_pw.equals(id_salt_pw_perm[2])) {
             if (checkPermissions(id_salt_pw_perm[3], id_salt_pw_perm[1]).equals("student")) {
-                cmd.display("Logged in as student");
+                return new String[]{id_salt_pw_perm[0],
+                                    username,
+                                    id_salt_pw_perm[1],
+                                    id_salt_pw_perm[2],
+                                    id_salt_pw_perm[3]};
 
-                Student logged_in_user = studentController.getExistingStudent(username, hashed_pw, id_salt_pw_perm[1],
-                        id_salt_pw_perm[0]);
-
-                Calendar starttime = logged_in_user.getAccessStart();
-                Calendar endtime = logged_in_user.getAccessEnd();
-
-                Timer time = new Timer();
-                TAccessPeriodHandler AP = new TAccessPeriodHandler(starttime, endtime);
-                time.schedule(AP, 0,20000);
-
-                StudentInterface studentInterface = StudentInterface.getInstance(username, hashed_pw, id_salt_pw_perm[1],
-                id_salt_pw_perm[0]);
-
-                studentInterface.run();
-                return true;
-            } else if (checkPermissions(id_salt_pw_perm[3], id_salt_pw_perm[1]).equals("admin")) {
-                cmd.display("Logged in as admin");
-                AdminInterface adminInterface = AdminInterface.getInstance(username, hashed_pw, id_salt_pw_perm[1],
-                        id_salt_pw_perm[0]);
-                adminInterface.run();
-                return true;
             }
-                else {
+            else {
                 System.out.println("Permissions are wrong");
-                    return false;
+                return null;
             }
         }
-        return false;
+        return null;
 
     }
-    
+
+    private void startAccessInterface(String[] usercredentials){
+        String id = usercredentials[0];
+        String username = usercredentials[1];
+        String salt = usercredentials[2];
+        String hashed_pw = usercredentials[3];
+        String hashed_permission = usercredentials[4];
+
+        String permission = checkPermissions(hashed_permission, salt);
+
+        if (permission.equals(permissions.student.name())){
+            Student logged_in_user = studentController.getExistingStudent(username, hashed_pw, salt, id);
+
+            Calendar starttime = logged_in_user.getAccessStart();
+            Calendar endtime = logged_in_user.getAccessEnd();
+
+            Timer time = new Timer();
+            TAccessPeriodHandler AP = new TAccessPeriodHandler(starttime, endtime);
+            time.schedule(AP, 0,20000);
+
+            StudentInterface studentInterface = StudentInterface.getInstance(username, hashed_pw, salt, id);
+
+            studentInterface.run();
+        }
+        else if (permission.equals(permissions.admin.name())){
+            AdminInterface adminInterface = AdminInterface.getInstance(username, hashed_pw, salt, id);
+            adminInterface.run();
+        }
+
+    }
+
     public static UserAcc compareUserPass(String username, String passwordToBeHash)
-	{
-		String salt;
-		ArrayList<UserAcc> accountList = getAccounts();
-		String securePassword;
+    {
+        String salt;
+        ArrayList<UserAcc> accountList = getAccounts();
+        String securePassword;
 
         for (UserAcc userAcc : accountList) {
 
@@ -140,8 +159,8 @@ public class LogInHandler{
             if (username.toLowerCase().equals(user.getUsername().toLowerCase()) && securePassword.equals(user.getPassword())) {
             }
         }
-		return null;
-	}
+        return null;
+    }
 
     public String checkPermissions(String hashed_permissions, String salt){
         if (hash("student", salt).equals(hashed_permissions)){
@@ -152,7 +171,7 @@ public class LogInHandler{
         }
         return "none";
     }
-  
+
 
     public static LinkedHashMap<String, String[]> readDB(Path filepath){
         String delimiter = ",";

@@ -66,7 +66,7 @@ public class AdminController extends UserController{
     public void refreshAdminDB() {
         ArrayList<Admin> newData = null;
         try {
-            newData = accountData.initAdmins();
+            newData = AccountData.initAdmins();
         } catch (Exception e) {
             System.out.println("Refresh course database encountered exception - " + e.getMessage());
             return;

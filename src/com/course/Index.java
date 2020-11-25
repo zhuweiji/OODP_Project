@@ -70,5 +70,12 @@ public class Index {
 	public boolean equals(int o) {
 		return getIndexID() == o;
 	}
-
+	public String[] getAllDetails() {
+		return new String[] {
+				Integer.toString(indexID),
+				courseID,
+				tutorialGroup,
+				Integer.toString(vacancy),
+				Integer.toString(waitingList) };
+	}
 }

@@ -40,7 +40,7 @@ public class Student {
 
     }
 
-    public Student(String user_id, String string, String string2, String string3, String string4, String string5, String string6, Calendar calendar, Calendar calendar2, int choice){
+    public Student(String user_id){
         this.userid = user_id;
     }
 
@@ -70,16 +70,15 @@ public class Student {
     }
 
     public void setMatricID(String matricID) {
-//        final String regex = "^[U|S][0-9]{7}[A-Z]"; // U XXXXXXX G todo TEST
-//        if (matricID.matches(regex)){
-//            this.matricID = matricID;
-//        }
-//        else{
-//            throw new IllegalArgumentException("Matriculation ID does not match format");
-//        }
-        this.matricID = matricID;
-
+        final String regex = "^[U|G][0-9]{7}[A-Z]"; // U XXXXXXX A
+        if (matricID.matches(regex)) {
+            this.matricID = matricID;
+        } else {
+            throw new IllegalArgumentException("Matriculation ID does not match format");
+        }
     }
+//        this.matricID = matricID;
+//    }
 
     public String getGender() {
         return gender;

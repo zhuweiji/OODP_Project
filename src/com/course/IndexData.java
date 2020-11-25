@@ -4,16 +4,17 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
+import com.Main;
 import com.user.IO;
 import com.course.Index;
 
 public class IndexData {
 	public static final String SEPARATOR = "|";
 	
-	public static ArrayList <Index> indexList = new ArrayList<Index>() ;
+	public static ArrayList <Index> indexList = new ArrayList<>() ;
 	
 	/** Initialise the indexess before application starts
-     * @param filename
+     *
      * @throws IOException
      * @throws ParseException 
      */
@@ -23,33 +24,33 @@ public class IndexData {
 	public static ArrayList<Index> initIndex() throws IOException, ParseException {
 		
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) IO.read("data/Index.txt");
-		
+		ArrayList<String> stringArray = (ArrayList) IO.read(Main.indexinfopath.toString());
+
         for (int i = 0 ; i < stringArray.size() ; i++) {
-        	
+
 				String field = (String) stringArray.get(i);
-				
+
 				// get individual 'fields' of the string separated by SEPARATOR
-				// pass in the string to the string tokenizer using delimiter "," 
-				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);	
-				
+				// pass in the string to the string tokenizer using delimiter ","
+				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);
+
 				//first to fifth tokens
-				String  courseID = tokenizer.nextToken().trim();	
-				int  indexID = Integer.parseInt(tokenizer.nextToken().trim());	
-				String tutorialGroup = tokenizer.nextToken().trim();	
+				String  courseID = tokenizer.nextToken().trim();
+				int  indexID = Integer.parseInt(tokenizer.nextToken().trim());
+				String tutorialGroup = tokenizer.nextToken().trim();
 				int vacancies = Integer.parseInt(tokenizer.nextToken().trim());
 				int waitingList = Integer.parseInt(tokenizer.nextToken().trim());
-				
+
 				// create Course object from file data
 				Index index = new Index(courseID, indexID, tutorialGroup, vacancies, waitingList);
-				// add to Courses list 
+				// add to Courses list
 				indexList.add(index) ;
 		}
 		return indexList ;
 	}
 
     /** Initialise the courses before application starts
-     * @param filename
+
      * @throws IOException
      * @throws ParseException 
      */
@@ -78,18 +79,18 @@ public class IndexData {
 		}
 	}
     /** Initialise the courses before application starts
-     * @param filename
+     *
      * @throws IOException
      * @throws ParseException 
      */
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 		public static void showIndex(String CourseID)throws IOException
 		{
-			ArrayList<String> stringArray = (ArrayList) IO.read("data/Index.txt");
+			ArrayList<String> stringArray = (ArrayList) IO.read(Main.indexinfopath.toString());
 			int t=0;
 			for (int i = 0 ; i < stringArray.size() ; i++) {
 	        	
-				String field = (String) stringArray.get(i);
+				String field = stringArray.get(i);
 				
 				// get individual 'fields' of the string separated by SEPARATOR
 				// pass in the string to the string tokenizer using delimiter "," 
@@ -110,7 +111,6 @@ public class IndexData {
 		}
 		
 		/** Save the courses that has been added during the session
-		 * @param CourseToUpdate
 		 * @throws IOException
 		 */
 		public static void saveIndexes(ArrayList<Index> IndexToUpdate) throws IOException {

@@ -15,6 +15,7 @@ public class Main {
     public static Path admininfopath;
     public static Path courseinfopath;
     public static Path indexinfopath;
+    public static Path studentcoursepath;
 
     public static void main(String[] args)throws ParseException, IOException {
 
@@ -22,8 +23,8 @@ public class Main {
 		CourseData.initCourses();
 		IndexData.initIndex();
 		LessonData.initLessons();
-		//StudentCourseData.initStudentCourses();
-        //AccountData.initAccounts();
+		StudentCourseData.initStudentCourses();
+        AccountData.initAccounts();
         get_data_paths();
 
         LogInHandler loginhandler = LogInHandler.startHandler();
@@ -41,6 +42,7 @@ public class Main {
         admininfopath = Paths.get(datadir.toString(), "admin_info.txt");
         courseinfopath = Paths.get(datadir.toString(), "Course.txt");
         indexinfopath = Paths.get(datadir.toString(), "Index.txt");
+        studentcoursepath = Paths.get(datadir.toString(),"StudentCourse.txt");
     }
 }
 

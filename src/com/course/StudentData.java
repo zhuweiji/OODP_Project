@@ -4,6 +4,7 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
+import com.Main;
 import com.user.*;
 
 public class StudentData {
@@ -17,7 +18,7 @@ public class StudentData {
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static ArrayList<Student> initStudents() throws IOException, ParseException {
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) IO.read("data/student_info.txt");
+		ArrayList<String> stringArray = (ArrayList) IO.read(Main.studentinfopath.toString());
 		studentList.clear();
 		for (String s : stringArray) {
 			String st = (String) s;

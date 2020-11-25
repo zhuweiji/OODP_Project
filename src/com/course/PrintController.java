@@ -32,7 +32,7 @@ public class PrintController {
 		for (StudentCourse sc : studentCourseList){
 			if(sc.getIndexID() == indexID){
 				for (Student s: studentList){
-					if(sc.getUserName().equals(s.getUserName())){
+					if(sc.getUsername().equals(s.getUserName())){
 						System.out.print(s.getUserName() + "\t\t ");
                         System.out.print(s.getMatricID() + "\t ");
                         System.out.print(s.getName());
@@ -54,7 +54,7 @@ public class PrintController {
 		for (StudentCourse sc : studentCourseList){
 			if(sc.getCourseID().equals(courseID)){
 				for (Student s: studentList){
-					if(sc.getUserName().equals(s.getUserName())){
+					if(sc.getUsername().equals(s.getUserName())){
 						System.out.print(s.getUserName() + "\t\t ");
                         System.out.print(s.getMatricID() + "\t");
                         System.out.print(s.getName());
@@ -176,7 +176,7 @@ public class PrintController {
 			System.out.println("Course ID\t AU\t Course Type\t Index ID\t Status");
 			System.out.println("-------------------------------------------------------------------");
 			for(StudentCourse sc  : studentCourseList) {
-				if (sc.getUserName().equals(s.getUserName())){
+				if (sc.getUsername().equals(s.getUserName())){
 					for(Course c : courseList){
 						if (c.getCourseID().equals(sc.getCourseID())){
 							System.out.print(sc.getCourseID() + "\t\t ");

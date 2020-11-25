@@ -4,6 +4,7 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
+import com.Main;
 import com.user.IO;
 import com.course.StudentCourse;
 
@@ -14,14 +15,14 @@ public class StudentCourseData {
 	public static ArrayList <StudentCourse> studentCourseList = new ArrayList<StudentCourse>() ;
 	
     /** Initialise the courses before application starts
-     * @param filename
+	 *
      * @throws IOException
      * @throws ParseException 
      */
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static ArrayList<StudentCourse> initStudentCourses() throws IOException, ParseException {
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) IO.read("data/StudentCourse.txt");
+		ArrayList<String> stringArray = (ArrayList) IO.read(Main.studentcoursepath.toString());
 			
 		if (stringArray.size() == 0){
 			return new ArrayList<StudentCourse>();
@@ -35,13 +36,14 @@ public class StudentCourseData {
 				StringTokenizer tokenizer = new StringTokenizer(field, SEPARATOR);	
 				
 				//first to fifth tokens
+				String userID = tokenizer.nextToken().trim();
 				String  userName = tokenizer.nextToken().trim();	
 				String  courseID = tokenizer.nextToken().trim();	
 				int indexID = Integer.parseInt(tokenizer.nextToken().trim());
 				String registerStatus = tokenizer.nextToken().trim();
 				
 				// create Course object from file data
-				StudentCourse course = new StudentCourse(userName, courseID, indexID, registerStatus);
+				StudentCourse course = new StudentCourse(userID, userName, courseID, indexID, registerStatus);
 				// add to Courses list 
 				studentCourseList.add(course) ;
 		}
@@ -56,9 +58,9 @@ public class StudentCourseData {
 		ArrayList <String> courseList = new ArrayList<String>() ;// to store Courses data
 
         for (int i = 0 ; i < CourseToUpdate.size() ; i++) {
-				StudentCourse course = (StudentCourse) CourseToUpdate.get(i);
+				StudentCourse course = CourseToUpdate.get(i);
 				StringBuilder stringBuild =  new StringBuilder() ;
-				stringBuild.append(course.getUserName().trim());
+				stringBuild.append(course.getUsername().trim());
 				stringBuild.append(SEPARATOR);
 				stringBuild.append(course.getCourseID().trim());
 				stringBuild.append(SEPARATOR);

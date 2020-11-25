@@ -31,7 +31,7 @@ public class StudentCourseController {
 				}
 				
 				// Adding
-				StudentCourse newStudentCourse = new StudentCourse(s.getUserName(), courseID, indexID, registerStatus);
+				StudentCourse newStudentCourse = new StudentCourse(s.getUserid(),s.getUserName(), courseID, indexID, registerStatus);
 				DataListController.writeObject(newStudentCourse);
 			    
 				// Update new vacancy & waiting list
@@ -58,7 +58,7 @@ public class StudentCourseController {
 		ArrayList<Index> indexList = DataListController.getIndex();
 		
 		for(StudentCourse course : studentCourseList){
-			if (course.getIndexID() == indexID && course.getUserName().equals(s.getUserName())){
+			if (course.getIndexID() == indexID && course.getUsername().equals(s.getUserName())){
 				studentCourseList.remove(course);
 				StudentCourseData.saveStudentCourses(studentCourseList);
 
