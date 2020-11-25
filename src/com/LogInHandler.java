@@ -15,6 +15,7 @@ import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 enum permissions{
     student,
@@ -46,7 +47,8 @@ public class LogInHandler{
         int attempts = 5;
         do{
             if (attempts <= 0){
-                cmd.display("You have entered too many wrong attempts. The program will now exit");
+                cmd.display_colored("You have entered too many wrong attempts. The program will now exit",
+                        ConsoleUserInterface.ConsoleColors.RED);
                 System.exit(-1);
             }
 
@@ -65,14 +67,20 @@ public class LogInHandler{
                 startAccessInterface(usercredentials);
             }
             else{
-                cmd.display("You have entered the wrong username or password");
+                cmd.display_colored("Username/Password incorrect.",
+                        ConsoleUserInterface.ConsoleColors.RED);
                 attempts--;
-                cmd.display("You have "+ attempts+" attempts left.");
+                cmd.display("");
+                sleep(1);
+                if (attempts < 3){
+                    cmd.display("You have "+ attempts+" attempts left.");
+                }
+
             }
 
         }while(usercredentials == null);
 
-        cmd.display("\nThank you for using mySTARS!");
+        cmd.display_colored("\nThank you for using mySTARS!", ConsoleUserInterface.ConsoleColors.GREEN_BOLD);
     }
 
     public String[] login(String username, String password){
@@ -80,7 +88,7 @@ public class LogInHandler{
         String[] id_salt_pw_perm = userinfo.get(username);
 
         if (id_salt_pw_perm == null){
-            System.out.println("Username was incorrect");
+//            System.out.println("Username was incorrect");
             return null;
         }
 
@@ -247,11 +255,17 @@ public class LogInHandler{
     }
 
     public static byte[] getNextSalt() {
-        //todo unused here should will be used in admin for generating new users
         byte[] salt = new byte[16];
         Random RANDOM = new SecureRandom();
         RANDOM.nextBytes(salt);
         return salt;
+    }
+    private void sleep(long seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public static class TAccessPeriodHandler extends TimerTask {
@@ -260,8 +274,8 @@ public class LogInHandler{
         ConsoleUserInterface cmd = ConsoleUserInterface.getInstance();
 
         TAccessPeriodHandler(Calendar accessStart, Calendar accessEnd) {
-            System.out.println();
-            System.out.println("Access Period Poller running (for demonstration purposes)");
+            cmd.display("");
+            cmd.display_colored("Access Period Poller running (for demonstration purposes)", ConsoleUserInterface.ConsoleColors.BLACK_BOLD);
             try {
                 cmd.display("This student's access period is from "+accessStart.getTime());
                 cmd.display("to "+accessEnd.getTime());
@@ -280,9 +294,10 @@ public class LogInHandler{
 
         public void check() {
             System.out.println();
-            System.out.println("-------------------------------------------------");
-            System.out.println("Checking access time (For demonstration purposes)");
-            System.out.println("--------------------------------------------------");
+            cmd.display_colored("-------------------------------------------------\n" +
+                    "Checking access time (For demonstration purposes)\n" +
+                    "--------------------------------------------------\r", ConsoleUserInterface.ConsoleColors.WHITE_BOLD);
+            System.out.println("");
             Calendar currentTime = Calendar.getInstance();
             if (accessStart.compareTo(currentTime) > 0) {
                 System.out.println("You are trying to access the program before your access period");

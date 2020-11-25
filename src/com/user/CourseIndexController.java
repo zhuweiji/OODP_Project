@@ -118,8 +118,10 @@ public class CourseIndexController {
         ArrayList<Course> newData = null;
         try {
             newData = CourseData.initCourses();
+            System.out.println(newData == null);
         } catch (Exception e) {
-            System.out.println("Refresh course database encountered exception - " + e.getMessage());
+            System.out.println("Refresh course database encountered exception - " + e.getMessage() );
+            e.printStackTrace();
             return;
         }
         // Convert ArrayList -> HashMap

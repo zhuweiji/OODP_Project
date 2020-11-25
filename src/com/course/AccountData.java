@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import com.Main;
 import com.user.Admin;
 import com.user.UserAcc;
 
@@ -23,7 +24,7 @@ public class AccountData {
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static ArrayList<UserAcc> initAccounts() throws IOException {
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) IO.read("data/user_cred.txt");
+		ArrayList<String> stringArray = (ArrayList) IO.read(Main.usercredpath.toString());
 		
 		
 		for (int i = 0; i < stringArray.size(); i++) {

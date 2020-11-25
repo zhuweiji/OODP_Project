@@ -79,6 +79,6 @@ public class StudentData {
 
 			alw.add(st.toString());
 		}
-		IO.write("data/student_info.txt", alw);
+		IO.write(Main.studentinfopath.toString(), alw);
 	}
 }

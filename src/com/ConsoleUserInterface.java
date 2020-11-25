@@ -27,6 +27,14 @@ public class ConsoleUserInterface {
         System.out.println(color + str + ConsoleColors.reset);
     }
 
+    public void setBG(String bg_color){
+        System.out.println(bg_color);
+    }
+
+    public void resetBG(){
+        System.out.println(ConsoleColors.BLACK_BACKGROUND);
+    }
+
     public void displayf(String str, String[] args){
         String output = str;
         for (String arg: args){

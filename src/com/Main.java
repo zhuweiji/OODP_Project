@@ -16,6 +16,7 @@ public class Main {
     public static Path courseinfopath;
     public static Path indexinfopath;
     public static Path studentcoursepath;
+    public static Path lesssonsinfopath;
 
     public static void main(String[] args)throws ParseException, IOException {
 
@@ -42,8 +43,12 @@ public class Main {
 //        else{
 //            cwd = Paths.get(System.getProperty("user.dir"));
 //        }
-            cwd = Paths.get(System.getProperty("user.dir"));
-        if (ConsoleUserInterface.getInstance().consoleAvail() && !visualstudio){
+
+//        if (ConsoleUserInterface.getInstance().consoleAvail() && !visualstudio){
+//            cwd = cwd.getParent();
+//        }
+        cwd = Paths.get(System.getProperty("user.dir"));
+        if (ConsoleUserInterface.getInstance().consoleAvail()){
             cwd = cwd.getParent();
         }
 
@@ -56,6 +61,7 @@ public class Main {
         courseinfopath = Paths.get(datadir.toString(), "Course.txt");
         indexinfopath = Paths.get(datadir.toString(), "Index.txt");
         studentcoursepath = Paths.get(datadir.toString(),"StudentCourse.txt");
+        lesssonsinfopath = Paths.get(datadir.toString(), "lessons.txt");
     }
 
 

@@ -69,6 +69,6 @@ public class StudentCourseData {
 				
 				courseList.add(stringBuild.toString()) ;
 			}
-			IO.write("data/StudentCourse.txt", courseList);
+			IO.write(Main.studentcoursepath.toString(), courseList);
 	}
 }

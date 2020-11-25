@@ -1,5 +1,7 @@
 package com.course;
 
+import com.Main;
+
 import java.io.*;
 import java.text.*;
 import java.util.*;
@@ -17,11 +19,10 @@ public class CourseData {
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public static ArrayList<Course> initCourses() throws IOException, ParseException {
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) IO.read("data/Course.txt");
+		ArrayList<String> stringArray = (ArrayList) IO.read(Main.courseinfopath.toString());
 		
 		
         for (int i = 0 ; i < stringArray.size() ; i++) {
-        	
 				String field = (String) stringArray.get(i);
 				
 				// get individual 'fields' of the string separated by SEPARATOR
@@ -66,6 +67,6 @@ public class CourseData {
 
 				courseListRename.add(stringBuild.toString()) ;
 			}
-			IO.write("data/Course.txt",courseListRename);
+			IO.write(Main.courseinfopath.toString(),courseListRename);
 	}
 }

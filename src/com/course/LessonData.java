@@ -1,6 +1,8 @@
 package com.course;
 
 
+import com.Main;
+
 import java.io.*;
 import java.text.*;
 import java.util.*;
@@ -18,7 +20,7 @@ public class LessonData {
 	@SuppressWarnings({ "rawtypes", "unchecked"})
 public static ArrayList<Lesson> initLessons() throws IOException, ParseException {
 		// read String from text file
-		ArrayList<String> stringArray = (ArrayList) IO.read("data/lessons.txt");
+		ArrayList<String> stringArray = (ArrayList) IO.read(Main.lesssonsinfopath.toString());
 		
 		if (stringArray.size() == 0){
 			return new ArrayList<Lesson>();
@@ -72,6 +74,6 @@ public static ArrayList<Lesson> initLessons() throws IOException, ParseException
 
 				cl.add(stringBuild.toString()) ;
 			}
-			IO.write("data/lessons.txt",cl);
+			IO.write(Main.lesssonsinfopath.toString(),cl);
 	}
 }
