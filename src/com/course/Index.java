@@ -72,10 +72,10 @@ public class Index {
 	}
 	public String[] getAllDetails() {
 		return new String[] {
-				Integer.toString(indexID),
 				courseID,
-				tutorialGroup,
 				Integer.toString(vacancy),
+				tutorialGroup,
+				Integer.toString(indexID),
 				Integer.toString(waitingList) };
 	}
 }

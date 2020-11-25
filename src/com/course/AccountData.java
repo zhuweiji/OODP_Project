@@ -16,7 +16,7 @@ public class AccountData {
 
 
     /** Initialise the courses before application starts
-     * 
+     *
      * @throws IOException
      * @throws ParseException 
      */
